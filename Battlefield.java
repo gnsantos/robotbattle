@@ -40,9 +40,28 @@ class Celula { // Cada célula da matriz representa um hexágono mostrado na tel
 	}
 }
 
+class CelRobo { // Cada célula da matriz representa um hexágono mostrado na tela
+	BufferedImage ime;
+	Graphics2D Gime;
+    Point origin;
+    
+	CelRobo(int x, int y, int r, BufferedImage t) {
+		ime = t;
+        
+        origin = new Point(x, y);
+        
+		Gime = ime.createGraphics();
+	}
+    
+	void draw(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.drawImage(ime, (int)origin.getX(), (int)origin.getY(), null);
+	}
+}
+
 class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do output gráfico
 	int Larg, Alt, Dx, Dy; // largura do terreno, altura do terreno, incremento em x e incremento em y
-	BufferedImage grama, terra, agua, baseA, baseB; // texturas a serem carregadas para o terreno
+	BufferedImage grama, terra, agua, baseA, baseB, roboA, roboB; // texturas a serem carregadas para o terreno
     
     int[][] Terreno;
     
@@ -51,11 +70,15 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
     
     Celula[][] cel; // define a matriz de células do terreno
     
+    CelRobo[][] robos;
+    
 	Campo(int L, int W, int H, int[][] Terreno) {
         this.Terreno = Terreno;
         this.m = Terreno[0].length;
         this.n = Terreno.length;
         this.cel = new Celula[m][n];
+        
+        this.robos = new CelRobo[m][n];
         
 		Dx = (int) (2 * L * Math.sin(2 * Math.PI / 6)); // incremento em x para desenhar os hexágonos
 		Dy = 3* L/2; // idem para y
@@ -97,7 +120,21 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
 			System.exit(1);
 		}
         
-		BufferedImage[] Textura = {agua, terra, grama, baseA, baseB}; // array de texturas (valores de enumeração: 0, 1, 2)
+        try {
+			roboA = ImageIO.read(this.getClass().getResource("roboA.png"));
+		}
+		catch (Exception e) {
+			System.exit(1);
+		}
+        
+        try {
+			roboB = ImageIO.read(this.getClass().getResource("roboB.png"));
+		}
+		catch (Exception e) {
+			System.exit(1);
+		}
+        
+		BufferedImage[] Textura = {agua, terra, grama, baseA, baseB, roboA, roboB}; // array de texturas (valores de enumeração: 0, 1, 2)
         
 		int DELTA = 0;
 		for (int i = 0; i < m; i++) {
@@ -107,6 +144,16 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
 				DELTA = DELTA == 0 ? Dx/2 : 0;
 			}
 		}
+        
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				// instância das células hexagonais, com as texturas adequadas, e atribuição destas ao mapa (a ser renderizado em paintComponent)
+				robos[i][j] = null;
+			}
+		}
+        
+        robos[5][5] = new CelRobo( 6*Dx, 4*Dy, L, Textura[5]);
+        
 	}
     
 	public void paintComponent(Graphics g) { // Função chamada automaticamente pelo java
@@ -115,6 +162,12 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
 		for (int i = 0; i < m; i++)
 			for (int j = 0; j < n; j++)
 				cel[i][j].draw(g); // pinta as células no contexto gráfico
+        
+        for (int i = 0; i < m; i++)
+			for (int j = 0; j < n; j++)
+                if (robos[i][j] != null) {
+                    robos[i][j].draw(g); // pinta as células no contexto gráfico
+                }
 	}
 }
 
@@ -163,13 +216,13 @@ public class Battlefield extends Frame{
     
     
     public static void main (String argv[]) throws IOException {
-        codeNameA = argv[0];
-        codeNameB = argv[1];
-        
-        initArena(Terreno.length, Terreno[0].length);
-        
-        tellMeAboutTheWar();
-        runtheGame();
+//        codeNameA = argv[0];
+//        codeNameB = argv[1];
+//        
+//        initArena(Terreno.length, Terreno[0].length);
+//        
+//        tellMeAboutTheWar();
+//        runtheGame();
         
         SwingUtilities.invokeLater(new Runnable() {
             @Override
