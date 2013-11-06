@@ -6,6 +6,7 @@ public class SystemRequest{
 	private String instructionRequest;
 	private String instructionArgument;
 	private int serialNumberRequester;
+    
 	public SystemRequest(String opCode, String arg,int serialNumber){
 		this.instructionRequest = opCode;
 		this.instructionArgument = arg;
@@ -17,4 +18,8 @@ public class SystemRequest{
 		System.out.println("Argument : " +this.instructionArgument);
 		System.out.println("Robot Serial Number : " +this.serialNumberRequester);
 	}
+    
+    public String getInstructionRequest () {
+        return this.instructionRequest;
+    }
 }
