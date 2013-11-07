@@ -14,54 +14,54 @@ import java.util.*;
 import java.io.*;
 
 class Celula { // Cada célula da matriz representa um hexágono mostrado na tela
-	Polygon p = new Polygon();
-	BufferedImage ime;
-	Graphics2D Gime;
+    Polygon p = new Polygon();
+    BufferedImage ime;
+    Graphics2D Gime;
     
-	Celula(int x, int y, int r, BufferedImage t) {
-		ime = t;
+    Celula(int x, int y, int r, BufferedImage t) {
+	ime = t;
         
-		for (int i = 0; i < 6; i++)
-			p.addPoint(x + (int) (r * Math.sin(i * 2 * Math.PI / 6)),
-					   y + (int) (r * Math.cos(i * 2 * Math.PI / 6)));
+	for (int i = 0; i < 6; i++)
+	    p.addPoint(x + (int) (r * Math.sin(i * 2 * Math.PI / 6)),
+		       y + (int) (r * Math.cos(i * 2 * Math.PI / 6)));
 		
-		Gime = ime.createGraphics();
-	}
+	Gime = ime.createGraphics();
+    }
     
-	void draw(Graphics g) {
-		Graphics2D g2d = (Graphics2D) g;
-		Rectangle r = new Rectangle(0,0,100,100);
-		g2d.setPaint(new TexturePaint(ime, r));
-		g2d.fill(p);
-	}
+    void draw(Graphics g) {
+	Graphics2D g2d = (Graphics2D) g;
+	Rectangle r = new Rectangle(0,0,100,100);
+	g2d.setPaint(new TexturePaint(ime, r));
+	g2d.fill(p);
+    }
     
-	void trans(int dx, int dy) {
-		p.translate(dx, dy);
-	}
+    void trans(int dx, int dy) {
+	p.translate(dx, dy);
+    }
 }
 
 class CelRobo { // Cada célula da matriz representa um hexágono mostrado na tela
-	BufferedImage ime;
-	Graphics2D Gime;
+    BufferedImage ime;
+    Graphics2D Gime;
     Point origin;
     
-	CelRobo(int x, int y, int r, BufferedImage t) {
-		ime = t;
+    CelRobo(int x, int y, int r, BufferedImage t) {
+	ime = t;
         
         origin = new Point(x, y);
         
-		Gime = ime.createGraphics();
-	}
+	Gime = ime.createGraphics();
+    }
     
-	void draw(Graphics g) {
-		Graphics2D g2d = (Graphics2D) g;
-		g2d.drawImage(ime, (int)origin.getX(), (int)origin.getY(), null);
-	}
+    void draw(Graphics g) {
+	Graphics2D g2d = (Graphics2D) g;
+	g2d.drawImage(ime, (int)origin.getX(), (int)origin.getY(), null);
+    }
 }
 
 class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do output gráfico
-	int Larg, Alt, Dx, Dy; // largura do terreno, altura do terreno, incremento em x e incremento em y
-	BufferedImage grama, terra, agua, baseA, baseB, roboA, roboB; // texturas a serem carregadas para o terreno
+    int Larg, Alt, Dx, Dy; // largura do terreno, altura do terreno, incremento em x e incremento em y
+    BufferedImage grama, terra, agua, baseA, baseB, roboA, roboB; // texturas a serem carregadas para o terreno
     
     int[][] Terreno;
     
@@ -72,7 +72,7 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
     
     CelRobo[][] robos;
     
-	Campo(int L, int W, int H, int[][] Terreno) {
+    Campo(int L, int W, int H, int[][] Terreno, Vector<BattleRobot> army) {
         this.Terreno = Terreno;
         this.m = Terreno[0].length;
         this.n = Terreno.length;
@@ -80,95 +80,105 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
         
         this.robos = new CelRobo[m][n];
         
-		Dx = (int) (2 * L * Math.sin(2 * Math.PI / 6)); // incremento em x para desenhar os hexágonos
-		Dy = 3* L/2; // idem para y
-		Larg = W; Alt = H;
+	Dx = (int) (2 * L * Math.sin(2 * Math.PI / 6)); // incremento em x para desenhar os hexágonos
+	Dy = 3* L/2; // idem para y
+	Larg = W; Alt = H;
         
-		// cada try..catch que segue carregará uma textura, ou levantará uma exceção que encerrará a aplicação com erro
-		try {
-			grama = ImageIO.read(this.getClass().getResource("grama.png"));
-		}
-		catch (Exception e) {
-			System.exit(1);
-		}
-        
-		try {
-			terra = ImageIO.read(this.getClass().getResource("terra.png"));
-		}
-		catch (Exception e) {
-			System.exit(1);
-		}
-        
-		try {
-			agua = ImageIO.read(this.getClass().getResource("agua.png"));
-		}
-		catch (Exception e) {
-			System.exit(1);
-		}
-        
-        try {
-			baseA = ImageIO.read(this.getClass().getResource("baseA.png"));
-		}
-		catch (Exception e) {
-			System.exit(1);
-		}
-        
-        try {
-			baseB = ImageIO.read(this.getClass().getResource("baseB.png"));
-		}
-		catch (Exception e) {
-			System.exit(1);
-		}
-        
-        try {
-			roboA = ImageIO.read(this.getClass().getResource("roboA.png"));
-		}
-		catch (Exception e) {
-			System.exit(1);
-		}
-        
-        try {
-			roboB = ImageIO.read(this.getClass().getResource("roboB.png"));
-		}
-		catch (Exception e) {
-			System.exit(1);
-		}
-        
-		BufferedImage[] Textura = {agua, terra, grama, baseA, baseB, roboA, roboB}; // array de texturas (valores de enumeração: 0, 1, 2)
-        
-		int DELTA = 0;
-		for (int i = 0; i < m; i++) {
-			for (int j = 0; j < n; j++) {
-				// instância das células hexagonais, com as texturas adequadas, e atribuição destas ao mapa (a ser renderizado em paintComponent)
-				cel[i][j] = new Celula(DELTA + L + i*Dx, L + j*Dy, L, Textura[Terreno[j][i]]);
-				DELTA = DELTA == 0 ? Dx/2 : 0;
-			}
-		}
-        
-		for (int i = 0; i < m; i++) {
-			for (int j = 0; j < n; j++) {
-				// instância das células hexagonais, com as texturas adequadas, e atribuição destas ao mapa (a ser renderizado em paintComponent)
-				robos[i][j] = null;
-			}
-		}
-        
-        robos[5][5] = new CelRobo( 6*Dx, 4*Dy, L, Textura[5]);
-        
+	// cada try..catch que segue carregará uma textura, ou levantará uma exceção que encerrará a aplicação com erro
+	try {
+	    grama = ImageIO.read(this.getClass().getResource("grama.png"));
 	}
+	catch (Exception e) {
+	    System.exit(1);
+	}
+        
+	try {
+	    terra = ImageIO.read(this.getClass().getResource("terra.png"));
+	}
+	catch (Exception e) {
+	    System.exit(1);
+	}
+        
+	try {
+	    agua = ImageIO.read(this.getClass().getResource("agua.png"));
+	}
+	catch (Exception e) {
+	    System.exit(1);
+	}
+        
+        try {
+	    baseA = ImageIO.read(this.getClass().getResource("baseA.png"));
+	}
+	catch (Exception e) {
+	    System.exit(1);
+	}
+        
+        try {
+	    baseB = ImageIO.read(this.getClass().getResource("baseB.png"));
+	}
+	catch (Exception e) {
+	    System.exit(1);
+	}
+        
+        try {
+	    roboA = ImageIO.read(this.getClass().getResource("roboA.png"));
+	}
+	catch (Exception e) {
+	    System.exit(1);
+	}
+        
+        try {
+	    roboB = ImageIO.read(this.getClass().getResource("roboB.png"));
+	}
+	catch (Exception e) {
+	    System.exit(1);
+	}
+        
+	BufferedImage[] Textura = {agua, terra, grama, baseA, baseB, roboA, roboB}; // array de texturas (valores de enumeração: 0, 1, 2)
+        
+	int DELTA = 0;
+	for (int i = 0; i < m; i++) {
+	    for (int j = 0; j < n; j++) {
+		// instância das células hexagonais, com as texturas adequadas, e atribuição destas ao mapa (a ser renderizado em paintComponent)
+		cel[i][j] = new Celula(DELTA + L + i*Dx, L + j*Dy, L, Textura[Terreno[j][i]]);
+		DELTA = DELTA == 0 ? Dx/2 : 0;
+	    }
+	}
+        
+	for (int i = 0; i < m; i++) {
+	    for (int j = 0; j < n; j++) {
+		// instância das células hexagonais, com as texturas adequadas, e atribuição destas ao mapa (a ser renderizado em paintComponent)
+		robos[i][j] = null;
+	    }
+	}
+        
+	Iterator itr = army.iterator();
+	while(itr.hasNext()){
+	    BattleRobot robot = (BattleRobot) itr.next();
+	    int posX = robot.getX();
+	    int posY = robot.getY();
+	    String team = robot.getTeam();
+	    if( team.equals("Team A") )
+		robos[posX][posY] = new CelRobo( posX*Dx, posY*Dy, L, Textura[5]);
+	    else
+		robos[posX][posY] = new CelRobo( posX*Dx, posY*Dy, L, Textura[6]);
+	}
+        
+    }
     
-	public void paintComponent(Graphics g) { // Função chamada automaticamente pelo java
-		super.paintComponent(g);
-		Graphics2D g2d = (Graphics2D) g;
-		for (int i = 0; i < m; i++)
-			for (int j = 0; j < n; j++)
-				cel[i][j].draw(g); // pinta as células no contexto gráfico
+    public void paintComponent(Graphics g) { // Função chamada automaticamente pelo java
+	super.paintComponent(g);
+	Graphics2D g2d = (Graphics2D) g;
+	for (int i = 0; i < m; i++)
+	    for (int j = 0; j < n; j++)
+		cel[i][j].draw(g); // pinta as células no contexto gráfico
         
         for (int i = 0; i < m; i++)
-			for (int j = 0; j < n; j++)
+	    for (int j = 0; j < n; j++)
                 if (robos[i][j] != null) {
                     robos[i][j].draw(g); // pinta as células no contexto gráfico
                 }
-	}
+    }
 }
 
 
@@ -192,16 +202,16 @@ public class Battlefield extends Frame{
     }
     
     static int[][] Terreno = { // O mapa
-    {0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-    {2, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 2},
-    {2, 1, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 2},
-    {2, 1, 2, 2, 0, 0, 2, 2, 2, 1, 1, 1, 2, 2, 1, 2},
-    {2, 1, 2, 2, 2, 2, 0, 0, 1, 1, 2, 2, 2, 2, 1, 2},
-    {2, 1, 2, 2, 2, 1, 1, 0, 0, 2, 2, 2, 2, 2, 1, 2},
-    {2, 1, 2, 1, 1, 1, 2, 2, 2, 0, 0, 2, 2, 2, 1, 2},
-    {2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 1, 2},
-    {2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 2},
-    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0}
+	{0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+	{2, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 2},
+	{2, 1, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 2},
+	{2, 1, 2, 2, 0, 0, 2, 2, 2, 1, 1, 1, 2, 2, 1, 2},
+	{2, 1, 2, 2, 2, 2, 0, 0, 1, 1, 2, 2, 2, 2, 1, 2},
+	{2, 1, 2, 2, 2, 1, 1, 0, 0, 2, 2, 2, 2, 2, 1, 2},
+	{2, 1, 2, 1, 1, 1, 2, 2, 2, 0, 0, 2, 2, 2, 1, 2},
+	{2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 1, 2},
+	{2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 2},
+	{2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0}
     };
     
     //    Attributes    
@@ -216,21 +226,21 @@ public class Battlefield extends Frame{
     
     
     public static void main (String argv[]) throws IOException {
-//        codeNameA = argv[0];
-//        codeNameB = argv[1];
-//        
-//        initArena(Terreno.length, Terreno[0].length);
-//        
-//        tellMeAboutTheWar();
-//        runtheGame();
+	codeNameA = argv[0];
+	codeNameB = argv[1];
+	        
+	initArena(Terreno.length, Terreno[0].length);
+	        
+	tellMeAboutTheWar();
+	runtheGame();
         
         SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                Battlefield bf = new Battlefield();
-                bf.setVisible(true);
-            }
-        });
+		@Override
+		public void run() {
+		    Battlefield bf = new Battlefield();
+		    bf.setVisible(true);
+		}
+	    });
     }
     
     /********************************************************************************/
@@ -249,20 +259,20 @@ public class Battlefield extends Frame{
         SysCallOperations op = SysCallOperations.valueOf( request.getInstructionRequest() );
         
         switch(op) {
-            case WLK:
-                break;
-            case FIRE:
-                break;
-            case BOMB:
-                break;
-            case TAKE:
-                break;
-            case LOOK:
-                break;
-            case ASK:
-                break;
-            default:
-                break;
+	case WLK:
+	    break;
+	case FIRE:
+	    break;
+	case BOMB:
+	    break;
+	case TAKE:
+	    break;
+	case LOOK:
+	    break;
+	case ASK:
+	    break;
+	default:
+	    break;
         }
     }
     
@@ -330,10 +340,10 @@ public class Battlefield extends Frame{
             j = gen.nextInt(mapWidth);
             arena[i][j] = new Entity(ROBOT, i, j);
             if (k < NUM_ROBOTS/2){
-                insertArmy(codeNameA,k,"A","TX",i,j,gen.nextInt(1000));
+                insertArmy(codeNameA,k,"A","TX",j,i,gen.nextInt(1000));
             }
             else{
-                insertArmy(codeNameB,k,"B","ZT",i,j,gen.nextInt(1000));
+                insertArmy(codeNameB,k,"B","ZT",j,i,gen.nextInt(1000));
             }
             // System.out.println("Robo #"+k + "\n("+i+","+j+")");
             // System.out.println();
@@ -357,11 +367,11 @@ public class Battlefield extends Frame{
         
         setSize(m, n);
         addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				System.exit(0);
-			}
-		});
-        add(new Campo(40, m, n, Terreno));
+		public void windowClosing(WindowEvent e) {
+		    System.exit(0);
+		}
+	    });
+        add(new Campo(40, m, n, Terreno, army));
         setVisible(true);
     }
     
