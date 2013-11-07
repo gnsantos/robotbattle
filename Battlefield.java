@@ -220,7 +220,7 @@ public class Battlefield extends Frame{
     //Virtual Machines Atributtes
     private static Vector<BattleRobot> army = new Vector<BattleRobot>(NUM_ROBOTS);
     private static int serialMachine;
-    private static Queue<SystemRequest> requestQueue = new LinkedList<SystemRequest>();
+    private static Vector<SystemRequest> requestList = new Vector<SystemRequest>(NUM_ROBOTS);
     public static String codeNameA;
     public static String codeNameB;
     
@@ -245,13 +245,38 @@ public class Battlefield extends Frame{
     
     /********************************************************************************/
     
+    /**ROTINES FOR EXECUTE THE MAIN ACTIONS */
     public static void runtheGame(){
-        for(int x = 0; x < NUM_ROBOTS;){
-            if(requestQueue.size() == 4 ){  queueProcessing(); }
-            if(army.get(x).runVM() !=  1){x++;}
+        boolean condition = true;
+        while (condition){
+            roleTheDice();
+            reloadArena();
+            if(!condition){ break; }
+            else{ sleepForaWhile();}
         }
-        if(requestQueue.size() > 0){ queueProcessing();}
+        System.out.println("Execution ended");
     }
+
+    public static void roleTheDice(){
+        for (x = 0; x < NUM_ROBOTS; x++ ) {
+            if (army.get(x).returnState()){ army.get(x).runVM();
+            }
+        }
+    }
+    public static void reloadArena(){
+        shuffleList();
+        Iterator it = requestList.iterator();
+        while(it.hasNext()){
+            executeCall((SystemRequest)it.next());        
+        }
+        changeTheWorld();
+    }
+
+    private static void shuffleList(){
+        long seed = System.nanoTime();
+        Collections.shuffle(this.requestList, new Random(seed));
+    }
+    public static void sleepForaWhile(int time){}
     
     /********************************************************************************/
     
@@ -305,7 +330,7 @@ public class Battlefield extends Frame{
     /********************************************************************************/
     
     public static void systemCall(SystemRequest request){
-        requestQueue.add(request);
+        requestList.add(request);
     }
     
     /********************************************************************************/

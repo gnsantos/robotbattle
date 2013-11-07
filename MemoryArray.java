@@ -43,4 +43,8 @@ import java.util.*;
  		mem[pos] = foo;
  	}
 
- }
+ 	public void  clear(){
+ 		StackableInterface[] novo = new StackableInterface[1000];
+ 		this.mem = novo;
+ 		this.size = 1000;
+ 	}

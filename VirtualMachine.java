@@ -22,7 +22,8 @@ class VirtualMachine{
     BOMB,
     TAKE,
     LOOK,
-    ASK
+    ASK,
+    EXC
   }
   private enum SetOperation{ 
     PUSH, 
@@ -53,11 +54,17 @@ class VirtualMachine{
     CALLING
   }
   public VirtualMachine(String sourceCode,int serialNumber) throws IOException{
+    this.startSourceCode(sourceCode);
+    this.myState = MachineStates.valueOf("WAITING");
+    this.serialNumber = serialNumber;
+  }
+
+  private void startSourceCode(String sourceCode) throws IOException{
+    this.programArray.clear();
+    this.labelsHash.clear();
     filter.parseToMe(this.programArray, this.labelsHash, sourceCode);
     this.instructionCounter = 0;
     this.pc = 0;
-    this.myState = MachineStates.valueOf("WAITING");
-    this.serialNumber = serialNumber;
   }
 
   private LinkedList<String[]> program(){
@@ -199,6 +206,9 @@ class VirtualMachine{
           case ASK:
             makeSysCall(programArray.get(index)[0],programArray.get(index)[1]);
             break;
+          case EXC:
+            makeSysCall(programArray.get(index)[0],programArray.get(index)[1]);
+            break;
           default:
             System.out.println("ERRO!");
             break;
@@ -208,7 +218,7 @@ class VirtualMachine{
         }
       }
   }
-
+/*Se o programa contem uma instrução inválida a própria VM tem a obrigação de se colocar em Off*/
   private void jumpPC(int position){
     String key = programArray.get(position)[1] + ':';
     Integer val = labelsHash.get(key);
@@ -253,5 +263,10 @@ class VirtualMachine{
       if (programArray.get(getPC())[0].compareTo("END") == 0){return -1;}
     }
     return 1;
-  }  
+  }
+
+  public changeSourceCode(String newSource){
+    myStack.eraseData();
+    this.startSourceCode(newSource);
+  }
 }

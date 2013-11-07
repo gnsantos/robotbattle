@@ -6,6 +6,7 @@ public class StackElement{
 	public ArrayList<StackableInterface> stackTeste = new ArrayList<StackableInterface>();
 	public MemoryArray memorySegment = new MemoryArray(MAX);
 	public Operation myOperation = new Operation();
+
 	private boolean itsEmpty(){
 		return (stackTeste.size() == 0);
 	}
@@ -148,5 +149,10 @@ Memória
 				break;
 		}
 		pile(foo.getValue());
+	}
+
+	public void eraseData(){
+		this.stackTeste.clear();
+		this.memorySegment.clear();
 	}
 }

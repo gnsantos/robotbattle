@@ -11,18 +11,28 @@ public class BattleRobot implements Robot{
 	private Vector<Integer> coordinates = new Vector<Integer>(2);
 	private int serialNumber;
 	private VirtualMachine vm;
-	private int robotState;
+	private String robotState;
     
 	public BattleRobot(String name, int serialNumber, String sourceCode) throws IOException{
 		this.robotName = name;
 		this.serialNumber = serialNumber;
 		this.vm = new VirtualMachine(sourceCode, this.serialNumber);
-		this.robotState = 1;
+		this.robotState = "On";
 	}
     
-	public int runVM(){
-		if(this.vm.runCode() == -1){ return 0; }
-		else{return 1; }
+	public void runVM(){
+		int state = this.vm.runCode();
+		if(state == -1){ this.robotState = "Off"; }
+	}
+
+	// public void newInstructionCycle(){
+	// 	novoVetorIns
+	// }
+	// public void turnOn(){}
+	
+	public int returnState(){ 
+		if (this.robotState.equals("On")){ return 1;}
+		else if (this.robotState.equals("Off")){ return 0;}
 	}
 
 	public String sayName(){
