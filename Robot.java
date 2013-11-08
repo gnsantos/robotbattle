@@ -2,7 +2,7 @@ import java.lang.*;
 import java.util.*;
 
 interface Robot{
-    public int runVM();
+    public void runVM();
     public String sayName();
     public int saySerialNumber();
     public boolean positionScanner(int x, int y);

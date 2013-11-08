@@ -48,3 +48,4 @@ import java.util.*;
  		this.mem = novo;
  		this.size = 1000;
  	}
+ }

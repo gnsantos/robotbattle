@@ -32,7 +32,7 @@ public class BattleRobot implements Robot{
 	
 	public int returnState(){ 
 		if (this.robotState.equals("On")){ return 1;}
-		else if (this.robotState.equals("Off")){ return 0;}
+        return 0;
 	}
 
 	public String sayName(){

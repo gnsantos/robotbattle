@@ -23,6 +23,7 @@ class VirtualMachine{
     TAKE,
     LOOK,
     ASK,
+    None,
     EXC
   }
   private enum SetOperation{ 
@@ -258,14 +259,14 @@ class VirtualMachine{
       nextPc();
       addInstructionCount();
       if(getInstructionCounter() == MAX_IC){
-        makeSysCall("None","None");
+        makeSysCall("NONE","NONE");
       }
       if (programArray.get(getPC())[0].compareTo("END") == 0){return -1;}
     }
     return 1;
   }
 
-  public changeSourceCode(String newSource){
+  public void changeSourceCode(String newSource) throws IOException{
     myStack.eraseData();
     this.startSourceCode(newSource);
   }
