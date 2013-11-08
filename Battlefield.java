@@ -188,7 +188,7 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
 }
 
 
-public class Battlefield extends Frame{
+public class Battlefield extends JFrame{
     
     //    DEFINES:
     private static final char CRYSTAL = '*';
@@ -200,22 +200,22 @@ public class Battlefield extends Frame{
     
     private enum SysCallOperations{
         WLK,
-        FIRE,
-        BOMB,
-        TAKE,
-        LOOK,
-        ASK,
-        NONE,
-        EXC
-    }
+	    FIRE,
+	    BOMB,
+	    TAKE,
+	    LOOK,
+	    ASK,
+	    NONE,
+	    EXC
+	    }
     private enum DirMov{
         E,
-        W,
-        SW,
-        SE,
-        NE,
-        NW
-    }
+	    W,
+	    SW,
+	    SE,
+	    NE,
+	    NW
+	    }
     static int[][] Terreno = { // O mapa
 	{0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
 	{2, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 2},
@@ -239,23 +239,36 @@ public class Battlefield extends Frame{
     public static String codeNameA;
     public static String codeNameB;
     
+    //Transforma a classe em Singleton:
+    
+
+    private static Battlefield thisIsSparta = new Battlefield();
+   
+
+    public static Battlefield getInstanceOfBattlefield(){
+	return thisIsSparta;
+    }
+    
+    /////////////////////////////////////////////////////////////////////////////////////////
+    
     
     public static void main (String argv[]) throws IOException {
         codeNameA = argv[0];
         codeNameB = argv[1];
         
-        initArena(Terreno.length, Terreno[0].length);
-        
-        // tellMeAboutTheWar();
+        //initArena(Terreno.length, Terreno[0].length);
+	tellMeAboutTheWar();
         runtheGame();
-        
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                Battlefield bf = new Battlefield();
-                bf.setVisible(true);
-            }
+	SwingUtilities.invokeLater(new Runnable() {
+		@Override
+		    public void run() {
+		    Battlefield bf = Battlefield.getInstanceOfBattlefield();
+		    bf.setVisible(true);
+		}
 	    });
+	thisIsSparta.repaint();
+       
+        
     }
     
     /********************************************************************************/
@@ -267,7 +280,7 @@ public class Battlefield extends Frame{
             condition = rollTheDice();
             reloadArena();
             if(condition == NUM_ROBOTS){ break; }
-            else{ sleepForaWhile(500);}
+            else{ sleepForaWhile(300);}
         }
         System.out.println("Execution ended");
     }
@@ -300,13 +313,13 @@ public class Battlefield extends Frame{
     }
     
     public static void sleepForaWhile(int time) {
-        try{
-            Thread.sleep(time);
-            // System.out.println("\n Sai!!!! \n");   
-        }
-        catch(InterruptedException e){
-            System.out.println("Deu merda!");
-        }
+	try{
+	    Thread.sleep(time);
+	    // System.out.println("\n Sai!!!! \n");   
+	}
+	catch(InterruptedException e){
+	    System.out.println("Deu merda!");
+	}
         
     }
     
@@ -316,24 +329,24 @@ public class Battlefield extends Frame{
         SysCallOperations op = SysCallOperations.valueOf( request.getInstructionRequest() );
         //System.out.println("Request :" + request.getInstructionRequest() + " Peso : " + request.getWeight() + "Requester : "  + request.getSerialNumberRequester()); 
         switch(op) {
-            case WLK:
-                BattleRobot sony = getRobotBySerial(request.getSerialNumberRequester());
-                sony.showCoordinates();
-                int k = moveCall(request.getInstructionArgument(),request.getSerialNumberRequester());
-                sony.showCoordinates();
-                break;
-            case FIRE:
-                break;
-            case BOMB:
-                break;
-            case TAKE:
-                break;
-            case LOOK:
-                break;
-            case ASK:
-                break;
-            default:
-                break;
+	case WLK:
+	    BattleRobot sony = getRobotBySerial(request.getSerialNumberRequester());
+	    //sony.showCoordinates();
+	    int k = moveCall(request.getInstructionArgument(),request.getSerialNumberRequester());
+	    //sony.showCoordinates();
+	    break;
+	case FIRE:
+	    break;
+	case BOMB:
+	    break;
+	case TAKE:
+	    break;
+	case LOOK:
+	    break;
+	case ASK:
+	    break;
+	default:
+	    break;
         }
     }
 
@@ -355,44 +368,54 @@ public class Battlefield extends Frame{
         int y = 0;
         //System.out.println("Request :" + request.getInstructionRequest() + " Peso : " + request.getWeight() + "Requester : "  + request.getSerialNumberRequester()); 
         switch(dir) {
-            case E:
-                if(canMoveTo((sony.getX() + 0)%16, (sony.getY() + 1)%10)){
-                    sony.moveRobot((sony.getX() + 0)%16, (sony.getY() + 1)%10);
-                    return 1;
-                }
-                break;
-            case W:
-                if(canMoveTo((sony.getX() + 0)%16, (sony.getY() -1)%10)){
-                    sony.moveRobot((sony.getX() + 0)%16, (sony.getY() -1)%10);
-                    return 1;
-                }
-                break;
-            case SE:
-                if(canMoveTo((sony.getX() + 1)%16, (sony.getY() + 0)%10)){
-                    sony.moveRobot((sony.getX() + 1)%16, (sony.getY() + 0)%10);
-                    return 1;
-                }
-                break;
-            case NE:
-                if(canMoveTo((sony.getX() - 1)%16, (sony.getY() + 0)%10)){
-                    sony.moveRobot((sony.getX() - 1)%16, (sony.getY() + 0)%10);
-                    return 1;
-                }
-                break;
-            case SW:
-                if(canMoveTo((sony.getX() + 1)%16, (sony.getY() - 1)%10)){
-                    sony.moveRobot((sony.getX() + 1)%16, (sony.getY() - 1)%10);
-                    return 1;
-                }
-                break;
-            case NW:
-                if(canMoveTo((sony.getX() - 1)%16, (sony.getY() - 1)%10)){
-                    sony.moveRobot((sony.getX() - 1 )%16, (sony.getY() - 1)%10);
-                    return 1;
-                }
-                break;
-            default:
-                break;
+	case E:
+	    if(canMoveTo((sony.getX() + 0)%16, (sony.getY() + 1)%10)){
+		sony.moveRobot((sony.getX() + 0)%16, (sony.getY() + 1)%10);
+		//thisIsSparta.repaint();
+		return 1;
+	    }
+	    break;
+	case W:
+	    if(canMoveTo((sony.getX() + 0)%16, (sony.getY() -1)%10)){
+		sony.moveRobot((sony.getX() + 0)%16, (sony.getY() +9)%10);
+		//thisIsSparta.repaint();
+		
+		return 1;
+	    }
+	    break;
+	case SE:
+	    if(canMoveTo((sony.getX() + 1)%16, (sony.getY() + 0)%10)){
+		sony.moveRobot((sony.getX() + 1)%16, (sony.getY() + 0)%10);
+		//thisIsSparta.repaint();
+		
+		return 1;
+	    }
+	    break;
+	case NE:
+	    if(canMoveTo((sony.getX() - 1)%16, (sony.getY() + 0)%10)){
+		sony.moveRobot((sony.getX() +15)%16, (sony.getY() + 0)%10);
+		//thisIsSparta.repaint();
+		
+		return 1;
+	    }
+	    break;
+	case SW:
+	    if(canMoveTo((sony.getX() + 1)%16, (sony.getY() - 1)%10)){
+		sony.moveRobot((sony.getX() + 1)%16, (sony.getY() +9)%10);
+		//thisIsSparta.repaint();
+		
+		return 1;
+	    }
+	    break;
+	case NW:
+	    if(canMoveTo((sony.getX() - 1)%16, (sony.getY() - 1)%10)){
+		sony.moveRobot((sony.getX() +15 )%16, (sony.getY() +9)%10);
+		//thisIsSparta.repaint();
+		return 1;
+	    }
+	    break;
+	default:
+	    break;
         }
         return 0;
     }
@@ -482,7 +505,7 @@ public class Battlefield extends Frame{
     
     /********************************************************************************/
     
-    public Battlefield() {
+    public Battlefield() throws IOException{
         setTitle("DOOOOOOOOOOOOOOM.");
         
         int m = 1200;
@@ -490,10 +513,11 @@ public class Battlefield extends Frame{
         
         setSize(m, n);
         addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
+		public void windowClosing(WindowEvent e) {
+		    System.exit(0);
+		}
 	    });
+	initArena(Terreno.length, Terreno[0].length);
         add(new Campo(40, m, n, Terreno, army));
         setVisible(true);
     }
