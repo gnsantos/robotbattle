@@ -205,10 +205,17 @@ public class Battlefield extends Frame{
         TAKE,
         LOOK,
         ASK,
-        None,
+        NONE,
         EXC
     }
-    
+    private enum DirMov{
+        E,
+        W,
+        SW,
+        SE,
+        NE,
+        NW
+    }
     static int[][] Terreno = { // O mapa
 	{0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
 	{2, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 2},
@@ -239,7 +246,7 @@ public class Battlefield extends Frame{
         
         initArena(Terreno.length, Terreno[0].length);
         
-        tellMeAboutTheWar();
+        // tellMeAboutTheWar();
         runtheGame();
         
         SwingUtilities.invokeLater(new Runnable() {
@@ -255,22 +262,23 @@ public class Battlefield extends Frame{
     
     /**ROTINES FOR EXECUTE THE MAIN ACTIONS */
     public static void runtheGame(){
-        boolean condition = true;
-        while (condition){
-            rollTheDice();
+        int condition = 0;
+        while (true){
+            condition = rollTheDice();
             reloadArena();
-            condition = false;
-            if(!condition){ break; }
-            else{ sleepForaWhile(10);}
+            if(condition == NUM_ROBOTS){ break; }
+            else{ sleepForaWhile(500);}
         }
         System.out.println("Execution ended");
     }
     
-    public static void rollTheDice(){
+    public static int rollTheDice(){
+        int cont = 0;
         for (int x = 0; x < NUM_ROBOTS; x++ ) {
-            if (army.get(x).returnState() == 1){ army.get(x).runVM();
-            }
+            if (army.get(x).returnState() == 1){ army.get(x).runVM(); }
+            else { cont++;}
         }
+        return cont;
     }
     public static void reloadArena(){
         shuffleList();
@@ -278,6 +286,7 @@ public class Battlefield extends Frame{
         while(it.hasNext()){
             executeCall((SystemRequest)it.next());
         }
+        requestList.clear();
         changeTheWorld();
     }
     
@@ -290,7 +299,14 @@ public class Battlefield extends Frame{
         Collections.shuffle(requestList, new Random(seed));
     }
     
-    public static void sleepForaWhile(int time){
+    public static void sleepForaWhile(int time) {
+        try{
+            Thread.sleep(time);
+            // System.out.println("\n Sai!!!! \n");   
+        }
+        catch(InterruptedException e){
+            System.out.println("Deu merda!");
+        }
         
     }
     
@@ -298,9 +314,13 @@ public class Battlefield extends Frame{
     
     public static void executeCall (SystemRequest request) {
         SysCallOperations op = SysCallOperations.valueOf( request.getInstructionRequest() );
-        
+        //System.out.println("Request :" + request.getInstructionRequest() + " Peso : " + request.getWeight() + "Requester : "  + request.getSerialNumberRequester()); 
         switch(op) {
             case WLK:
+                BattleRobot sony = getRobotBySerial(request.getSerialNumberRequester());
+                sony.showCoordinates();
+                int k = moveCall(request.getInstructionArgument(),request.getSerialNumberRequester());
+                sony.showCoordinates();
                 break;
             case FIRE:
                 break;
@@ -316,7 +336,78 @@ public class Battlefield extends Frame{
                 break;
         }
     }
+
+    public static boolean canMoveTo(int i, int j){
+        Iterator it = army.iterator();
+        BattleRobot hal;
+        while(it.hasNext()){
+            hal = (BattleRobot)it.next();
+            if(i == hal.getX() && j == hal.getY())
+                return false;
+        }
+        return true;
+    }
+
+    public static int moveCall(String direction, int robotSerial){
+        BattleRobot sony = getRobotBySerial(robotSerial);
+        DirMov dir = DirMov.valueOf( direction);
+        int x = 0;
+        int y = 0;
+        //System.out.println("Request :" + request.getInstructionRequest() + " Peso : " + request.getWeight() + "Requester : "  + request.getSerialNumberRequester()); 
+        switch(dir) {
+            case E:
+                if(canMoveTo((sony.getX() + 0)%16, (sony.getY() + 1)%10)){
+                    sony.moveRobot((sony.getX() + 0)%16, (sony.getY() + 1)%10);
+                    return 1;
+                }
+                break;
+            case W:
+                if(canMoveTo((sony.getX() + 0)%16, (sony.getY() -1)%10)){
+                    sony.moveRobot((sony.getX() + 0)%16, (sony.getY() -1)%10);
+                    return 1;
+                }
+                break;
+            case SE:
+                if(canMoveTo((sony.getX() + 1)%16, (sony.getY() + 0)%10)){
+                    sony.moveRobot((sony.getX() + 1)%16, (sony.getY() + 0)%10);
+                    return 1;
+                }
+                break;
+            case NE:
+                if(canMoveTo((sony.getX() - 1)%16, (sony.getY() + 0)%10)){
+                    sony.moveRobot((sony.getX() - 1)%16, (sony.getY() + 0)%10);
+                    return 1;
+                }
+                break;
+            case SW:
+                if(canMoveTo((sony.getX() + 1)%16, (sony.getY() - 1)%10)){
+                    sony.moveRobot((sony.getX() + 1)%16, (sony.getY() - 1)%10);
+                    return 1;
+                }
+                break;
+            case NW:
+                if(canMoveTo((sony.getX() - 1)%16, (sony.getY() - 1)%10)){
+                    sony.moveRobot((sony.getX() - 1 )%16, (sony.getY() - 1)%10);
+                    return 1;
+                }
+                break;
+            default:
+                break;
+        }
+        return 0;
+    }
     
+    public static BattleRobot getRobotBySerial(int robotSerial){
+        Iterator it = army.iterator();
+        BattleRobot wally = null;
+        while(it.hasNext()){
+            wally = (BattleRobot)it.next();
+            if (wally.saySerialNumber() == robotSerial){
+                break;
+            }
+        }
+        return wally;
+    }
     /********************************************************************************/
     
     public static void tellMeAboutTheWar(){
@@ -328,12 +419,15 @@ public class Battlefield extends Frame{
             System.out.print("Position : ");
             army.get(x).showCoordinates();
             System.out.println();
+            // sleepForaWhile(1000);
         }
     }
     
     /********************************************************************************/
     
     public static void systemCall(SystemRequest request){
+        sleepForaWhile(500);
+        request.showRequest();
         requestList.add(request);
     }
     

@@ -23,7 +23,7 @@ class VirtualMachine{
     TAKE,
     LOOK,
     ASK,
-    None,
+    NONE,
     EXC
   }
   private enum SetOperation{ 
