@@ -70,20 +70,12 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
     
     Celula[][] cel; // define a matriz de células do terreno
     
-    CelRobo[][] robos;
+    public CelRobo[][] robos;
     
-    Campo(int L, int W, int H, int[][] Terreno, Vector<BattleRobot> army) {
-        this.Terreno = Terreno;
-        this.m = Terreno[0].length;
-        this.n = Terreno.length;
-        this.cel = new Celula[m][n];
-        
-        this.robos = new CelRobo[m][n];
-        
-        Dx = (int) (2 * L * Math.sin(2 * Math.PI / 6)); // incremento em x para desenhar os hexágonos
-        Dy = 3* L/2; // idem para y
-        Larg = W; Alt = H;
-        
+    public BufferedImage[] Textura;
+
+    private void initTexturas(){
+	
         // cada try..catch que segue carregará uma textura, ou levantará uma exceção que encerrará a aplicação com erro
         try {
             grama = ImageIO.read(this.getClass().getResource("grama.png"));
@@ -134,24 +126,17 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
             System.exit(1);
         }
         
-        BufferedImage[] Textura = {agua, terra, grama, baseA, baseB, roboA, roboB}; // array de texturas (valores de enumeração: 0, 1, 2)
-        
-        int DELTA = 0;
+        BufferedImage[] imageArray = {agua, terra, grama, baseA, baseB, roboA, roboB};
+	this.Textura = imageArray;
+    }
+
+    public void setRobots(Vector<BattleRobot> army, int Dx, int Dy, int L){
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                // instância das células hexagonais, com as texturas adequadas, e atribuição destas ao mapa (a ser renderizado em paintComponent)
-                cel[i][j] = new Celula(DELTA + L + i*Dx, L + j*Dy, L, Textura[Terreno[j][i]]);
-                DELTA = DELTA == 0 ? Dx/2 : 0;
-            }
-        }
-        
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                // instância das células hexagonais, com as texturas adequadas, e atribuição destas ao mapa (a ser renderizado em paintComponent)
                 robos[i][j] = null;
             }
         }
-        
+	
         Iterator itr = army.iterator();
         while(itr.hasNext()){
             BattleRobot robot = (BattleRobot) itr.next();
@@ -169,6 +154,39 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
             else
                 robos[posX][posY] = new CelRobo( (int)((posX + psi)*Dx), posY*Dy, L, Textura[6]);
         }
+    }
+
+    public int getDx(){
+	return this.Dx;
+    }
+    public int getDy(){
+	return this.Dy;
+    }
+    
+    Campo(int L, int W, int H, int[][] Terreno, Vector<BattleRobot> army) {
+        this.Terreno = Terreno;
+        this.m = Terreno[0].length;
+        this.n = Terreno.length;
+        this.cel = new Celula[m][n];
+        
+        this.robos = new CelRobo[m][n];
+        
+        Dx = (int) (2 * L * Math.sin(2 * Math.PI / 6)); // incremento em x para desenhar os hexágonos
+        Dy = 3* L/2; // idem para y
+        Larg = W; Alt = H;
+        
+	initTexturas();
+
+        int DELTA = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                // instância das células hexagonais, com as texturas adequadas, e atribuição destas ao mapa (a ser renderizado em paintComponent)
+                cel[i][j] = new Celula(DELTA + L + i*Dx, L + j*Dy, L, Textura[Terreno[j][i]]);
+                DELTA = DELTA == 0 ? Dx/2 : 0;
+            }
+        }
+
+	setRobots(army,Dx, Dy, L);
         
     }
     
@@ -200,22 +218,22 @@ public class Battlefield extends JFrame{
     
     private enum SysCallOperations{
         WLK,
-	    FIRE,
-	    BOMB,
-	    TAKE,
-	    LOOK,
-	    ASK,
-	    NONE,
-	    EXC
-	    }
+	FIRE,
+	BOMB,
+	TAKE,
+	LOOK,
+	ASK,
+	NONE,
+	EXC
+    }
     private enum DirMov{
         E,
-	    W,
-	    SW,
-	    SE,
-	    NE,
-	    NW
-	    }
+	W,
+	SW,
+	SE,
+	NE,
+	NW
+    }
     static int[][] Terreno = { // O mapa
 	{0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
 	{2, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 2},
@@ -238,6 +256,7 @@ public class Battlefield extends JFrame{
     private static Vector<SystemRequest> requestList = new Vector<SystemRequest>(NUM_ROBOTS);
     public static String codeNameA;
     public static String codeNameB;
+    public static Campo thisIsMadness;
     
     //Transforma a classe em Singleton:
     
@@ -252,20 +271,23 @@ public class Battlefield extends JFrame{
     /////////////////////////////////////////////////////////////////////////////////////////
     
     
-    public static void main (String argv[]) throws IOException {
+    public static void main (String argv[]) throws IOException{
         codeNameA = argv[0];
         codeNameB = argv[1];
         
-        //initArena(Terreno.length, Terreno[0].length);
-	tellMeAboutTheWar();
+        initArena(Terreno.length, Terreno[0].length);
+	rearrangeRobots();
+	//tellMeAboutTheWar();
+
         runtheGame();
 	SwingUtilities.invokeLater(new Runnable() {
 		@Override
-		    public void run() {
+		public void run() {
 		    Battlefield bf = Battlefield.getInstanceOfBattlefield();
 		    bf.setVisible(true);
 		}
 	    });
+
 	thisIsSparta.repaint();
        
         
@@ -304,7 +326,8 @@ public class Battlefield extends JFrame{
     }
     
     private static void changeTheWorld() {
-        
+	rearrangeRobots();
+        thisIsSparta.repaint();
     }
     
     private static void shuffleList(){
@@ -455,6 +478,10 @@ public class Battlefield extends JFrame{
     }
     
     /********************************************************************************/
+    public static void rearrangeRobots(){
+       	thisIsMadness.setRobots(army, thisIsMadness.getDx(), thisIsMadness.getDy(), 40);
+    }
+    /********************************************************************************/
     
     public static void insertArmy(String sourceCode,int index, String team, String robotModel, int x, int y, int serialNumber) throws IOException{
         army.add(index, new BattleRobot(robotModel+"-" + serialNumber, serialNumber,sourceCode));
@@ -486,8 +513,8 @@ public class Battlefield extends JFrame{
             j = gen.nextInt(mapWidth);
             arena[i][j] = new Entity(ROBOT, i, j);
             if (k < NUM_ROBOTS/2){
-                insertArmy(codeNameA,k,"A","TX",j,i,gen.nextInt(1000));
-            }
+		insertArmy(codeNameA,k,"A","TX",j,i,gen.nextInt(1000));
+	    }
             else{
                 insertArmy(codeNameB,k,"B","ZT",j,i,gen.nextInt(1000));
             }
@@ -505,8 +532,8 @@ public class Battlefield extends JFrame{
     
     /********************************************************************************/
     
-    public Battlefield() throws IOException{
-        setTitle("DOOOOOOOOOOOOOOM.");
+    public Battlefield(){
+        setTitle("BATTLEFIELD");
         
         int m = 1200;
         int n = 720;
@@ -517,8 +544,15 @@ public class Battlefield extends JFrame{
 		    System.exit(0);
 		}
 	    });
-	initArena(Terreno.length, Terreno[0].length);
-        add(new Campo(40, m, n, Terreno, army));
+	
+	/*try{
+	    initArena(Terreno.length, Terreno[0].length);
+	}catch(IOException e){
+	    System.out.println("Arena unvailable.");
+	    System.exit(1);
+	    }*/
+	thisIsMadness = new Campo(40, m, n, Terreno, army);
+        add(thisIsMadness);
         setVisible(true);
     }
     

@@ -54,7 +54,7 @@ class VirtualMachine{
     RUNNING,
     CALLING
   }
-  public VirtualMachine(String sourceCode,int serialNumber) throws IOException{
+    public VirtualMachine(String sourceCode,int serialNumber) throws IOException{
     this.startSourceCode(sourceCode);
     this.myState = MachineStates.valueOf("WAITING");
     this.serialNumber = serialNumber;
@@ -266,7 +266,7 @@ class VirtualMachine{
     return 1;
   }
 
-  public void changeSourceCode(String newSource) throws IOException{
+    public void changeSourceCode(String newSource) throws IOException{
     myStack.eraseData();
     this.startSourceCode(newSource);
   }
