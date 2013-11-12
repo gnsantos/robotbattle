@@ -25,6 +25,13 @@ public class BattleRobot implements Robot{
 		if(state == -1){ this.robotState = "Off"; }
 	}
 
+	public void returnAnswer(Double answer){
+		vm.pushAnswer(answer);
+	}
+	public void returnAnswer(String answer){
+		vm.pushAnswer(answer);
+	}
+
 	// public void newInstructionCycle(){
 	// 	novoVetorIns
 	// }

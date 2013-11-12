@@ -54,12 +54,18 @@ class VirtualMachine{
     RUNNING,
     CALLING
   }
-    public VirtualMachine(String sourceCode,int serialNumber) throws IOException{
+  public VirtualMachine(String sourceCode,int serialNumber) throws IOException{
     this.startSourceCode(sourceCode);
     this.myState = MachineStates.valueOf("WAITING");
     this.serialNumber = serialNumber;
   }
 
+  public void pushAnswer(Double item){
+    myStack.pile(item);
+  }
+  public void pushAnswer (String item){
+    myStack.pile(item);
+  }
   private void startSourceCode(String sourceCode) throws IOException{
     this.programArray.clear();
     this.labelsHash.clear();
