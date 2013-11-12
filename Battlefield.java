@@ -254,8 +254,7 @@ public class Battlefield extends JFrame{
     private static Vector<BattleRobot> army = new Vector<BattleRobot>(NUM_ROBOTS);
     private static int serialMachine;
     private static Vector<SystemRequest> requestList = new Vector<SystemRequest>(NUM_ROBOTS);
-    public static String codeNameA;
-    public static String codeNameB;
+    public static final String codeName = "sourceCode";
     public static Campo thisIsMadness;
     
     //Transforma a classe em Singleton:
@@ -272,25 +271,21 @@ public class Battlefield extends JFrame{
     
     
     public static void main (String argv[]) throws IOException{
-        codeNameA = argv[0];
-        codeNameB = argv[1];
-        
+        // codeNameA = argv[0];
+        // codeNameB = argv[1];
         initArena(Terreno.length, Terreno[0].length);
-	rearrangeRobots();
-	//tellMeAboutTheWar();
-
+        rearrangeRobots();
+    	//tellMeAboutTheWar();
         runtheGame();
-	SwingUtilities.invokeLater(new Runnable() {
-		@Override
-		public void run() {
-		    Battlefield bf = Battlefield.getInstanceOfBattlefield();
-		    bf.setVisible(true);
-		}
-	    });
 
-	thisIsSparta.repaint();
-       
-        
+    	SwingUtilities.invokeLater(new Runnable() {
+    		@Override
+    		public void run() {
+    		    Battlefield bf = Battlefield.getInstanceOfBattlefield();
+    		    bf.setVisible(true);
+    		}
+    	    });
+    	thisIsSparta.repaint();
     }
     
     /********************************************************************************/
@@ -513,10 +508,10 @@ public class Battlefield extends JFrame{
             j = gen.nextInt(mapWidth);
             arena[i][j] = new Entity(ROBOT, i, j);
             if (k < NUM_ROBOTS/2){
-		insertArmy(codeNameA,k,"A","TX",j,i,gen.nextInt(1000));
-	    }
+                insertArmy(codeName + "-" + k,k,"A","TX",j,i,gen.nextInt(1000));
+	        }
             else{
-                insertArmy(codeNameB,k,"B","ZT",j,i,gen.nextInt(1000));
+                insertArmy(codeName + "-" + k,k,"B","ZT",j,i,gen.nextInt(1000));
             }
             // System.out.println("Robo #"+k + "\n("+i+","+j+")");
             // System.out.println();
