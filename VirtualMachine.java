@@ -54,12 +54,18 @@ class VirtualMachine{
     RUNNING,
     CALLING
   }
-    public VirtualMachine(String sourceCode,int serialNumber) throws IOException{
+  public VirtualMachine(String sourceCode,int serialNumber) throws IOException{
     this.startSourceCode(sourceCode);
     this.myState = MachineStates.valueOf("WAITING");
     this.serialNumber = serialNumber;
   }
 
+  public void pushAnswer(Double item){
+    myStack.pile(item);
+  }
+  public void pushAnswer (String item){
+    myStack.pile(item);
+  }
   private void startSourceCode(String sourceCode) throws IOException{
     this.programArray.clear();
     this.labelsHash.clear();
@@ -266,8 +272,21 @@ class VirtualMachine{
     return 1;
   }
 
-    public void changeSourceCode(String newSource) throws IOException{
+  public void changeSourceCode(String newSource) throws IOException{
     myStack.eraseData();
     this.startSourceCode(newSource);
   }
+  // public static void main (String argv[]){
+  //   String my = "sourceCodeX";
+  //   int serie = 10;
+  //   try{
+  //     VirtualMachine vm = new VirtualMachine(my,serie);
+  //     vm.showProgram(); 
+  //   }
+  //   catch(IOException e){
+  //     System.out.println("ERRO : " + e.toString());
+  //     e.printStackTrace();
+  //     System.exit(0);
+  //   }
+  // }
 }

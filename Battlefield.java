@@ -28,22 +28,33 @@ public class Battlefield extends JFrame{
     
     private enum SysCallOperations{
         WLK,
-	FIRE,
-	BOMB,
-	TAKE,
-	LOOK,
-	ASK,
-	NONE,
-	EXC
+    	FIRE,
+    	BOMB,
+    	TAKE,
+    	LOOK,
+    	ASK,
+    	NONE,
+    	EXC
     }
     
     private enum DirMov{
         E,
-	W,
-	SW,
-	SE,
-	NE,
-	NW
+    	W,
+	   SW,
+    	SE,
+    	NE,
+    	NW
+    }
+
+    private enum AskOptions {
+        MY_HEALTH,
+        HAS_ENEMY,
+        HAS_CRYSTAL,
+        NUMBER_OF_CRYSTAL,
+        ENEMY_BASE_DISTANCE,
+        TEAM_BASE_DISTANCE,
+        ITS_ENEMY,
+        THEIR_HEALTH
     }
     
     static int[][] Terreno = { // O mapa
@@ -79,15 +90,14 @@ public class Battlefield extends JFrame{
 
     private static int serialMachine;
     private static Vector<SystemRequest> requestList = new Vector<SystemRequest>(NUM_ROBOTS);
-    public static String codeNameA;
-    public static String codeNameB;
+    public static final String codeName = "sourceCode";
     public static Campo thisIsMadness;
     
     //Transforma a classe em Singleton:
     
 
     private static Battlefield thisIsSparta = new Battlefield();
-   
+    //Trocar esse nome depois...   
 
     public static Battlefield getInstanceOfBattlefield(){
 	return thisIsSparta;
@@ -105,22 +115,19 @@ public class Battlefield extends JFrame{
 	//tellMeAboutTheWar();
 
         runtheGame();
-	SwingUtilities.invokeLater(new Runnable() {
-		@Override
-		public void run() {
-		    Battlefield bf = Battlefield.getInstanceOfBattlefield();
-		    bf.setVisible(true);
-		}
-	    });
 
-	thisIsSparta.repaint();
-       
-        
+    	SwingUtilities.invokeLater(new Runnable() {
+    		@Override
+    		public void run() {
+    		    Battlefield bf = Battlefield.getInstanceOfBattlefield();
+    		    bf.setVisible(true);
+    		}
+    	    });
+    	thisIsSparta.repaint();
     }
     
     /********************************************************************************/
-    
-    /**ROTINES FOR EXECUTE THE MAIN ACTIONS */
+                    /**ROTINES FOR EXECUTE THE MAIN ACTIONS */
     public static void runtheGame(){
         int condition = 0;
         while (true){
@@ -160,28 +167,21 @@ public class Battlefield extends JFrame{
         Collections.shuffle(requestList, new Random(seed));
     }
     
-    public static void sleepForaWhile(int time) {
-	try{
-	    Thread.sleep(time);
-	    // System.out.println("\n Sai!!!! \n");   
-	}
-	catch(InterruptedException e){
-	    System.out.println("Deu merda!");
-	}
-        
-    }
+
     
     /********************************************************************************/
-    
+                            /*SYSTEM CALLS*/
     public static void executeCall (SystemRequest request) {
         SysCallOperations op = SysCallOperations.valueOf( request.getInstructionRequest() );
+        BattleRobot sony = getRobotBySerial(request.getSerialNumberRequester());
+        double sucess = 0;
         //System.out.println("Request :" + request.getInstructionRequest() + " Peso : " + request.getWeight() + "Requester : "  + request.getSerialNumberRequester()); 
         switch(op) {
 	case WLK:
-	    BattleRobot sony = getRobotBySerial(request.getSerialNumberRequester());
-	    //sony.showCoordinates();
-	    int k = moveCall(request.getInstructionArgument(),request.getSerialNumberRequester());
-	    //sony.showCoordinates();
+	    sucess = moveCall(request.getInstructionArgument(),request.getSerialNumberRequester());
+	    sony.returnAnswer(sucess);
+        //sony.showCoordinates();
+        //fazer push se a acao ocorreu ok!
 	    break;
 	case FIRE:
 	    break;
@@ -192,11 +192,44 @@ public class Battlefield extends JFrame{
 	case LOOK:
 	    break;
 	case ASK:
-	    break;
+        sucess = askCall(request.getInstructionArgument(),request.getSerialNumberRequester());
+        sony.returnAnswer(sucess);	    
+        break;
 	default:
 	    break;
         }
     }
+    /********************************************************************************/
+                        /*ASK ACTION*/
+    public static int askCall(String asked, int robotSerial){
+        AskOptions question = AskOptions.valueOf(asked);
+        BattleRobot sony = getRobotBySerial(robotSerial);
+        switch(question){
+            case MY_HEALTH:
+                break;
+            case HAS_ENEMY:
+                break;
+            case HAS_CRYSTAL:
+                break;
+            case NUMBER_OF_CRYSTAL:
+                break;
+            case ENEMY_BASE_DISTANCE:
+                break;
+            case TEAM_BASE_DISTANCE:
+                break;
+            case ITS_ENEMY:
+                break;
+            case THEIR_HEALTH:
+                break;
+            default:
+                break;
+        }
+        return 0;
+
+    }
+
+    /********************************************************************************/
+                        /*MOVE ACTION*/
 
     public static boolean canMoveTo(int i, int j){
         Iterator it = army.iterator();
@@ -279,8 +312,14 @@ public class Battlefield extends JFrame{
         }
         return wally;
     }
+
+    public static void rearrangeRobots(){
+       	thisIsMadness.setRobots(army, thisIsMadness.getDx(), thisIsMadness.getDy(), 40);
+    }
+
     /********************************************************************************/
-    
+                        /*DEBUG FUNCTIONS*/
+
     public static void tellMeAboutTheWar(){
         System.out.println("\tInformacao sobre os robos\n" );
         for (int x = 0; x < NUM_ROBOTS ; x++) {
@@ -294,6 +333,16 @@ public class Battlefield extends JFrame{
         }
     }
     
+    public static void sleepForaWhile(int time) {
+        try{
+            Thread.sleep(time);
+            // System.out.println("\n Sai!!!! \n");   
+        }
+        catch(InterruptedException e){
+            System.out.println("Deu merda!");
+        }
+            
+    }
     /********************************************************************************/
     
     public static void systemCall(SystemRequest request){
@@ -309,14 +358,13 @@ public class Battlefield extends JFrame{
 
     }
     /********************************************************************************/
+                        /*INITIALIZE ARENA AND HIS ELEMENTS*/
     
     public static void insertArmy(String sourceCode,int index, String team, String robotModel, int x, int y, int serialNumber) throws IOException{
         army.add(index, new BattleRobot(robotModel+"-" + serialNumber, serialNumber,sourceCode));
         army.get(index).setTeam("Team "+team);
         army.get(index).moveRobot(x,y);
     }
-    
-    /********************************************************************************/
     
     static void initArena(int mapHeight, int mapWidth) throws IOException{
         
@@ -331,15 +379,12 @@ public class Battlefield extends JFrame{
             i = gen.nextInt(mapHeight);
             j = gen.nextInt(mapWidth);
             if (k < NUM_ROBOTS/2){
-		insertArmy(codeNameA,k,"A","TX",j,i,gen.nextInt(1000));
-	    }
+                insertArmy(codeName + "-" + k,k,"A","TX",j,i,gen.nextInt(1000));
+	        }
             else{
-                insertArmy(codeNameB,k,"B","ZT",j,i,gen.nextInt(1000));
+                insertArmy(codeName + "-" + k,k,"B","ZT",j,i,gen.nextInt(1000));
             }
-            // System.out.println("Robo #"+k + "\n("+i+","+j+")");
-            // System.out.println();
         }
-        
         //        Inserts crystals at totally random locations
         for (int k = 0; k < NUM_CRYSTALS; k++) {
             i = gen.nextInt(mapHeight);
@@ -349,8 +394,10 @@ public class Battlefield extends JFrame{
         }
     }
     
+
     /********************************************************************************/
-    
+    /*CONSTRUCTOR*/
+
     public Battlefield(){
         setTitle("BATTLEFIELD");
         

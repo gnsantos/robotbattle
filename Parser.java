@@ -5,14 +5,37 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Parser{
+
+	/*Constant Variables help to open a file*/
+	final static String sourcePath = "/sourceCodes";
+    final static String directoryPath = System.getProperty("user.dir");
+    final static String defaultSource = "defaultSource";
+
     public static void parseToMe (LinkedList<String[]> programArray, Hashtable<String, Integer> labelsHash, String name) throws IOException{
-	BufferedReader file =  new BufferedReader(new FileReader(name));
+	String path = directoryPath + sourcePath;
+	File file;
+	FileReader reader;
+	BufferedReader buffer;
+	try{
+		// System.out.println("Path - " + directoryPath);
+		file = new File(path,name);
+		reader = new FileReader(file);
+		buffer =  new BufferedReader(reader);
+	
+	}
+	catch(IOException e){
+		System.out.println("I didn\'t found :"+ name +"\nUsing default Source Code");
+		file = new File(path,defaultSource);
+		reader = new FileReader(file);
+		buffer =  new BufferedReader(reader);
+	}
 	String line;
 	int pc = 0;
 	Pattern comline = Pattern.compile("(\\b[a-zA-Z]*\\b:\\s*)?(\\b[a-zA-Z]{2,4}\\b)[^:]?((-?\\d+\\.?\\d*|[^#]*|\\s*))\\s*[\n\f#]*");
 	Pattern labeline = Pattern.compile("(\\b[a-zA-Z]*\\b:\\s*)[\n\f#]*$");
 	Pattern other = Pattern.compile("^#.*[\n\f]*|^[ \t\n]*$");
-	while((line = file.readLine()) != null){
+
+	while((line = buffer.readLine()) != null){
 	    Matcher matchLabel = labeline.matcher(line);
 	    Matcher matchComLine = comline.matcher(line);
 	    Matcher matchOther = other.matcher(line);
