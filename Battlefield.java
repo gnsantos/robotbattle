@@ -40,12 +40,12 @@ public class Battlefield extends JFrame{
     private enum DirMov{
         E,
     	W,
-	   SW,
+        SW,
     	SE,
     	NE,
     	NW
     }
-
+    
     private enum AskOptions {
         MY_HEALTH,
         HAS_ENEMY,
@@ -54,9 +54,9 @@ public class Battlefield extends JFrame{
         ENEMY_BASE_DISTANCE,
         TEAM_BASE_DISTANCE,
         ITS_ENEMY,
-        THEIR_HEALTH
+        THEIR_HEALTH,
+        WHY
     }
-    
     static int[][] Terreno = { // O mapa
     {0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
     {0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
@@ -87,7 +87,7 @@ public class Battlefield extends JFrame{
     //Virtual Machines Atributtes
     private static Vector<BattleRobot> army = new Vector<BattleRobot>(NUM_ROBOTS);
     private static Vector<Crystal> crystals = new Vector<Crystal>(NUM_CRYSTALS);
-
+    
     private static int serialMachine;
     private static Vector<SystemRequest> requestList = new Vector<SystemRequest>(NUM_ROBOTS);
     public static final String codeName = "sourceCode";
@@ -95,39 +95,39 @@ public class Battlefield extends JFrame{
     
     //Transforma a classe em Singleton:
     
-
+    
     private static Battlefield thisIsSparta = new Battlefield();
     //Trocar esse nome depois...   
-
+    
     public static Battlefield getInstanceOfBattlefield(){
-	return thisIsSparta;
+        return thisIsSparta;
     }
     
     /////////////////////////////////////////////////////////////////////////////////////////
     
     
     public static void main (String argv[]) throws IOException{
-        codeNameA = argv[0];
-        codeNameB = argv[1];
+        // codeNameA = argv[0];
+        // codeNameB = argv[1];
         
         initArena(Height, Width);
-	rearrangeAll();
-	//tellMeAboutTheWar();
-
+        rearrangeAll();
+        //tellMeAboutTheWar();
+        
         runtheGame();
-
+        
     	SwingUtilities.invokeLater(new Runnable() {
     		@Override
     		public void run() {
     		    Battlefield bf = Battlefield.getInstanceOfBattlefield();
     		    bf.setVisible(true);
     		}
-    	    });
+        });
     	thisIsSparta.repaint();
     }
     
     /********************************************************************************/
-                    /**ROTINES FOR EXECUTE THE MAIN ACTIONS */
+    /**ROTINES FOR EXECUTE THE MAIN ACTIONS */
     public static void runtheGame(){
         int condition = 0;
         while (true){
@@ -167,40 +167,40 @@ public class Battlefield extends JFrame{
         Collections.shuffle(requestList, new Random(seed));
     }
     
-
+    
     
     /********************************************************************************/
-                            /*SYSTEM CALLS*/
+    /*SYSTEM CALLS*/
     public static void executeCall (SystemRequest request) {
         SysCallOperations op = SysCallOperations.valueOf( request.getInstructionRequest() );
         BattleRobot sony = getRobotBySerial(request.getSerialNumberRequester());
         double sucess = 0;
         //System.out.println("Request :" + request.getInstructionRequest() + " Peso : " + request.getWeight() + "Requester : "  + request.getSerialNumberRequester()); 
         switch(op) {
-	case WLK:
-	    sucess = moveCall(request.getInstructionArgument(),request.getSerialNumberRequester());
-	    sony.returnAnswer(sucess);
-        //sony.showCoordinates();
-        //fazer push se a acao ocorreu ok!
-	    break;
-	case FIRE:
-	    break;
-	case BOMB:
-	    break;
-	case TAKE:
-	    break;
-	case LOOK:
-	    break;
-	case ASK:
-        sucess = askCall(request.getInstructionArgument(),request.getSerialNumberRequester());
-        sony.returnAnswer(sucess);	    
-        break;
-	default:
-	    break;
+            case WLK:
+                sucess = moveCall(request.getInstructionArgument(),request.getSerialNumberRequester());
+                sony.returnAnswer(sucess);
+                //sony.showCoordinates();
+                //fazer push se a acao ocorreu ok!
+                break;
+            case FIRE:
+                break;
+            case BOMB:
+                break;
+            case TAKE:
+                break;
+            case LOOK:
+                break;
+            case ASK:
+                sucess = askCall(request.getInstructionArgument(),request.getSerialNumberRequester());
+                sony.returnAnswer(sucess);	    
+                break;
+            default:
+                break;
         }
     }
     /********************************************************************************/
-                        /*ASK ACTION*/
+    /*ASK ACTION*/
     public static int askCall(String asked, int robotSerial){
         AskOptions question = AskOptions.valueOf(asked);
         BattleRobot sony = getRobotBySerial(robotSerial);
@@ -225,12 +225,12 @@ public class Battlefield extends JFrame{
                 break;
         }
         return 0;
-
+        
     }
-
+    
     /********************************************************************************/
-                        /*MOVE ACTION*/
-
+    /*MOVE ACTION*/
+    
     public static boolean canMoveTo(int i, int j){
         Iterator it = army.iterator();
         BattleRobot hal;
@@ -241,63 +241,57 @@ public class Battlefield extends JFrame{
         }
         return true;
     }
-
+    
     public static int moveCall(String direction, int robotSerial){
         BattleRobot sony = getRobotBySerial(robotSerial);
         DirMov dir = DirMov.valueOf( direction);
         int x = 0;
         int y = 0;
-        //System.out.println("Request :" + request.getInstructionRequest() + " Peso : " + request.getWeight() + "Requester : "  + request.getSerialNumberRequester()); 
         switch(dir) {
-	case E:
-	    if(canMoveTo((sony.getX() + 0)%Width, (sony.getY() + 1)%Height)){
-		sony.moveRobot((sony.getX() + 0)%Width, (sony.getY() + 1)%Height);
-		//thisIsSparta.repaint();
-		return 1;
-	    }
-	    break;
-	case W:
-	    if(canMoveTo((sony.getX() + 0)%Width, (sony.getY() -1)%Height)){
-		sony.moveRobot((sony.getX() + 0)%Width, (sony.getY() + Height - 1)%Height);
-		//thisIsSparta.repaint();
-		
-		return 1;
-	    }
-	    break;
-	case SE:
-	    if(canMoveTo((sony.getX() + 1)%Width, (sony.getY() + 0)%Height)){
-		sony.moveRobot((sony.getX() + 1)%Width, (sony.getY() + 0)%Height);
-		//thisIsSparta.repaint();
-		
-		return 1;
-	    }
-	    break;
-	case NE:
-	    if(canMoveTo((sony.getX() - 1)%Width, (sony.getY() + 0)%Height)){
-		sony.moveRobot((sony.getX() - 1)%Width, (sony.getY() + 0)%Height);
-		//thisIsSparta.repaint();
-		
-		return 1;
-	    }
-	    break;
-	case SW:
-	    if(canMoveTo((sony.getX() + 1)%Width, (sony.getY() - 1)%Height)){
-		sony.moveRobot((sony.getX() + Width - 1)%Width, (sony.getY() + Height - 1)%Height);
-		//thisIsSparta.repaint();
-		
-		return 1;
-	    }
-	    break;
-	case NW:
-	    if(canMoveTo((sony.getX() - 1)%Width, (sony.getY() - 1)%Height)){
-		sony.moveRobot((sony.getX() + Width - 1)%Width, (sony.getY() + Height - 1)%Height);
-		//thisIsSparta.repaint();
-		return 1;
-	    }
-	    break;
-	default:
-	    break;
+            case E:
+                if(canMoveTo((sony.getX() + 0)%Width, (sony.getY() + 1)%Height)){
+                    sony.moveRobot((sony.getX() + 0)%Width, (sony.getY() + 1)%Height);
+                    return 1;
+                }
+                break;
+            case W:
+                if(canMoveTo((sony.getX() + 0)%Width, (sony.getY() -1)%Height)){
+                    sony.moveRobot((sony.getX() + 0)%Width, (sony.getY() + Height - 1)%Height);
+                    
+                    return 1;
+                }
+                break;
+            case SE:
+                if(canMoveTo((sony.getX() + 1)%Width, (sony.getY() + 0)%Height)){
+                    sony.moveRobot((sony.getX() + 1)%Width, (sony.getY() + 0)%Height);
+                    
+                    return 1;
+                }
+                break;
+            case NE:
+                if(canMoveTo((sony.getX() - 1)%Width, (sony.getY() + 0)%Height)){
+                    sony.moveRobot((sony.getX() - 1)%Width, (sony.getY() + 0)%Height);
+                    
+                    return 1;
+                }
+                break;
+            case SW:
+                if(canMoveTo((sony.getX() + 1)%Width, (sony.getY() - 1)%Height)){
+                    sony.moveRobot((sony.getX() + Width - 1)%Width, (sony.getY() + Height - 1)%Height);
+                    
+                    return 1;
+                }
+                break;
+            case NW:
+                if(canMoveTo((sony.getX() - 1)%Width, (sony.getY() - 1)%Height)){
+                    sony.moveRobot((sony.getX() + Width - 1)%Width, (sony.getY() + Height - 1)%Height);
+                    return 1;
+                }
+                break;
+            default:
+                break;
         }
+        
         return 0;
     }
     
@@ -312,14 +306,9 @@ public class Battlefield extends JFrame{
         }
         return wally;
     }
-
-    public static void rearrangeRobots(){
-       	thisIsMadness.setRobots(army, thisIsMadness.getDx(), thisIsMadness.getDy(), 40);
-    }
-
     /********************************************************************************/
-                        /*DEBUG FUNCTIONS*/
-
+    /*DEBUG FUNCTIONS*/
+    
     public static void tellMeAboutTheWar(){
         System.out.println("\tInformacao sobre os robos\n" );
         for (int x = 0; x < NUM_ROBOTS ; x++) {
@@ -341,7 +330,7 @@ public class Battlefield extends JFrame{
         catch(InterruptedException e){
             System.out.println("Deu merda!");
         }
-            
+        
     }
     /********************************************************************************/
     
@@ -355,10 +344,10 @@ public class Battlefield extends JFrame{
     public static void rearrangeAll(){
        	thisIsMadness.setRobots(army, thisIsMadness.getDx(), thisIsMadness.getDy(), HEXAGON_SIZE);
         thisIsMadness.setCrystals(crystals, thisIsMadness.getDx(), thisIsMadness.getDy(), HEXAGON_SIZE);
-
+        
     }
     /********************************************************************************/
-                        /*INITIALIZE ARENA AND HIS ELEMENTS*/
+    /*INITIALIZE ARENA AND HIS ELEMENTS*/
     
     public static void insertArmy(String sourceCode,int index, String team, String robotModel, int x, int y, int serialNumber) throws IOException{
         army.add(index, new BattleRobot(robotModel+"-" + serialNumber, serialNumber,sourceCode));
@@ -389,15 +378,15 @@ public class Battlefield extends JFrame{
         for (int k = 0; k < NUM_CRYSTALS; k++) {
             i = gen.nextInt(mapHeight);
             j = gen.nextInt(mapWidth);
-
+            
             crystals.add(k, new Crystal(j,i,"FREE"));
         }
     }
     
-
+    
     /********************************************************************************/
     /*CONSTRUCTOR*/
-
+    
     public Battlefield(){
         setTitle("BATTLEFIELD");
         
@@ -406,13 +395,13 @@ public class Battlefield extends JFrame{
         
         setSize(m, n);
         addWindowListener(new WindowAdapter() {
-		public void windowClosing(WindowEvent e) {
-		    System.exit(0);
-		}
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
 	    });
-	
-
-	thisIsMadness = new Campo(HEXAGON_SIZE, m, n, Terreno, army, crystals);
+        
+        
+        thisIsMadness = new Campo(HEXAGON_SIZE, m, n, Terreno, army, crystals);
         add(thisIsMadness);
         setVisible(true);
     }
