@@ -24,7 +24,7 @@ class Celula { // Cada célula da matriz representa um hexágono mostrado na tel
         for (int i = 0; i < 6; i++)
             p.addPoint(x + (int) (r * Math.sin(i * 2 * Math.PI / 6)),
                        y + (int) (r * Math.cos(i * 2 * Math.PI / 6)));
-		
+        
         Gime = ime.createGraphics();
     }
     
@@ -40,12 +40,12 @@ class Celula { // Cada célula da matriz representa um hexágono mostrado na tel
     }
 }
 
-class CelRobo { // Cada célula da matriz representa um hexágono mostrado na tela
+class CelExtra { // Cada célula da matriz representa um hexágono mostrado na tela
     BufferedImage ime;
     Graphics2D Gime;
     Point origin;
     
-    CelRobo(int x, int y, int r, BufferedImage t) {
+    CelExtra(int x, int y, int r, BufferedImage t) {
         ime = t;
         
         origin = new Point(x, y);
@@ -59,18 +59,52 @@ class CelRobo { // Cada célula da matriz representa um hexágono mostrado na te
     }
 }
 
+class Crystal {
+    // Posição
+    int x;
+    int y;
+
+    // Com o robô, no chão, etc.
+    String status;
+
+    // Contrutor
+    public Crystal(int x, int y, String status) {
+        this.x = x;
+        this.y = y;
+        this.status = status;
+    }
+
+
+    // Getters e setters
+    public int getX() {
+        return x;
+    }
+    public int getY() {
+        return y;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String s) {
+        status = s;
+    }
+}
+
 class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do output gráfico
     int Larg, Alt, Dx, Dy; // largura do terreno, altura do terreno, incremento em x e incremento em y
-    BufferedImage grama, terra, agua, baseA, baseB, roboA, roboB; // texturas a serem carregadas para o terreno
+    BufferedImage grama, terra, agua, baseA, baseB, roboA, roboB, crystal; // texturas a serem carregadas para o terreno
     
     int[][] Terreno;
-    
+
     int m; //Dimensões do mapa
     int n;
     
     Celula[][] cel; // define a matriz de células do terreno
-    
-    public CelRobo[][] robos;
+
+    public CelExtra[][] robos;
+    public CelExtra[][] cristais;
     
     public BufferedImage[] Textura;
 
@@ -126,7 +160,14 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
             System.exit(1);
         }
         
-        BufferedImage[] imageArray = {agua, terra, grama, baseA, baseB, roboA, roboB};
+        try {
+            crystal = ImageIO.read(this.getClass().getResource("crystal.png"));
+        }
+        catch (Exception e) {
+            System.exit(1);
+        }
+        
+        BufferedImage[] imageArray = {agua, terra, grama, baseA, baseB, roboA, roboB, crystal};
 	this.Textura = imageArray;
     }
 
@@ -150,26 +191,49 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
                 psi = 0.6;
             
             if( team.equals("Team A"))
-                robos[posX][posY] = new CelRobo( (int)((posX + psi)*Dx), posY*Dy, L, Textura[5]);
+                robos[posX][posY] = new CelExtra( (int)((posX + psi)*Dx), posY*Dy, L, Textura[5]);
             else
-                robos[posX][posY] = new CelRobo( (int)((posX + psi)*Dx), posY*Dy, L, Textura[6]);
+                robos[posX][posY] = new CelExtra( (int)((posX + psi)*Dx), posY*Dy, L, Textura[6]);
+        }
+    }
+
+    public void setCrystals(Vector<Crystal> crystalVector, int Dx, int Dy, int L){
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                cristais[i][j] = null;
+            }
+        }
+    
+        Iterator itr = crystalVector.iterator();
+        while(itr.hasNext()){
+            Crystal cristal = (Crystal) itr.next();
+            int posX = cristal.getX();
+            int posY = cristal.getY();
+                        
+            double psi = 0;
+            if (posY%2 == 1)
+                psi = 0.6;
+            
+            cristais[posX][posY] = new CelExtra( (int)((posX + psi)*Dx), posY*Dy, L, Textura[7]);
+
         }
     }
 
     public int getDx(){
-	return this.Dx;
+    	return this.Dx;
     }
     public int getDy(){
-	return this.Dy;
+	   return this.Dy;
     }
     
-    Campo(int L, int W, int H, int[][] Terreno, Vector<BattleRobot> army) {
+    Campo(int L, int W, int H, int[][] Terreno, Vector<BattleRobot> army, Vector<Crystal> crystalsVector) {
         this.Terreno = Terreno;
         this.m = Terreno[0].length;
         this.n = Terreno.length;
         this.cel = new Celula[m][n];
         
-        this.robos = new CelRobo[m][n];
+        this.robos = new CelExtra[m][n];
+        this.cristais = new CelExtra[m][n];
         
         Dx = (int) (2 * L * Math.sin(2 * Math.PI / 6)); // incremento em x para desenhar os hexágonos
         Dy = 3* L/2; // idem para y
@@ -187,6 +251,7 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
         }
 
 	setRobots(army,Dx, Dy, L);
+    setCrystals(crystalsVector,Dx,Dy, L);
         
     }
     
@@ -201,6 +266,12 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
             for (int j = 0; j < n; j++)
                 if (robos[i][j] != null) {
                     robos[i][j].draw(g); // pinta as células no contexto gráfico
+                }
+
+        for (int i = 0; i < m; i++)
+            for (int j = 0; j < n; j++)
+                if (cristais[i][j] != null) {
+                    cristais[i][j].draw(g); // pinta as células no contexto gráfico
                 }
     }
 }
@@ -247,11 +318,11 @@ public class Battlefield extends JFrame{
 	{2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0}
     };
     
-    //    Attributes
-    static Entity[][] arena;
     
     //Virtual Machines Atributtes
     private static Vector<BattleRobot> army = new Vector<BattleRobot>(NUM_ROBOTS);
+    private static Vector<Crystal> crystals = new Vector<Crystal>(NUM_CRYSTALS);
+
     private static int serialMachine;
     private static Vector<SystemRequest> requestList = new Vector<SystemRequest>(NUM_ROBOTS);
     public static String codeNameA;
@@ -276,7 +347,7 @@ public class Battlefield extends JFrame{
         codeNameB = argv[1];
         
         initArena(Terreno.length, Terreno[0].length);
-	rearrangeRobots();
+	rearrangeAll();
 	//tellMeAboutTheWar();
 
         runtheGame();
@@ -326,7 +397,7 @@ public class Battlefield extends JFrame{
     }
     
     private static void changeTheWorld() {
-	rearrangeRobots();
+    	rearrangeAll();
         thisIsSparta.repaint();
     }
     
@@ -478,8 +549,10 @@ public class Battlefield extends JFrame{
     }
     
     /********************************************************************************/
-    public static void rearrangeRobots(){
+    public static void rearrangeAll(){
        	thisIsMadness.setRobots(army, thisIsMadness.getDx(), thisIsMadness.getDy(), 40);
+        thisIsMadness.setCrystals(crystals, thisIsMadness.getDx(), thisIsMadness.getDy(), 40);
+
     }
     /********************************************************************************/
     
@@ -492,7 +565,6 @@ public class Battlefield extends JFrame{
     /********************************************************************************/
     
     static void initArena(int mapHeight, int mapWidth) throws IOException{
-        arena = new Entity[mapHeight][mapWidth];
         
         Random gen = new Random();
         //gen.setSeed(3);
@@ -500,18 +572,10 @@ public class Battlefield extends JFrame{
         int i;
         int j;
         
-        //        Initializes the matriz with spaces
-        for (i = 0; i < mapHeight; i++) {
-            for (j = 0; j < mapWidth; j++) {
-                arena[i][j] = null;
-            }
-        }
-        
         //        Inserts robots at totally random locations
         for (int k = 0; k < NUM_ROBOTS; k++) {
             i = gen.nextInt(mapHeight);
             j = gen.nextInt(mapWidth);
-            arena[i][j] = new Entity(ROBOT, i, j);
             if (k < NUM_ROBOTS/2){
 		insertArmy(codeNameA,k,"A","TX",j,i,gen.nextInt(1000));
 	    }
@@ -526,7 +590,8 @@ public class Battlefield extends JFrame{
         for (int k = 0; k < NUM_CRYSTALS; k++) {
             i = gen.nextInt(mapHeight);
             j = gen.nextInt(mapWidth);
-            arena[i][j] = new Entity(CRYSTAL, i, j);
+
+            crystals.add(k, new Crystal(j,i,"FREE"));
         }
     }
     
@@ -545,13 +610,8 @@ public class Battlefield extends JFrame{
 		}
 	    });
 	
-	/*try{
-	    initArena(Terreno.length, Terreno[0].length);
-	}catch(IOException e){
-	    System.out.println("Arena unvailable.");
-	    System.exit(1);
-	    }*/
-	thisIsMadness = new Campo(40, m, n, Terreno, army);
+
+	thisIsMadness = new Campo(40, m, n, Terreno, army, crystals);
         add(thisIsMadness);
         setVisible(true);
     }
