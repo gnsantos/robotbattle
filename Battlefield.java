@@ -69,6 +69,9 @@ public class Battlefield extends JFrame{
     {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0}
     };
     
+    static int Height = Terreno.length;
+    static int Width = Terreno[0].length;
+    
     
     //Virtual Machines Atributtes
     private static Vector<BattleRobot> army = new Vector<BattleRobot>(NUM_ROBOTS);
@@ -97,7 +100,7 @@ public class Battlefield extends JFrame{
         codeNameA = argv[0];
         codeNameB = argv[1];
         
-        initArena(Terreno.length, Terreno[0].length);
+        initArena(Height, Width);
 	rearrangeAll();
 	//tellMeAboutTheWar();
 
@@ -214,47 +217,47 @@ public class Battlefield extends JFrame{
         //System.out.println("Request :" + request.getInstructionRequest() + " Peso : " + request.getWeight() + "Requester : "  + request.getSerialNumberRequester()); 
         switch(dir) {
 	case E:
-	    if(canMoveTo((sony.getX() + 0)%16, (sony.getY() + 1)%10)){
-		sony.moveRobot((sony.getX() + 0)%16, (sony.getY() + 1)%10);
+	    if(canMoveTo((sony.getX() + 0)%Width, (sony.getY() + 1)%Height)){
+		sony.moveRobot((sony.getX() + 0)%Width, (sony.getY() + 1)%Height);
 		//thisIsSparta.repaint();
 		return 1;
 	    }
 	    break;
 	case W:
-	    if(canMoveTo((sony.getX() + 0)%16, (sony.getY() -1)%10)){
-		sony.moveRobot((sony.getX() + 0)%16, (sony.getY() +9)%10);
+	    if(canMoveTo((sony.getX() + 0)%Width, (sony.getY() -1)%Height)){
+		sony.moveRobot((sony.getX() + 0)%Width, (sony.getY() + Height - 1)%Height);
 		//thisIsSparta.repaint();
 		
 		return 1;
 	    }
 	    break;
 	case SE:
-	    if(canMoveTo((sony.getX() + 1)%16, (sony.getY() + 0)%10)){
-		sony.moveRobot((sony.getX() + 1)%16, (sony.getY() + 0)%10);
+	    if(canMoveTo((sony.getX() + 1)%Width, (sony.getY() + 0)%Height)){
+		sony.moveRobot((sony.getX() + 1)%Width, (sony.getY() + 0)%Height);
 		//thisIsSparta.repaint();
 		
 		return 1;
 	    }
 	    break;
 	case NE:
-	    if(canMoveTo((sony.getX() - 1)%16, (sony.getY() + 0)%10)){
-		sony.moveRobot((sony.getX() +15)%16, (sony.getY() + 0)%10);
+	    if(canMoveTo((sony.getX() - 1)%Width, (sony.getY() + 0)%Height)){
+		sony.moveRobot((sony.getX() - 1)%Width, (sony.getY() + 0)%Height);
 		//thisIsSparta.repaint();
 		
 		return 1;
 	    }
 	    break;
 	case SW:
-	    if(canMoveTo((sony.getX() + 1)%16, (sony.getY() - 1)%10)){
-		sony.moveRobot((sony.getX() + 1)%16, (sony.getY() +9)%10);
+	    if(canMoveTo((sony.getX() + 1)%Width, (sony.getY() - 1)%Height)){
+		sony.moveRobot((sony.getX() + Width - 1)%Width, (sony.getY() + Height - 1)%Height);
 		//thisIsSparta.repaint();
 		
 		return 1;
 	    }
 	    break;
 	case NW:
-	    if(canMoveTo((sony.getX() - 1)%16, (sony.getY() - 1)%10)){
-		sony.moveRobot((sony.getX() +15 )%16, (sony.getY() +9)%10);
+	    if(canMoveTo((sony.getX() - 1)%Width, (sony.getY() - 1)%Height)){
+		sony.moveRobot((sony.getX() + Width - 1)%Width, (sony.getY() + Height - 1)%Height);
 		//thisIsSparta.repaint();
 		return 1;
 	    }
