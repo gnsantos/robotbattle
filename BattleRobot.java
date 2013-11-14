@@ -6,12 +6,14 @@ public class BattleRobot implements Robot{
     
     //Robot Attributes
 	private String robotName;
-	private  String robotTeam;
+	private String robotTeam;
 	private double robotHealth = 100.0;
 	private Vector<Integer> coordinates = new Vector<Integer>(2);
 	private int serialNumber;
+	private int crystal;
 	private VirtualMachine vm;
 	private String robotState;
+	private final Integer MAX_CRYSTAL = 3;
     
     public BattleRobot(String name, int serialNumber, String sourceCode) throws IOException{
 		this.robotName = name;
@@ -61,6 +63,18 @@ public class BattleRobot implements Robot{
 		return this.robotTeam;
 	}
 	//---------------------------------------------------------
+    public void takeCrystal(){
+    	if (getCrystalQuantity() < MAX_CRYSTAL){
+    		this.crystal++;
+    		return 1;
+    	}
+    	else{
+    		return 0;
+    	}
+    }
+    public int getCrystalQuantity(){
+    	return this.crystal;
+    }
 	//---------------------------------------------------------
 	public void reloadHealth(double x){
 		this.robotHealth = this.robotHealth + x;

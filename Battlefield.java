@@ -200,32 +200,51 @@ public class Battlefield extends JFrame{
         }
     }
     /********************************************************************************/
-    /*ASK ACTION*/
     public static int askCall(String asked, int robotSerial){
         AskOptions question = AskOptions.valueOf(asked);
         BattleRobot sony = getRobotBySerial(robotSerial);
         switch(question){
             case MY_HEALTH:
+                sony.returnAnswer(sony.getHealth());
                 break;
             case HAS_ENEMY:
+                sony.returnAnswer(lookAround(asked));
                 break;
             case HAS_CRYSTAL:
+                sony.returnAnswer(lookAround(asked));
                 break;
             case NUMBER_OF_CRYSTAL:
+                sony.returnAnswer(sony.getCrystalQuantity());
                 break;
             case ENEMY_BASE_DISTANCE:
+                sony.returnAnswer(calculeDistance(asked));
                 break;
             case TEAM_BASE_DISTANCE:
+                sony.returnAnswer(calculeDistance(asked));
                 break;
             case ITS_ENEMY:
+                //Precisaria de três argumentos?!
+                //sony.returnAnswer(calculeDistance("Enemy"));
                 break;
             case THEIR_HEALTH:
+                //analogo ao do anterior
                 break;
             default:
                 break;
         }
         return 0;
-        
+
+    }
+
+    public static Double lookAround(String direction){
+        for(int x = -1; x < 2; x++){
+            for(int y = -1; y < 2; y++){
+                
+            }
+        }
+    }
+    public static Double calculeDistance(String team){
+
     }
     
     /********************************************************************************/
