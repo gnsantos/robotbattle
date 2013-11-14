@@ -24,7 +24,7 @@ public class Parser{
 	
 	}
 	catch(IOException e){
-		System.out.println("I didn\'t found :"+ name +"\nUsing default Source Code");
+		System.out.println("I didn\'t find "+ name +"\nUsing default Source Code");
 		file = new File(path,defaultSource);
 		reader = new FileReader(file);
 		buffer =  new BufferedReader(reader);

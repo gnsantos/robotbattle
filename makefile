@@ -3,7 +3,7 @@
 #Professor Marco Dimas Gubitoso
 
 #Fellipe Souto Sampaio 
-#Número USP: 7990422 e-mail: fellipe.sampaio@usp.com
+#Número USP: 7990422 e-mail: fellipe.sampaio@usp.br
 
 #Gervásio Protásio dos Santos Neto 
 #Número USP: 7990996 e-mail: gervasio.neto@usp.br
@@ -15,7 +15,10 @@
 #2 semestre 2013
 
 default:
-	javac Battlefield.java
+	make clean
+	javac BattleField.java
+	jar cvfe BF.jar Battlefield *.class *.png source* default*
 
 clean:
-	$(RM) *.class
+	rm -f *.class
+	rm -f *.jar
