@@ -8,11 +8,11 @@ interface Robot{
     public boolean positionScanner(int x, int y);
     public int getX();
     public int getY();
-    public int takeCrystal();
-    public int getCrystalQuantity();
+    public int incrementCrystalCount();
+    public Double getCrystalQuantity();
     public void setTeam(String team);
     public String getTeam();
-    public void reloadHealth(double x);
+    public void updateHealth(double x);
     public double getHealth();
     public void moveRobot(int x, int y);
     public void showCoordinates();

@@ -85,6 +85,7 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
             crystal = ImageIO.read(this.getClass().getResource("crystal.png"));
         }
         catch (Exception e) {
+            e.printStackTrace();
             System.exit(1);
         }
         

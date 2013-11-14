@@ -63,24 +63,27 @@ public class BattleRobot implements Robot{
 		return this.robotTeam;
 	}
 	//---------------------------------------------------------
-    public void takeCrystal(){
+    public int incrementCrystalCount(){
     	if (getCrystalQuantity() < MAX_CRYSTAL){
     		this.crystal++;
-    		return 1;
+  			return 1;
     	}
     	else{
     		return 0;
     	}
     }
-    public int getCrystalQuantity(){
-    	return this.crystal;
+    public Double getCrystalQuantity(){
+    	return 1.0*this.crystal;
     }
 	//---------------------------------------------------------
-	public void reloadHealth(double x){
+	public void updateHealth(double x){
 		this.robotHealth = this.robotHealth + x;
 	}
 	public double getHealth(){
 		return this.robotHealth;
+	}
+	public void turnOff(){
+		this.robotState = "Off";
 	}
 	//---------------------------------------------------------
 	//---------------------------------------------------------
