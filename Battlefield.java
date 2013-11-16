@@ -37,6 +37,8 @@ public class Battlefield extends JFrame{
 
     //Valor default de dano que um tiro pode causa
     private static final double FIRE_DAMAGE = -20;
+    private static final double BOMB_DAMAGE = -50;
+
     
     private enum SysCallOperations{
         WLK,
@@ -100,6 +102,7 @@ public class Battlefield extends JFrame{
     //Virtual Machines Atributtes
     private static Vector<BattleRobot> army = new Vector<BattleRobot>();
     private static Vector<Crystal> crystals = new Vector<Crystal>(NUM_CRYSTALS);
+    private static Stack<Bomb> groundMine = new Stack<Bomb>();
     
     private static int serialMachine;
     private static Vector<SystemRequest> requestList = new Vector<SystemRequest>();
@@ -122,7 +125,7 @@ public class Battlefield extends JFrame{
     public static void main (String argv[]) throws IOException{
         // codeNameA = argv[0];
         // codeNameB = argv[1];
-        numRobots = 16;
+        numRobots = 2;
         initArena(Height, Width);
         rearrangeAll();
         //tellMeAboutTheWar();
@@ -146,7 +149,7 @@ public class Battlefield extends JFrame{
             condition = runRobotStateCycle();
             processRequestList();
             if(condition == numRobots){ break; }
-            else{ pauseSystem(10);}
+            else{ pauseSystem(100);}
         }
         System.out.println("Execution ended");
     }
@@ -202,7 +205,9 @@ public class Battlefield extends JFrame{
                 sony.returnAnswer(sucessNum);
                 break;
             case BOMB:
-
+                System.out.println("fazendo chamada!");
+                sucessNum = bombCall(request.getInstructionArgument(),request.getSerialNumberRequester());
+                sony.returnAnswer(sucessNum);
                 break;
             case TAKE:
                 break;
@@ -218,9 +223,8 @@ public class Battlefield extends JFrame{
                 break;
         }
     }
-
     /********************************************************************************/
-    /*Look */
+    /*Olha para uma direção */
     public static String lookCall(String dir, int robotSerial){
         BattleRobot sony = getRobotBySerial(robotSerial);
         DirMov direction = DirMov.valueOf(dir);
@@ -270,74 +274,68 @@ public class Battlefield extends JFrame{
             if(c.getX() == i && j == c.getY())
                 return "HAS_CRYSTAL";
         }
+
+        Iterator bm = groundMine.iterator();
+        Bomb b;
+        while(bm.hasNext()){
+            b = (Bomb) cs.next();
+            if(b.getX() == i && j == b.getY())
+                return "HAS_BOMB";
+        }
         return "NONE";
     }
 
     /********************************************************************************/
+    /*Planta uma bomba em uma célula */
     public static double bombCall(String dir, int robotSerial){
         BattleRobot sony = getRobotBySerial(robotSerial);
         DirMov direction = DirMov.valueOf(dir);
-        String type;
-        int x = 0, y = 0;
-
+        Bomb plantedBomb;
         switch(direction) {
             case E:
-                type = lookAt((sony.getX() + 0)%Width, (sony.getY() + 1)%Height, sony.getTeam());
-                x = (sony.getX() + 0)%Width;
-                y = (sony.getY() + 1)%Height;
-                break;
+                plantedBomb = sony.placeTheBomb((sony.getX() + 0)%Width, (sony.getY() + 1)%Height);
+                groundMine.push(plantedBomb);
+                return 1;
             case W:
-                type = lookAt((sony.getX() + 0)%Width, (sony.getY() -1 + Height)%Height, sony.getTeam());
-                x = (sony.getX() + 0)%Width;
-                y = (sony.getY() + Height -1)%Height;
-                break;
+                plantedBomb = sony.placeTheBomb((sony.getX() + 0)%Width, (sony.getY() -1 + Height)%Height);
+                groundMine.push(plantedBomb);
+                return 1;
             case SE:
-                type = lookAt((sony.getX() + 1)%Width, (sony.getY() + 0)%Height, sony.getTeam());
-                x = (sony.getX() + 1)%Width;
-                y = (sony.getY() + 0)%Height;
-                break;
+                plantedBomb = sony.placeTheBomb((sony.getX() + 1)%Width, (sony.getY() + 0)%Height);
+                groundMine.push(plantedBomb);
+                return 1;
             case NE:
-                type = lookAt((sony.getX() - 1 + Width)%Width, (sony.getY() + 0)%Height, sony.getTeam());
-                x = (sony.getX() + Width - 1)%Width;
-                y = (sony.getY() + 0)%Height;
-                break;
+                plantedBomb = sony.placeTheBomb((sony.getX() - 1 + Width)%Width, (sony.getY() + 0)%Height);
+                groundMine.push(plantedBomb);
+                return 1;
             case SW:
-                type = lookAt((sony.getX() + 1)%Width, (sony.getY() - 1 + Height)%Height, sony.getTeam());
-                x = (sony.getX() + 1)%Width;
-                y = (sony.getY() + Height -1)%Height;
-                break;
+                plantedBomb = sony.placeTheBomb((sony.getX() + 1)%Width, (sony.getY() - 1 + Height)%Height);
+                groundMine.push(plantedBomb);
+                return 1;
             case NW:
-                type = lookAt((sony.getX() - 1 + Width)%Width, (sony.getY() - 1 + Height)%Height, sony.getTeam());
-                x = (sony.getX() + Width - 1)%Width;
-                y = (sony.getY() + Height -1)%Height;
-                break;
+                plantedBomb = sony.placeTheBomb((sony.getX() - 1 + Width)%Width, (sony.getY() - 1 + Height)%Height);
+                groundMine.push(plantedBomb);
+                return 1;
             default:
-                type = "NONE";
                 break;
         }
-
-        if(type.equals("HAS_ENEMY")){
+        return 0;
+    }
+    public static void processTheDamage(){
+        BattleRobot hal = null;
+        while (!groundMine.empty()){
             Iterator it = army.iterator();
-            BattleRobot hal = null;
-
+            Bomb b = groundMine.pop();
+            int i = b.getX();
+            int j = b.getY();
             while(it.hasNext()){
                 hal = (BattleRobot)it.next();
-                if(x == hal.getX() && y == hal.getY())
-                break;
-            }
-
-            if(hal.getHealth() > 0){
-                hal.updateHealth(FIRE_DAMAGE);
-            }
-            robotDied(hal);
-            return 1;
+                if(i == hal.getX() && j == hal.getY()){
+                    hal.updateHealth(BOMB_DAMAGE);
+                }
+            }            
         }
-        else{
-            return 0;
-        }
-
     }
-
     /********************************************************************************/
     /*Atira no adversário*/
     public static double fireCall(String dir, int robotSerial){
@@ -410,6 +408,7 @@ public class Battlefield extends JFrame{
     }
 
     /********************************************************************************/
+    /*Pergunta coisas para o sistema */
     public static void  askCall(String asked, int robotSerial){
         AskOptions question = AskOptions.valueOf(asked);
         BattleRobot sony = getRobotBySerial(robotSerial);
@@ -568,16 +567,22 @@ public class Battlefield extends JFrame{
     /********************************************************************************/
     
     public static void systemCall(SystemRequest request){
-        pauseSystem(10);
+        pauseSystem(100);
         //request.showRequest();
         requestList.add(request);
     }
     
     /********************************************************************************/
+    //seria interessante mudar a cor do hexagono momentaneamente durante a explosao
     public static void rearrangeAll(){
        	visualComponet.setRobots(army, visualComponet.getDx(), visualComponet.getDy(), HEXAGON_SIZE);
         visualComponet.setCrystals(crystals, visualComponet.getDx(), visualComponet.getDy(), HEXAGON_SIZE);
-        
+        if (!groundMine.empty()){
+            groundMine =  visualComponet.setMines(groundMine, visualComponet.getDx(), visualComponet.getDy(), HEXAGON_SIZE);
+            if(!groundMine.empty()){
+                processTheDamage();
+            }
+        }
     }
     /********************************************************************************/
     /*INITIALIZE ARENA AND HIS ELEMENTS*/
@@ -586,6 +591,7 @@ public class Battlefield extends JFrame{
         army.add(index, new BattleRobot(robotModel+"-" + serialNumber, serialNumber,sourceCode));
         army.get(index).setTeam("Team "+team);
         army.get(index).moveRobot(x,y);
+        army.get(index).initBomb();
     }
     
     static void initArena(int mapHeight, int mapWidth) throws IOException{
@@ -633,8 +639,7 @@ public class Battlefield extends JFrame{
             }
 	    });
         
-        
-        visualComponet = new Campo(HEXAGON_SIZE, m, n, Terreno, army, crystals);
+        visualComponet = new Campo(HEXAGON_SIZE, m, n, Terreno, army, crystals,groundMine);
         add(visualComponet);
         setVisible(true);
     }
