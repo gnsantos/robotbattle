@@ -252,9 +252,9 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
             int posY = b.getY();
             int countdown = b.getTimer();
             double psi = 0;
-            if (posY%2 == 1)
-                psi = 0.6;
-            minesField[posX][posY] = new CelExtra( (int)((posX + psi)*Dx), posY*Dy, L, ExplosivesTexture[countdown]);
+            // if (posY%2 == 1)
+                psi = 0.1;
+            minesField[posX][posY] = new CelExtra( (int)((posX - 2*psi)*Dx), (int)((posY - psi)*Dy), L, ExplosivesTexture[countdown]);
             if (countdown == 0){
                 mineExploded.push(b);
             }

@@ -94,7 +94,8 @@ public class BattleRobot implements Robot{
 		this.coordinates.add(1,y);
 	}
 	public void showCoordinates(){
-		System.out.println("X : " + this.coordinates.get(0) + "\nY : " + this.coordinates.get(1));
+		//System.out.println("X : " + this.coordinates.get(0) + "\nY : " + this.coordinates.get(1));
+		System.out.println("(" + this.coordinates.get(0) + "," +this.coordinates.get(1) + ")");
 	}
 	//---------------------------------------------------------
 

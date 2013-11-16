@@ -149,7 +149,7 @@ public class Battlefield extends JFrame{
             condition = runRobotStateCycle();
             processRequestList();
             if(condition == numRobots){ break; }
-            else{ pauseSystem(100);}
+            else{ pauseSystem(1000);}
         }
         System.out.println("Execution ended");
     }
@@ -479,44 +479,55 @@ public class Battlefield extends JFrame{
         DirMov dir = DirMov.valueOf( direction);
         int x = 0;
         int y = 0;
+        System.out.println("\nTime : " + sony.getTeam());
+        sony.showCoordinates();
+        System.out.println("---------------------------------");
         switch(dir) {
             case E:
-                if(canMoveTo((sony.getX() + 0)%Width, (sony.getY() + 1)%Height)){
-                    sony.moveRobot((sony.getX() + 0)%Width, (sony.getY() + 1)%Height);
+                if(canMoveTo(xMove(sony.getX(), sony.getY(), direction) , yMove(sony.getX(), sony.getY(), direction))){
+                    sony.moveRobot(xMove(sony.getX(), sony.getY(), direction), yMove(sony.getX(), sony.getY(), direction));
+                    sony.showCoordinates();
+                    System.out.println("---------------------------------");
                     return 1;
                 }
                 break;
             case W:
-                if(canMoveTo((sony.getX() + 0)%Width, (sony.getY() -1 + Height)%Height)){
-                    sony.moveRobot((sony.getX() + 0)%Width, (sony.getY() + Height - 1)%Height);
-                    
+                if(canMoveTo(xMove(sony.getX(), sony.getY(), direction) , yMove(sony.getX(), sony.getY(), direction))){
+                    sony.moveRobot(xMove(sony.getX(), sony.getY(), direction), yMove(sony.getX(), sony.getY(), direction));
+                    sony.showCoordinates();
+                    System.out.println("---------------------------------");
                     return 1;
                 }
                 break;
             case SE:
-                if(canMoveTo((sony.getX() + 1)%Width, (sony.getY() + 0)%Height)){
-                    sony.moveRobot((sony.getX() + 1)%Width, (sony.getY() + 0)%Height);
-                    
+                if(canMoveTo(xMove(sony.getX(), sony.getY(), direction) , yMove(sony.getX(), sony.getY(), direction))){
+                    sony.moveRobot(xMove(sony.getX(), sony.getY(), direction), yMove(sony.getX(), sony.getY(), direction));
+                    sony.showCoordinates();
+                    System.out.println("---------------------------------");
                     return 1;
                 }
                 break;
             case NE:
-                if(canMoveTo((sony.getX() - 1 + Width)%Width, (sony.getY() + 0)%Height)){
-                    sony.moveRobot((sony.getX() - 1 + Width)%Width, (sony.getY() + 0)%Height);
-                    
+                if(canMoveTo(xMove(sony.getX(), sony.getY(), direction) , yMove(sony.getX(), sony.getY(), direction))){
+                    sony.moveRobot(xMove(sony.getX(), sony.getY(), direction), yMove(sony.getX(), sony.getY(), direction));
+                    sony.showCoordinates();
+                    System.out.println("---------------------------------");
                     return 1;
                 }
                 break;
             case SW:
-                if(canMoveTo((sony.getX() + 1)%Width, (sony.getY() - 1 + Height)%Height)){
-                    sony.moveRobot((sony.getX() + Width - 1)%Width, (sony.getY() + Height - 1)%Height);
-                    
+                if(canMoveTo(xMove(sony.getX(), sony.getY(), direction) , yMove(sony.getX(), sony.getY(), direction))){
+                    sony.moveRobot(xMove(sony.getX(), sony.getY(), direction), yMove(sony.getX(), sony.getY(), direction));
+                    sony.showCoordinates();
+                    System.out.println("---------------------------------");
                     return 1;
                 }
                 break;
             case NW:
-                if(canMoveTo((sony.getX() - 1 + Width)%Width, (sony.getY() - 1 + Height)%Height)){
-                    sony.moveRobot((sony.getX() + Width - 1)%Width, (sony.getY() + Height - 1)%Height);
+                if(canMoveTo(xMove(sony.getX(), sony.getY(), direction) , yMove(sony.getX(), sony.getY(), direction))){
+                    sony.moveRobot(xMove(sony.getX(), sony.getY(), direction), yMove(sony.getX(), sony.getY(), direction));
+                    sony.showCoordinates();
+                    System.out.println("---------------------------------");
                     return 1;
                 }
                 break;
@@ -526,7 +537,63 @@ public class Battlefield extends JFrame{
         
         return 0;
     }
-    
+
+    public static int xMove(int x, int y, String direction){
+        DirMov dir = DirMov.valueOf( direction);
+        switch(dir) {
+             case E:
+                return (x + 1 + Width)%Width;
+            case W:
+                return (x - 1 + Width)%Width;
+            case NE:
+            case NW:
+                if (y%2 != 0)
+                    return (x + Width)%Width;
+                else 
+                    return (x - 1 + Width)%Width;
+            case SE:
+            case SW:
+                return (x + 1 + Width)%Width;
+            default:
+                break;
+        }
+        return x;
+
+    }
+    public static int yMove(int x, int y, String direction){
+        DirMov dir = DirMov.valueOf(direction);
+        switch(dir) {
+            case E:
+                return y;
+            case W:
+                return y;
+            case SE:
+                if(x%2 == 0)
+                    return (y + Height)%Height;
+                else
+                    return (y + 1 + Height)%Height; 
+            case NE:
+                if(x%2 == 0)
+                    return (y + Height)%Height;
+                else
+                    return (y - 1 + Height)%Height; 
+            case SW:
+                if(x%2 == 0)
+                    return (y - 1 + Height)%Height;
+                else
+                    return (y + Height)%Height; 
+            case NW:
+                if(y%2 == 0)
+                    return (y - 2 + Height)%Height;
+                else
+                    // return (y + Height)%Height;
+                    return (y + Height)%Height;
+            default:
+                break;
+        }
+        return y;
+
+    }
     public static BattleRobot getRobotBySerial(int robotSerial){
         Iterator it = army.iterator();
         BattleRobot wally = null;
@@ -638,7 +705,8 @@ public class Battlefield extends JFrame{
                 System.exit(0);
             }
 	    });
-        
+        System.out.println("W : " + Width + " H : " + Height);
+        System.out.println("VAL : " + (0 + Width)%Width);
         visualComponet = new Campo(HEXAGON_SIZE, m, n, Terreno, army, crystals,groundMine);
         add(visualComponet);
         setVisible(true);
