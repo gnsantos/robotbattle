@@ -103,6 +103,7 @@ public class Battlefield extends JFrame{
     private static Vector<BattleRobot> army = new Vector<BattleRobot>();
     private static Vector<Crystal> crystals = new Vector<Crystal>(NUM_CRYSTALS);
     private static Stack<Bomb> groundMine = new Stack<Bomb>();
+    private static Stack<Bomb> mineExploded = new Stack<Bomb>(); 
     
     private static int serialMachine;
     private static Vector<SystemRequest> requestList = new Vector<SystemRequest>();
@@ -202,7 +203,6 @@ public class Battlefield extends JFrame{
                 sony.returnAnswer(sucessNum);
                 break;
             case BOMB: /*Planta uma bomba*/ 
-                System.out.println("fazendo chamada!");
                 sucessNum = bombCall(request.getInstructionArgument(),request.getSerialNumberRequester());
                 sony.returnAnswer(sucessNum);
                 break;
@@ -267,9 +267,10 @@ public class Battlefield extends JFrame{
     }
     public static void processTheDamage(){
         BattleRobot hal = null;
-        while (!groundMine.empty()){
+        Stack<Bomb> auxMines = new Stack<Bomb>(); 
+        while (!mineExploded.empty()){
             Iterator it = army.iterator();
-            Bomb b = groundMine.pop();
+            Bomb b = mineExploded.pop();
             int i = b.getX();
             int j = b.getY();
             while(it.hasNext()){
@@ -277,8 +278,10 @@ public class Battlefield extends JFrame{
                 if(i == hal.getX() && j == hal.getY()){
                     hal.updateHealth(BOMB_DAMAGE);
                 }
-            }            
+            }
+            auxMines.push(b);            
         }
+        mineExploded = auxMines;
     }
     /********************************************************************************/
     /*Atira no adversário*/
@@ -469,15 +472,19 @@ public class Battlefield extends JFrame{
             // System.out.println("\n Sai!!!! \n");   
         }
         catch(InterruptedException e){
-            System.out.println("Deu merda!");
+            System.out.println("Pausa do sistema deu errado!");
         }
         
     }
     /********************************************************************************/
-    
+    /*Funcoes disponibilizadas às outras entidades para requisicoes a arena*/
     public static void systemCall(SystemRequest request){
         pauseSystem(100);
         requestList.add(request);
+    }
+
+    public static void updateBombStack(Stack<Bomb> bombStack){
+        groundMine = bombStack;
     }
     
     /********************************************************************************/
@@ -485,13 +492,18 @@ public class Battlefield extends JFrame{
     public static void rearrangeAll(){
        	visualComponet.setRobots(army, visualComponet.getDx(), visualComponet.getDy(), HEXAGON_SIZE);
         visualComponet.setCrystals(crystals, visualComponet.getDx(), visualComponet.getDy(), HEXAGON_SIZE);
+        if (!mineExploded.empty())
+                visualComponet.removeLastExplosions(mineExploded);
         if (!groundMine.empty()){
-            groundMine =  visualComponet.setMines(groundMine, visualComponet.getDx(), visualComponet.getDy(), HEXAGON_SIZE);
-            if(!groundMine.empty()){
+
+            mineExploded =  visualComponet.setMines(groundMine, visualComponet.getDx(), visualComponet.getDy(), HEXAGON_SIZE);
+            if(!mineExploded.empty()){
                 processTheDamage();
             }
         }
     }
+
+
     /********************************************************************************/
     /*INITIALIZE ARENA AND HIS ELEMENTS*/
     
@@ -546,8 +558,6 @@ public class Battlefield extends JFrame{
                 System.exit(0);
             }
 	    });
-        System.out.println("W : " + Width + " H : " + Height);
-        System.out.println("VAL : " + (0 + Width)%Width);
         visualComponet = new Campo(HEXAGON_SIZE, m, n, Terreno, army, crystals,groundMine);
         add(visualComponet);
         setVisible(true);

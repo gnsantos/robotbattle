@@ -16,7 +16,7 @@ class Bomb {
     int x;
     int y;
     int countdown = 0;
-    private final Integer TIMER = 5;
+    private final Integer TIMER = 9;
     
     // Com o robô, no chão, etc.
     String status;
@@ -52,9 +52,10 @@ class Bomb {
     }
 
     public boolean updateBombTimer(){
-        if (this.status.equals("Armed")){   
+        if (this.getStatus().equals("Armed")){
+            this.countdown--;   
             if(this.countdown == 0){
-                this.status = "exploded";
+                this.setStatus("exploded");
                 return true;
             }
             else return false;         

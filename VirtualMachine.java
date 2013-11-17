@@ -227,9 +227,16 @@ class VirtualMachine{
   }
 /*Se o programa contem uma instrução inválida a própria VM tem a obrigação de se colocar em Off*/
   private void jumpPC(int position){
-    String key = programArray.get(position)[1] + ':';
+    String key = programArray.get(position)[1];
     Integer val = labelsHash.get(key);
-    this.pc = val -1;
+    if(labelsHash.containsKey(key)){
+      this.pc = val -1;
+    }
+    else{
+      key = programArray.get(position)[1] + ":";
+      val = labelsHash.get(key);
+      this.pc = val -1;
+    }
   }
 
   private void setPC(int value){

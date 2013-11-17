@@ -100,9 +100,10 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
 
         //X
         try {
-            bombaX = ImageIO.read(this.getClass().getResource("bomba9.png"));
+            bombaX = ImageIO.read(this.getClass().getResource("bombaX.png"));
         }
         catch (Exception e) {
+            e.printStackTrace();
             System.exit(1);
         }
 
@@ -111,81 +112,83 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
             bomba9 = ImageIO.read(this.getClass().getResource("bomba9.png"));
         }
         catch (Exception e) {
+            e.printStackTrace();
             System.exit(1);
         }
 
         //8
         try {
-            bomba8 = ImageIO.read(this.getClass().getResource("bomba9.png"));
+            bomba8 = ImageIO.read(this.getClass().getResource("bomba8.png"));
         }
         catch (Exception e) {
+            e.printStackTrace();
             System.exit(1);
         }
 
         //7
         try {
-            bomba7 = ImageIO.read(this.getClass().getResource("bomba9.png"));
+            bomba7 = ImageIO.read(this.getClass().getResource("bomba7.png"));
         }
         catch (Exception e) {
+            e.printStackTrace();
             System.exit(1);
         }
 
         //6
         try {
-            bomba6 = ImageIO.read(this.getClass().getResource("bomba9.png"));
+            bomba6 = ImageIO.read(this.getClass().getResource("bomba6.png"));
         }
         catch (Exception e) {
+            e.printStackTrace();
             System.exit(1);
         }
 
         //5
         try {
-            bomba5 = ImageIO.read(this.getClass().getResource("bomba9.png"));
+            bomba5 = ImageIO.read(this.getClass().getResource("bomba5.png"));
         }
         catch (Exception e) {
+            e.printStackTrace();
             System.exit(1);
         }
 
         //4
         try {
-            bomba4 = ImageIO.read(this.getClass().getResource("bomba9.png"));
+            bomba4 = ImageIO.read(this.getClass().getResource("bomba4.png"));
         }
         catch (Exception e) {
+            e.printStackTrace();
             System.exit(1);
         }
 
         //3
         try {
-            bomba3 = ImageIO.read(this.getClass().getResource("bomba9.png"));
+            bomba3 = ImageIO.read(this.getClass().getResource("bomba3.png"));
         }
         catch (Exception e) {
+            e.printStackTrace();
             System.exit(1);
         }
 
         //2
         try {
-            bomba2 = ImageIO.read(this.getClass().getResource("bomba9.png"));
+            bomba2 = ImageIO.read(this.getClass().getResource("bomba2.png"));
         }
         catch (Exception e) {
+            e.printStackTrace();
             System.exit(1);
         }
 
         //1
         try {
-            bomba1 = ImageIO.read(this.getClass().getResource("bomba9.png"));
+            bomba1 = ImageIO.read(this.getClass().getResource("bomba1.png"));
         }
         catch (Exception e) {
+            e.printStackTrace();
             System.exit(1);
         }
 
-        //0
-        try {
-            bomba0 = ImageIO.read(this.getClass().getResource("bomba9.png"));
-        }
-        catch (Exception e) {
-            System.exit(1);
-        }
-        BufferedImage[] bombArray = {bombaX, bomba1, bomba2, bomba3, bomba4, bomba5,bomba6, bomba7, bomba8, bomba9};
+        BufferedImage[] bombArray = {bombaX, bomba1, bomba2, bomba3, bomba4, bomba5, bomba6, bomba7, bomba8, bomba9};
         this.ExplosivesTexture = bombArray;
     }
     
@@ -238,27 +241,44 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
     }
     public Stack<Bomb> setMines(Stack<Bomb> bombStack, int Dx, int Dy, int L){
         Stack<Bomb> mineExploded = new Stack<Bomb>();
-
+        Stack<Bomb> mineActived = new Stack<Bomb>();
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 minesField[i][j] = null;
             }
         }
         
-                    System.out.println("Estou aqui!");
         while(!bombStack.empty()){
             Bomb b = bombStack.pop();
             int posX = b.getX();
             int posY = b.getY();
-            int countdown = b.getTimer();
-            double psi = 0;
-            // if (posY%2 == 1)
-                psi = 0.1;
-            minesField[posX][posY] = new CelExtra( (int)((posX - 2*psi)*Dx), (int)((posY - psi)*Dy), L, ExplosivesTexture[countdown]);
-            if (countdown == 0){
+            int countdown;
+            boolean timer;
+            double psi = 0; 
+            
+            timer = b.updateBombTimer();
+            countdown = b.getTimer();
+
+            if (posY%2 == 0){
+                psi = 0.2; 
+                minesField[posX][posY] = new CelExtra( (int)((posX+psi)*Dx), 
+                                                        (int)((posY+psi)*Dy), L, 
+                                                        ExplosivesTexture[countdown]);
+            }
+            else{
+                psi = 0.3; 
+                minesField[posX][posY] = new CelExtra( (int)((posX+2.2*psi)*Dx), 
+                                                        (int)((posY+psi/2)*Dy), L, 
+                                                        ExplosivesTexture[countdown]); 
+            }
+
+            if (timer){
                 mineExploded.push(b);
             }
+            else
+                mineActived.push(b);
         }
+        Battlefield.updateBombStack(mineActived);
         return mineExploded;
     }
     
@@ -267,6 +287,15 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
     }
     public int getDy(){
         return this.Dy;
+    }
+
+    public void removeLastExplosions(Stack<Bomb> mineExploded){
+        while (!mineExploded.empty()){
+            Bomb b = mineExploded.pop();
+            int x = b.getX();
+            int y = b.getY();
+            minesField [x][y] = null;
+        }
     }
     
     Campo(int L, int W, int H, int[][] Terreno, Vector<BattleRobot> army, Vector<Crystal> crystalsVector, Stack<Bomb> bombStack) {
