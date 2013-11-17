@@ -131,7 +131,7 @@ public class Battlefield extends JFrame{
         rearrangeAll();
         //tellMeAboutTheWar();
         
-        runtheGame();
+        runTheGame();
     	SwingUtilities.invokeLater(new Runnable() {
     		@Override
     		public void run() {
@@ -144,13 +144,13 @@ public class Battlefield extends JFrame{
     
     /********************************************************************************/
     /**ROTINES FOR EXECUTE THE MAIN ACTIONS */
-    public static void runtheGame(){
+    public static void runTheGame(){
         int condition = 0;
         while (true){
             condition = runRobotStateCycle();
             processRequestList();
             if(condition == numRobots){ break; }
-            else{ pauseSystem(1000);}
+            else{ pauseSystem(100);}
         }
         System.out.println("Execution ended");
     }
