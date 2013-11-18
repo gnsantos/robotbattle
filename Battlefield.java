@@ -17,29 +17,31 @@ import java.math.*;
 
 public class Battlefield extends JFrame{
     
-    //    DEFINES:
+    /*
+     * Defines 
+     */
     private static final char CRYSTAL = '*';
     private static final char ROBOT = 'r';
     private static final char EMPTY = ' ';
     
-    private static  int numRobots = 2;
+    private static final int HEXAGON_SIZE = 20;
+    
     private static final int NUM_CRYSTALS = 10;
     
-    private static final int HEXAGON_SIZE = 20;
-
-    //Coordenadas no mapa da base A
+    // Coordenadas no mapa da base A
     private static final int BASE_A_X = 3;
     private static final int BASE_A_Y = 16;
-
-    //Coordenadas no mapa da base B
+    
+    // Coordenadas no mapa da base B
     private static final int BASE_B_X = 28;
     private static final int BASE_B_Y = 2;
-
-    //Valor default de dano que um tiro pode causa
+    
+    // Valor default de dano que cada fonte pode causar
     private static final double FIRE_DAMAGE = -20;
     private static final double BOMB_DAMAGE = -50;
-
     
+    
+    // Possíveis chamadas do robô ao sistema
     private enum SysCallOperations{
         WLK,
     	FIRE,
@@ -51,6 +53,7 @@ public class Battlefield extends JFrame{
     	EXC
     }
     
+    // Possíveis direções de movimento (em um mapa hexagonal)
     private enum DirMov{
         E,
     	W,
@@ -60,6 +63,7 @@ public class Battlefield extends JFrame{
     	NW
     }
     
+    // Possíveis perguntas a serem feitas pelo robô ao sistema
     private enum AskOptions {
         MY_HEALTH,
         HAS_ENEMY,
@@ -71,8 +75,9 @@ public class Battlefield extends JFrame{
         THEIR_HEALTH,
         WHY
     }
-
-    static int[][] Terreno = { // O mapa
+    
+    // Configuração do mapa
+    static int[][] Terreno = {
     {0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
     {0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
     {2, 2, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 2},
@@ -95,43 +100,56 @@ public class Battlefield extends JFrame{
     {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0}
     };
     
+    
+    // Dimensões do mapa
     static int Height = Terreno.length;
     static int Width = Terreno[0].length;
     
     
-    //Virtual Machines Atributtes
-    private static Vector<BattleRobot> army = new Vector<BattleRobot>();
-    private static Vector<Crystal> crystals = new Vector<Crystal>(NUM_CRYSTALS);
-    private static Stack<Bomb> groundMine = new Stack<Bomb>();
-    private static Stack<Bomb> mineExploded = new Stack<Bomb>(); 
+    // Estruturas com as entidades do sistema
+    private static Vector<BattleRobot> army = new Vector<BattleRobot>();            // Vetor com os robôs
+    private static Vector<Crystal> crystals = new Vector<Crystal>(NUM_CRYSTALS);    // Vetor com os cristais
+    private static Stack<Bomb> groundMine = new Stack<Bomb>();                      // Pilhas das bombas
+    private static Stack<Bomb> mineExploded = new Stack<Bomb>();
     
-    private static int serialMachine;
-    private static Vector<SystemRequest> requestList = new Vector<SystemRequest>();
-    public static final String codeName = "sourceCode";
-    public static Campo visualComponet;
+    private static int numRobots = 2;       // Número de robôs
     
-    //Transforma a classe em Singleton:
+    private static Vector<SystemRequest> requestList = new Vector<SystemRequest>(); // Vetor com as chamadas ao sistema
+    
+    public static final String codeName = "sourceCode";     // Nome do arquivo default de código fonte dos robôs
+    
+    public static Campo visualComponent;        // O controlador da parte gráfica
     
     
+    
+    // Transforma a classe em Singleton:
     private static Battlefield controlador = new Battlefield();
-    //Trocar esse nome depois...   
     
     public static Battlefield getInstanceOfBattlefield(){
         return controlador;
     }
     
-    /////////////////////////////////////////////////////////////////////////////////////////
     
+    
+    
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
+    // Main
     
     public static void main (String argv[]) throws IOException{
-        // codeNameA = argv[0];
-        // codeNameB = argv[1];
+        // Seta o número inicial de robôs
         numRobots = 2;
-        initArena(Height, Width);
-        rearrangeAll();
-        //tellMeAboutTheWar();
         
+        // Inicializa o vetor de robôs e o de cristais
+        initArena(Height, Width);
+        
+        // Atualiza as posições e dos cristais
+        rearrangeAll();
+        
+        // Começa a execução do jogo
         runtheGame();
+        
+        // Paralelamente, atualiza o componente gráfico
     	SwingUtilities.invokeLater(new Runnable() {
     		@Override
     		public void run() {
@@ -142,57 +160,163 @@ public class Battlefield extends JFrame{
     	controlador.repaint();
     }
     
-    /********************************************************************************/
-    /**ROTINES FOR EXECUTE THE MAIN ACTIONS */
+    // Construtor
+    public Battlefield(){
+        // Seta atributos da janela
+        setTitle("BATTLEFIELD");
+        
+        int m = 1200;
+        int n = 720;
+        
+        setSize(m, n);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+	    });
+        
+        // Cria o gerenciador gráfico
+        visualComponent = new Campo(HEXAGON_SIZE, m, n, Terreno, army, crystals,groundMine);
+        add(visualComponent);
+        setVisible(true);
+    }
+    
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
+    // Métodos principais
+    
     public static void runtheGame(){
         int condition = 0;
+        
+        // Rodar enquanto houver robôs executando ações
         while (true){
             condition = runRobotStateCycle();
             processRequestList();
-            if(condition == numRobots){ break; }
-            else{ pauseSystem(1000);}
+            
+            if(condition == numRobots)
+                break;
+            else
+                pauseSystem(1000);
         }
         System.out.println("Execution ended");
     }
     
     public static int runRobotStateCycle(){
         int cont = 0;
+        
+        // Para cada robô do vetor, roda algumas instruções dele (runVM)
         for (int x = 0; x < numRobots; x++ ) {
-            if (army.get(x).returnState() == 1){ army.get(x).runVM(); }
-            else { cont++;}
+            if (army.get(x).returnState() == 1)
+                army.get(x).runVM();
+            else 
+                cont++;
         }
+        
+        // Retorna o número de robôs inativos
         return cont;
     }
+    
     public static void processRequestList(){
         shuffleList();
         Iterator it = requestList.iterator();
+        
+        // Itera pela lista de chamadas e executa cada uma delas
         while(it.hasNext()){
             executeCall((SystemRequest)it.next());
         }
+        
         requestList.clear();
         updateArena();
     }
     
     private static void updateArena() {
+        // Atualiza as estruturas de dados conforme apropriado
+        // e então atualiza a parte gráfica
     	rearrangeAll();
         controlador.repaint();
     }
     
     private static void shuffleList(){
+        // Aleatoriza a lista de chamadas ao sistema
+        // para não priorizar nenhum robô
         long seed = System.nanoTime();
         Collections.shuffle(requestList, new Random(seed));
     }
     
+    public static void rearrangeAll(){
+       	visualComponent.setRobots(army, visualComponent.getDx(), visualComponent.getDy(), HEXAGON_SIZE);
+        visualComponent.setCrystals(crystals, visualComponent.getDx(), visualComponent.getDy(), HEXAGON_SIZE);
+        
+        // Atualiza as estruturas de dados dos robôs, dos cristais e das bombas
+        if (!mineExploded.empty())
+            visualComponent.removeLastExplosions(mineExploded);
+        if (!groundMine.empty()){
+            
+            mineExploded =  visualComponent.setMines(groundMine, visualComponent.getDx(), visualComponent.getDy(), HEXAGON_SIZE);
+            if(!mineExploded.empty()){
+                processTheDamage();
+            }
+        }
+    }
     
+    public static BattleRobot getRobotBySerial(int robotSerial){
+        Iterator it = army.iterator();
+        BattleRobot wally = null;
+        
+        // Retorna o robô baseado no serial
+        while(it.hasNext()){
+            wally = (BattleRobot)it.next();
+            if (wally.saySerialNumber() == robotSerial){
+                break;
+            }
+        }
+        return wally;
+    }
     
-    /********************************************************************************/
-    /*SYSTEM CALLS*/
+    public static void insertArmy(String sourceCode,int index, String team, String robotModel, int x, int y, int serialNumber) throws IOException{
+        // Insere um robô novo no vetor de robôs
+        army.add(index, new BattleRobot(robotModel+"-" + serialNumber, serialNumber,sourceCode));
+        army.get(index).setTeam("Team "+team);
+        army.get(index).moveRobot(x,y);
+        army.get(index).initBomb();
+    }
+    
+    static void initArena(int mapHeight, int mapWidth) throws IOException{
+        Random gen = new Random();
+        int i;
+        int j;
+
+        // Inicializa o vetore de robôs e o de cristais
+        for (int k = 0; k < numRobots; k++) {
+            i = gen.nextInt(mapHeight);
+            j = gen.nextInt(mapWidth);
+            if (k < numRobots/2){
+                insertArmy(codeName + "-" + k,k,"A","TX",j,i,gen.nextInt(1000));
+	        }
+            else{
+                insertArmy(codeName + "-" + k,k,"B","ZT",j,i,gen.nextInt(1000));
+            }
+        }
+
+        for (int k = 0; k < NUM_CRYSTALS; k++) {
+            i = gen.nextInt(mapHeight);
+            j = gen.nextInt(mapWidth);
+            
+            crystals.add(k, new Crystal(j,i,"FREE"));
+        }
+    }
+    
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
+    // Chamadas sistema
+    
     public static void executeCall (SystemRequest request) {
+        //Recebe uma chamada e a executa
         SysCallOperations op = SysCallOperations.valueOf( request.getInstructionRequest() );
         BattleRobot sony = getRobotBySerial(request.getSerialNumberRequester());
         double sucessNum = 0;
         String sucessStr;
-        //System.out.println("Request :" + request.getInstructionRequest() + " Peso : " + request.getWeight() + "Requester : "  + request.getSerialNumberRequester()); 
+        
         switch(op) {
             case WLK: /*Anda pelo mapa*/
                 sucessNum = moveCall(request.getInstructionArgument(),request.getSerialNumberRequester());
@@ -213,23 +337,25 @@ public class Battlefield extends JFrame{
                 sony.returnAnswer(sucessStr);
                 break;
             case ASK: /*Faz perguntas ao sistema */
-                /*Faz perguntas ao sistema sobre coisas diversas*/
                 askCall(request.getInstructionArgument(),request.getSerialNumberRequester());
                 break;
             default:
                 break;
         }
     }
-    /********************************************************************************/
-    /*Olha para uma direção */
+    
+    // Olha para uma direção
     public static String lookCall(String dir, int robotSerial){
         BattleRobot sony = getRobotBySerial(robotSerial);
         return lookAt(xMove(sony.getX(), sony.getY(), dir),yMove(sony.getX(), sony.getY(), dir), sony.getTeam());
     }
+    
+    // Varre as estruturas para ver se algo está onde se está olhado
     public static String lookAt(int i, int j, String robotTeam){
         Iterator it = army.iterator();
         BattleRobot hal;
-
+        
+        // Olha os robôs
         while(it.hasNext()){
             hal = (BattleRobot)it.next();
             if(i == hal.getX() && j == hal.getY()){
@@ -238,7 +364,8 @@ public class Battlefield extends JFrame{
                 else return "HAS_ENEMY";
             }
         }
-
+        
+        // Olha os cristais
         Iterator cs = crystals.iterator();
         Crystal c;
         while(cs.hasNext()){
@@ -246,7 +373,8 @@ public class Battlefield extends JFrame{
             if(c.getX() == i && j == c.getY())
                 return "HAS_CRYSTAL";
         }
-
+        
+        // Olha as bombas
         Iterator bm = groundMine.iterator();
         Bomb b;
         while(bm.hasNext()){
@@ -254,20 +382,28 @@ public class Battlefield extends JFrame{
             if(b.getX() == i && j == b.getY())
                 return "HAS_BOMB";
         }
+        
+        // A ordem de retorno das listas prioriza o que deve ser
+        // mais importante para o usuário e permite, por exemplo,
+        // plantar armadilhas.
+        
         return "NONE";
     }
-
-    /********************************************************************************/
-    /*Planta uma bomba em uma célula */
+    
+    // Planta uma bomba em uma célula
     public static double bombCall(String dir, int robotSerial){
         BattleRobot sony = getRobotBySerial(robotSerial);
         Bomb plantedBomb = sony.placeTheBomb(xMove(sony.getX(), sony.getY(), dir),yMove(sony.getX(), sony.getY(), dir));
         groundMine.push(plantedBomb);
         return 1;
     }
+    
     public static void processTheDamage(){
         BattleRobot hal = null;
-        Stack<Bomb> auxMines = new Stack<Bomb>(); 
+        Stack<Bomb> auxMines = new Stack<Bomb>();
+        // Olha para o vetor de "bombas que acabaram de explodir"
+        // e danifica o robô, caso necessário
+        
         while (!mineExploded.empty()){
             Iterator it = army.iterator();
             Bomb b = mineExploded.pop();
@@ -283,56 +419,64 @@ public class Battlefield extends JFrame{
         }
         mineExploded = auxMines;
     }
-    /********************************************************************************/
-    /*Atira no adversário*/
+    
+    // Atira no adversário
     public static double fireCall(String dir, int robotSerial){
         BattleRobot sony = getRobotBySerial(robotSerial);
         String type = lookAt(xMove(sony.getX(), sony.getY(), dir), yMove(sony.getX(), sony.getY(), dir), sony.getTeam());
         int x = xMove(sony.getX(), sony.getY(), dir);
         int y = yMove(sony.getX(), sony.getY(), dir);
-
+        
+        // Olha para o vetore de robôs; se houver algum
+        // na posição escolhida, atira.
+        
         if(type.equals("HAS_ENEMY")){
             Iterator it = army.iterator();
             BattleRobot hal = null;
-
+            
             while(it.hasNext()){
-            hal = (BattleRobot)it.next();
-            if(x == hal.getX() && y == hal.getY())
-                break;
+                hal = (BattleRobot)it.next();
+                if(x == hal.getX() && y == hal.getY())
+                    break;
             }
-            if(hal.getHealth() > 0){
+            
+            if(hal.getHealth() > 0)
                 hal.updateHealth(FIRE_DAMAGE);
-            }
-            robotDied(hal);
+            else
+                robotDied(hal);
+            
             return 1;
         }
         else{
             return 0;
         }
-
+        
     }
-
-    /*Desliga o robo se seu HP chegar a 0*/
+    
+    // Desliga o robo se seu HP chegar a 0
     public static void robotDied(BattleRobot hal){
         army.remove(hal);
         numRobots--;
     }
-
-    /********************************************************************************/
-    /*Pergunta coisas para o sistema */
+    
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
+    // Pergunta coisas para o sistema
+    
     public static void  askCall(String asked, int robotSerial){
+        // "Executa" a pergunta
         AskOptions question = AskOptions.valueOf(asked);
         BattleRobot sony = getRobotBySerial(robotSerial);
         switch(question){
-            /*Devolve a quantidade de vida do robô*/
+                // Devolve a quantidade de vida do robô
             case MY_HEALTH:
                 sony.returnAnswer(sony.getHealth());
                 break;
-            /*Devolve a quantidade de cristais do robô*/
+                // Devolve a quantidade de cristais do robô
             case NUMBER_OF_CRYSTAL:
                 sony.returnAnswer(sony.getCrystalQuantity());
                 break;
-            /*Calcula a distância de ponto a ponto do robô a ponta da base inimiga ou sua própria base*/
+                // Calcula a distância de ponto a ponto do robô a ponta da base inimiga ou sua própria base
             case ENEMY_BASE_DISTANCE:
                 if (sony.getTeam().equals("Team A")){
                     sony.returnAnswer(calculeDistance("Team B",sony));    
@@ -348,11 +492,13 @@ public class Battlefield extends JFrame{
                 break;
         }
     }
-
+    
+    // Calcula a distância do robô à base especificada
     public static Double calculeDistance(String team,BattleRobot sony){
         return Math.sqrt( Math.pow(2,sony.getX() - getBaseX(team)) + Math.pow(2,sony.getY() - getBaseY(team)));
     }
-
+    
+    // Retorna a coordenada x da base especificada
     public static Double getBaseX(String team){
         if (team.equals("Time A")){
             return 1.0*BASE_A_X;
@@ -362,6 +508,7 @@ public class Battlefield extends JFrame{
         }
     }
 
+    // Retorna a coordenada y da base especificada
     public static Double getBaseY(String team){
         if (team.equals("Time A")){
             return 1.0*BASE_A_Y;
@@ -371,12 +518,27 @@ public class Battlefield extends JFrame{
         }
     }
     
-    /********************************************************************************/
-    /*MOVE ACTION*/
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
+    // Movimento
+    
+    public static int moveCall(String direction, int robotSerial){
+        BattleRobot sony = getRobotBySerial(robotSerial);
+        
+        // Checa se o robô pode se mover; se puder, move.
+        if(canMoveTo(xMove(sony.getX(), sony.getY(), direction), yMove(sony.getX(), sony.getY(), direction))){
+            sony.moveRobot(xMove(sony.getX(), sony.getY(), direction), yMove(sony.getX(), sony.getY(), direction));
+            return 1;
+        }
+        else
+            return 0;
+    }
     
     public static boolean canMoveTo(int i, int j){
+        // Checa se o robô pode se mover
         Iterator it = army.iterator();
         BattleRobot hal;
+        
         while(it.hasNext()){
             hal = (BattleRobot)it.next();
             if(i == hal.getX() && j == hal.getY())
@@ -385,21 +547,11 @@ public class Battlefield extends JFrame{
         return true;
     }
     
-    public static int moveCall(String direction, int robotSerial){
-        BattleRobot sony = getRobotBySerial(robotSerial);
-        if(canMoveTo(xMove(sony.getX(), sony.getY(), direction), yMove(sony.getX(), sony.getY(), direction))){
-            sony.moveRobot(xMove(sony.getX(), sony.getY(), direction), yMove(sony.getX(), sony.getY(), direction));
-            return 1;
-        }
-        else
-            return 0;
-    }
-
-    /*Metodos Helper para execucao de acoes*/
+    // Metodos Helper para execucao de acoes
     public static int xMove(int x, int y, String direction){
         DirMov dir = DirMov.valueOf( direction);
         switch(dir) {
-             case E:
+            case E:
                 return (x + 1 + Width)%Width;
             case W:
                 return (x - 1 + Width)%Width;
@@ -419,8 +571,8 @@ public class Battlefield extends JFrame{
                 break;
         }
         return x;
-
     }
+    
     public static int yMove(int x, int y, String direction){
         DirMov dir = DirMov.valueOf(direction);
         switch(dir) {
@@ -436,131 +588,37 @@ public class Battlefield extends JFrame{
             default:
                 break;
         }
-        return y;
-
+        return y;   
     }
-    public static BattleRobot getRobotBySerial(int robotSerial){
-        Iterator it = army.iterator();
-        BattleRobot wally = null;
-        while(it.hasNext()){
-            wally = (BattleRobot)it.next();
-            if (wally.saySerialNumber() == robotSerial){
-                break;
-            }
-        }
-        return wally;
-    }
-    /********************************************************************************/
-    /*DEBUG FUNCTIONS*/
     
-    /*public static void tellMeAboutTheWar(){
-        System.out.println("\tInformacao sobre os robos\n" );
-        for (int x = 0; x < NUM_ROBOTS ; x++) {
-            System.out.println("Name : " + army.get(x).sayName()
-                               +"\nSerial Number : " +army.get(x).saySerialNumber());
-            System.out.println("Team : " + army.get(x).getTeam());
-            System.out.print("Position : ");
-            army.get(x).showCoordinates();
-            System.out.println();
-            // pauseSystem(1000);
-        }
-    }*/
+    
+    
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
+    // Funções disponibilizadas às outras entidades para requisicoes a arena
+    public static void systemCall(SystemRequest request){
+        pauseSystem(100);
+        requestList.add(request);
+    }
+    
+    public static void updateBombStack(Stack<Bomb> bombStack){
+        groundMine = bombStack;
+    }
+    
+    
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
+    // DEBUG FUNCTIONS
     
     public static void pauseSystem(int time) {
         try{
             Thread.sleep(time);
-            // System.out.println("\n Sai!!!! \n");   
         }
         catch(InterruptedException e){
             System.out.println("Pausa do sistema deu errado!");
         }
         
-    }
-    /********************************************************************************/
-    /*Funcoes disponibilizadas às outras entidades para requisicoes a arena*/
-    public static void systemCall(SystemRequest request){
-        pauseSystem(100);
-        requestList.add(request);
-    }
-
-    public static void updateBombStack(Stack<Bomb> bombStack){
-        groundMine = bombStack;
-    }
-    
-    /********************************************************************************/
-    //seria interessante mudar a cor do hexagono momentaneamente durante a explosao
-    public static void rearrangeAll(){
-       	visualComponet.setRobots(army, visualComponet.getDx(), visualComponet.getDy(), HEXAGON_SIZE);
-        visualComponet.setCrystals(crystals, visualComponet.getDx(), visualComponet.getDy(), HEXAGON_SIZE);
-        if (!mineExploded.empty())
-                visualComponet.removeLastExplosions(mineExploded);
-        if (!groundMine.empty()){
-
-            mineExploded =  visualComponet.setMines(groundMine, visualComponet.getDx(), visualComponet.getDy(), HEXAGON_SIZE);
-            if(!mineExploded.empty()){
-                processTheDamage();
-            }
-        }
-    }
-
-
-    /********************************************************************************/
-    /*INITIALIZE ARENA AND HIS ELEMENTS*/
-    
-    public static void insertArmy(String sourceCode,int index, String team, String robotModel, int x, int y, int serialNumber) throws IOException{
-        army.add(index, new BattleRobot(robotModel+"-" + serialNumber, serialNumber,sourceCode));
-        army.get(index).setTeam("Team "+team);
-        army.get(index).moveRobot(x,y);
-        army.get(index).initBomb();
-    }
-    
-    static void initArena(int mapHeight, int mapWidth) throws IOException{
-        
-        Random gen = new Random();
-        //gen.setSeed(3);
-        
-        int i;
-        int j;
-        
-        //        Inserts robots at totally random locations
-        for (int k = 0; k < numRobots; k++) {
-            i = gen.nextInt(mapHeight);
-            j = gen.nextInt(mapWidth);
-            if (k < numRobots/2){
-                insertArmy(codeName + "-" + k,k,"A","TX",j,i,gen.nextInt(1000));
-	        }
-            else{
-                insertArmy(codeName + "-" + k,k,"B","ZT",j,i,gen.nextInt(1000));
-            }
-        }
-        //        Inserts crystals at totally random locations
-        for (int k = 0; k < NUM_CRYSTALS; k++) {
-            i = gen.nextInt(mapHeight);
-            j = gen.nextInt(mapWidth);
-            
-            crystals.add(k, new Crystal(j,i,"FREE"));
-        }
-    }
-    
-    
-    /********************************************************************************/
-    /*CONSTRUCTOR*/
-    
-    public Battlefield(){
-        setTitle("BATTLEFIELD");
-        
-        int m = 1200;
-        int n = 720;
-        
-        setSize(m, n);
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
-	    });
-        visualComponet = new Campo(HEXAGON_SIZE, m, n, Terreno, army, crystals,groundMine);
-        add(visualComponet);
-        setVisible(true);
     }
     
 }

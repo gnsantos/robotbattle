@@ -15,7 +15,7 @@ public class BattleRobot implements Robot{
 	private String robotState;
 	private final Integer MAX_CRYSTAL = 3;
 	private final Integer MAX_BOMB = 10;
-	private Vector<Bomb> grondMine = new Vector<Bomb>(MAX_BOMB);
+	private Vector<Bomb> groundMine = new Vector<Bomb>(MAX_BOMB);
     
     public BattleRobot(String name, int serialNumber, String sourceCode) throws IOException{
 		this.robotName = name;
@@ -101,14 +101,14 @@ public class BattleRobot implements Robot{
 
 	public void initBomb(){
 		for (int x = 0; x < MAX_BOMB; x++){
-			grondMine.add(x,new Bomb(getX(),getY(),"Holding"));
+			groundMine.add(x,new Bomb(getX(),getY(),"Holding"));
 		}
 	}
 
 	public Bomb placeTheBomb(int x, int y){
-		int size = grondMine.size();
+		int size = groundMine.size();
 		if (size > 0){
-			Bomb b = grondMine.remove(size-1);
+			Bomb b = groundMine.remove(size-1);
 			b.plantTheBomb(x, y);
 			return b;
 		}
