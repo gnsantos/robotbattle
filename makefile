@@ -16,7 +16,7 @@
 
 default:
 	make clean
-	javac BattleField.java
+	javac Battlefield.java
 	jar cvfe BF.jar Battlefield *.class *.png source* default*
 
 clean:

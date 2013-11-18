@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2013.9.16)  29 OCT 2013 07:31
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2013.9.16)  17 NOV 2013 12:49
 entering extended mode
  %&-line parsing enabled.
 **relatorio.tex
@@ -746,114 +746,71 @@ LaTeX Font Info:    External font `lmex10' loaded for size
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 37--43
+Underfull \hbox (badness 10000) in paragraph at lines 37--42
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 37--43
+Underfull \hbox (badness 10000) in paragraph at lines 37--42
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 37--43
+Underfull \hbox (badness 10000) in paragraph at lines 37--42
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 37--43
+Underfull \hbox (badness 10000) in paragraph at lines 37--42
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 37--43
-
- []
-
-[2] [3] [4]
-Underfull \hbox (badness 10000) in paragraph at lines 86--90
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 86--90
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 86--90
-
- []
-
-[5]
-Underfull \hbox (badness 10000) in paragraph at lines 94--100
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 94--100
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 94--100
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 94--100
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 94--100
-
- []
-
-LaTeX Font Info:    Try loading font information for OMS+lmr on input line 105.
-
-(/usr/share/texmf/tex/latex/lm/omslmr.fd
+[2]
+LaTeX Font Info:    Try loading font information for OMS+lmr on input line 68.
+ (/usr/share/texmf/tex/latex/lm/omslmr.fd
 File: omslmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `OMS/lmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/lmsy/m/n' tried instead on input line 105.
- [6]
+(Font)              Font shape `OMS/lmsy/m/n' tried instead on input line 68.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 109.
+(Font)              <10> on input line 73.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 109.
-
-Underfull \hbox (badness 10000) in paragraph at lines 111--114
-
+(Font)              <7> on input line 73.
+ [3]
+Overfull \hbox (12.9165pt too wide) in paragraph at lines 83--84
+[]\T1/lmr/m/n/10 WLK - Anda pela arena uti-lizando uma das seis di-reções pos-s
+íveis (leste,oeste,
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 111--114
-
+[4]
+Overfull \hbox (3.9723pt too wide) in paragraph at lines 105--112
+\T1/lmr/m/n/10 >Background -->Tamanho fixo da janela -->Contorno dos hexagonos 
+-->Melhorar
  []
 
-[7] [8] (./relatorio.aux) ) 
+[5] (./relatorio.aux) ) 
 Here is how much of TeX's memory you used:
- 12441 strings out of 495061
- 219060 string characters out of 1182621
- 264003 words of memory out of 3000000
- 15357 multiletter control sequences out of 15000+50000
- 60443 words of font info for 45 fonts, out of 3000000 for 9000
+ 12430 strings out of 495061
+ 218882 string characters out of 1182621
+ 264005 words of memory out of 3000000
+ 15346 multiletter control sequences out of 15000+50000
+ 61712 words of font info for 45 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
- 63i,13n,57p,970b,301s stack positions out of 5000i,500n,10000p,200000b,50000s
-{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr
-/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}</usr/share/texmf/fonts/type1/pub
-lic/lm/lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/shar
-e/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm
-/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/
-fonts/type1/public/lm/lmr6.pfb></usr/share/texmf/fonts/type1/public/lm/lmr7.pfb
-></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1
-/public/lm/lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/
-share/texmf/fonts/type1/public/lm/lmsy6.pfb></usr/share/texmf/fonts/type1/publi
-c/lm/lmsy8.pfb>
-Output written on relatorio.pdf (8 pages, 263191 bytes).
+ 63i,13n,57p,861b,301s stack positions out of 5000i,500n,10000p,200000b,50000s
+{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/sha
+re/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/
+lm-mathsy.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/te
+xmf/fonts/type1/public/lm/lmmi10.pfb></usr/share/texmf/fonts/type1/public/lm/lm
+r10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fon
+ts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr6.pfb><
+/usr/share/texmf/fonts/type1/public/lm/lmr7.pfb></usr/share/texmf/fonts/type1/p
+ublic/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb></usr/shar
+e/texmf/fonts/type1/public/lm/lmri8.pfb></usr/share/texmf/fonts/type1/public/lm
+/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy6.pfb></usr/share/texmf
+/fonts/type1/public/lm/lmsy8.pfb>
+Output written on relatorio.pdf (5 pages, 239294 bytes).
 PDF statistics:
- 82 PDF objects out of 1000 (max. 8388607)
+ 76 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  13 words of extra memory for PDF output out of 10000 (max. 10000000)
 
