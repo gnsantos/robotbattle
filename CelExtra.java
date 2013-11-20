@@ -19,7 +19,7 @@ class CelExtra { // Cada célula da matriz representa um hexágono mostrado na t
     CelExtra(int x, int y, int r, BufferedImage t) {
         ime = t;
         
-        origin = new Point(x, y);
+        origin = new Point(12+x, 12+y);
         
         Gime = ime.createGraphics();
     }

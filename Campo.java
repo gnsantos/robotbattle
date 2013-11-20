@@ -15,7 +15,7 @@ import java.io.*;
 
 class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do output gráfico
     int Larg, Alt, Dx, Dy; // largura do terreno, altura do terreno, incremento em x e incremento em y
-    BufferedImage grama, terra, agua, baseA, baseB, roboA, roboB, crystal; // texturas a serem carregadas para o terreno
+    BufferedImage grama, terra, agua, baseA, baseB, roboA, roboB, crystalN, crystalW, crystalS, crystalE; // texturas a serem carregadas para o terreno
     BufferedImage bombaX, bomba0, bomba1, bomba2, bomba3, bomba4, bomba5, bomba6, bomba7, bomba8, bomba9;
     int[][] Terreno;
     
@@ -35,14 +35,14 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
         
         // cada try..catch que segue carregará uma textura, ou levantará uma exceção que encerrará a aplicação com erro
         try {
-            grama = ImageIO.read(this.getClass().getResource("grama5.png"));
+            grama = ImageIO.read(this.getClass().getResource("grama6.png"));
         }
         catch (Exception e) {
             System.exit(1);
         }
         
         try {
-            terra = ImageIO.read(this.getClass().getResource("terra6.png"));
+            terra = ImageIO.read(this.getClass().getResource("terra7.png"));
         }
         catch (Exception e) {
             System.exit(1);
@@ -70,28 +70,52 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
         }
         
         try {
-            roboA = ImageIO.read(this.getClass().getResource("roboA.png"));
+            roboA = ImageIO.read(this.getClass().getResource("roboA3.png"));
         }
         catch (Exception e) {
             System.exit(1);
         }
         
         try {
-            roboB = ImageIO.read(this.getClass().getResource("roboB.png"));
+            roboB = ImageIO.read(this.getClass().getResource("roboB2.png"));
         }
         catch (Exception e) {
             System.exit(1);
         }
         
         try {
-            crystal = ImageIO.read(this.getClass().getResource("crystal.png"));
+            crystalN = ImageIO.read(this.getClass().getResource("crystal2N.png"));
         }
         catch (Exception e) {
             e.printStackTrace();
             System.exit(1);
         }
         
-        BufferedImage[] imageArray = {agua, terra, grama, baseA, baseB, roboA, roboB, crystal};
+        try {
+            crystalW = ImageIO.read(this.getClass().getResource("crystal2W.png"));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+        
+        try {
+            crystalS = ImageIO.read(this.getClass().getResource("crystal2S.png"));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+        
+        try {
+            crystalE = ImageIO.read(this.getClass().getResource("crystal2E.png"));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+        
+        BufferedImage[] imageArray = {agua, terra, grama, baseA, baseB, roboA, roboB, crystalN, crystalW, crystalS, crystalE};
         this.Textura = imageArray;
         initExplosives();
     }
@@ -234,8 +258,8 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
             double psi = 0;
             if (posY%2 == 1)
                 psi = 0.6;
-            
-            cristais[posX][posY] = new CelExtra( (int)((posX + psi)*Dx), posY*Dy, L, Textura[7]);
+                        
+            cristais[posX][posY] = new CelExtra( (int)((posX + psi)*Dx), posY*Dy, L, Textura[7+((posX*posY)%4)]);
             
         }
     }

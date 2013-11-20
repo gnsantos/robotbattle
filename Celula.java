@@ -20,8 +20,8 @@ class Celula { // Cada célula da matriz representa um hexágono mostrado na tel
         ime = t;
         
         for (int i = 0; i < 6; i++)
-            p.addPoint(x + (int) (r * Math.sin(i * 2 * Math.PI / 6)),
-                       y + (int) (r * Math.cos(i * 2 * Math.PI / 6)));
+            p.addPoint(10 + x + (int) ((r+1) * Math.sin(i * 2 * Math.PI / 6)),
+                       12 + y + (int) ((r+1) * Math.cos(i * 2 * Math.PI / 6)));
         
         Gime = ime.createGraphics();
     }
