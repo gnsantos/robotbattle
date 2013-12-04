@@ -35,60 +35,60 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
         
         // cada try..catch que segue carregará uma textura, ou levantará uma exceção que encerrará a aplicação com erro
         try {
-            grama = ImageIO.read(this.getClass().getResource("grama2.png"));
+            grama = ImageIO.read(this.getClass().getResource("/img/grama2.png"));
         }
         catch (Exception e) {
-            System.exit(1);
-        }
+            e.printStackTrace();
+            System.exit(1);        }
         
         try {
-            terra = ImageIO.read(this.getClass().getResource("terra9.png"));
+            terra = ImageIO.read(this.getClass().getResource("/img/terra9.png"));
         }
         catch (Exception e) {
-            System.exit(1);
-        }
+            e.printStackTrace();
+            System.exit(1);        }
         
         try {
             agua = ImageIO.read(this.getClass().getResource("/img/agua3.png"));
         }
         catch (Exception e) {
-            System.exit(1);
-        }
+            e.printStackTrace();
+            System.exit(1);        }
         
         try {
-            ponte = ImageIO.read(this.getClass().getResource("ponte4.png"));
+            ponte = ImageIO.read(this.getClass().getResource("/img/ponte4.png"));
         }
         catch (Exception e) {
-            System.exit(1);
-        }
+            e.printStackTrace();
+            System.exit(1);        }
         
         try {
-            baseA = ImageIO.read(this.getClass().getResource("base5.png"));
+            baseA = ImageIO.read(this.getClass().getResource("/img/base5.png"));
         }
         catch (Exception e) {
-            System.exit(1);
-        }
+            e.printStackTrace();
+            System.exit(1);        }
         
         try {
-            baseB = ImageIO.read(this.getClass().getResource("base3.png"));
+            baseB = ImageIO.read(this.getClass().getResource("/img/base3.png"));
         }
         catch (Exception e) {
-            System.exit(1);
-        }
+            e.printStackTrace();
+            System.exit(1);        }
         
         try {
             roboA = ImageIO.read(this.getClass().getResource("/img/roboA3.png"));
         }
         catch (Exception e) {
-            System.exit(1);
-        }
+            e.printStackTrace();
+            System.exit(1);        }
         
         try {
             roboB = ImageIO.read(this.getClass().getResource("/img/roboB2.png"));
         }
         catch (Exception e) {
-            System.exit(1);
-        }
+            e.printStackTrace();
+            System.exit(1);        }
         
         try {
             crystalN = ImageIO.read(this.getClass().getResource("/img/crystal2N.png"));
