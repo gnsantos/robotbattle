@@ -122,6 +122,7 @@ public class Battlefield extends JFrame{
     
     public static Campo visualComponent;        // O controlador da parte gmovecráfica
     
+    public static String quemGanhou;
     
     
     // Transforma a classe em Singleton:
@@ -193,11 +194,10 @@ public class Battlefield extends JFrame{
             processRequestList();
             
             if(condition == numRobots) {
-                System.out.print("YOU LOSERS\n");
+                quemGanhou = "Nobody";
                 break;
             }
-            else if(NUM_DROPPED_CRYSTALS == 3) {
-                System.out.print("GANHEI GG\n");
+            else if(NUM_DROPPED_CRYSTALS == 1) {
                 break;
             }
             else
@@ -222,7 +222,8 @@ public class Battlefield extends JFrame{
     }
     
     public static void endTheGame() {
-        System.out.print("Game ended.\n");
+        JOptionPane.showMessageDialog(null, quemGanhou+" wins!!");
+        System.exit(0);
     }
     
     public static void processRequestList(){
@@ -400,8 +401,13 @@ public class Battlefield extends JFrame{
         crystals.add(dropped);
         sony.decreaseCrystalCount();
         
-        if (Terreno[y][x] == 3 || Terreno[y][x] == 4) {     // Se o cristal está na base
+        if (Terreno[y][x] == 3) {     // Se o cristal está na base
             NUM_DROPPED_CRYSTALS++;
+            quemGanhou = "Red Team";
+        }
+        else if (Terreno[y][x] == 4) {     // Se o cristal está na base
+            NUM_DROPPED_CRYSTALS++;
+            quemGanhou = "Blue Team";
         }
     }
     
