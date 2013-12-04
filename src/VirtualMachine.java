@@ -21,6 +21,7 @@ class VirtualMachine{
     FIRE,
     BOMB,
     TAKE,
+    DROP,
     LOOK,
     ASK,
     NONE,
@@ -192,38 +193,41 @@ class VirtualMachine{
       }
 
     }catch(IllegalArgumentException enumErro1){
-      try{
-        SysCallOperations mySysCall = SysCallOperations.valueOf(opCode);
-        switch(mySysCall){
-          case WLK:
-            makeSysCall(programArray.get(index)[0],programArray.get(index)[1]);
-            break;
-          case BOMB:
-            makeSysCall(programArray.get(index)[0],programArray.get(index)[1]);
-            break;
-          case FIRE:
-            makeSysCall(programArray.get(index)[0],programArray.get(index)[1]);
-            break;
-          case TAKE:
-            makeSysCall(programArray.get(index)[0],programArray.get(index)[1]);
-            break;
-          case LOOK:
-            makeSysCall(programArray.get(index)[0],programArray.get(index)[1]);
-            break;
-          case ASK:
-            makeSysCall(programArray.get(index)[0],programArray.get(index)[1]);
-            break;
-          case EXC:
-            makeSysCall(programArray.get(index)[0],programArray.get(index)[1]);
-            break;
-          default:
-            System.out.println("ERRO!");
-            break;
-          }
-      }catch(IllegalArgumentException enumErro2){ 
-        System.out.println("Code : " +programArray.get(index)[0] +"\nArgs : "  +programArray.get(index)[1] +"\nIt isn't a Valid Option!");    
+        try{
+            SysCallOperations mySysCall = SysCallOperations.valueOf(opCode);
+            switch(mySysCall){
+                case WLK:
+                    makeSysCall(programArray.get(index)[0],programArray.get(index)[1]);
+                    break;
+                case BOMB:
+                    makeSysCall(programArray.get(index)[0],programArray.get(index)[1]);
+                    break;
+                case FIRE:
+                    makeSysCall(programArray.get(index)[0],programArray.get(index)[1]);
+                    break;
+                case TAKE:
+                    makeSysCall(programArray.get(index)[0],programArray.get(index)[1]);
+                    break;
+                case DROP:
+                    makeSysCall(programArray.get(index)[0],programArray.get(index)[1]);
+                    break;
+                case LOOK:
+                    makeSysCall(programArray.get(index)[0],programArray.get(index)[1]);
+                    break;
+                case ASK:
+                    makeSysCall(programArray.get(index)[0],programArray.get(index)[1]);
+                    break;
+                case EXC:
+                    makeSysCall(programArray.get(index)[0],programArray.get(index)[1]);
+                    break;
+                default:
+                    System.out.println("ERRO!");
+                    break;
+            }
+        }catch(IllegalArgumentException enumErro2){ 
+            System.out.println("Code : " +programArray.get(index)[0] +"\nArgs : "  +programArray.get(index)[1] +"\nIt isn't a Valid Option!");    
         }
-      }
+    }
   }
 /*Se o programa contem uma instrução inválida a própria VM tem a obrigação de se colocar em Off*/
   private void jumpPC(int position){

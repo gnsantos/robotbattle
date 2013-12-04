@@ -242,7 +242,7 @@ try {
             if (posY%2 == 1)
                 psi = 0.6;
             
-            if( team.equals("Team A"))
+            if(team.equals("Team A"))
                 robos[posX][posY] = new CelExtra( (int)((posX + psi)*Dx), posY*Dy, L, Textura[5]);
             else
                 robos[posX][posY] = new CelExtra( (int)((posX + psi)*Dx), posY*Dy, L, Textura[6]);

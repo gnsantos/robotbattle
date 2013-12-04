@@ -13,6 +13,7 @@ public class SystemRequest{
         FIRE,
         BOMB,
         TAKE,
+        DROP,
         LOOK,
         ASK,
         NONE,
@@ -28,23 +29,25 @@ public class SystemRequest{
 	private int setWeight(String opCode){
 	    SysCallOperations mySysCall = SysCallOperations.valueOf(opCode);
         switch(mySysCall){
-          case WLK:
-            return 1;
-          case BOMB:
-            return 2;
-          case FIRE:
-           	return 3;
-          case TAKE:
-            return 4;
-          case LOOK:
-            return 5;
-          case ASK:
-            return 6;
-          case EXC:
-            return 7;
-          default:
-            return 0;
-          }
+            case WLK:
+                return 1;
+            case BOMB:
+                return 2;
+            case FIRE:
+                return 3;
+            case TAKE:
+                return 4;
+            case DROP:
+                return 8;
+            case LOOK:
+                return 5;
+            case ASK:
+                return 6;
+            case EXC:
+                return 7;
+            default:
+                return 0;
+        }
 	}
 	public int getWeight(){ 
 		return this.requestWeight; 

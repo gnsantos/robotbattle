@@ -10,7 +10,7 @@ public class BattleRobot implements Robot{
     private double robotHealth = 100.0;
     private Vector<Integer> coordinates = new Vector<Integer>(2);
     private int serialNumber;
-    private int crystal = 0;
+    public int crystal = 0;
     private VirtualMachine vm;
     private String robotState;
     private final Integer MAX_CRYSTAL = 3;
@@ -74,11 +74,27 @@ public class BattleRobot implements Robot{
 	    return 0;
     	}
     }
+    //---------------------------------------------------------
+    public int decreaseCrystalCount(){
+    	if (getCrystalQuantity() > 0){
+            this.crystal--;
+            return 1;
+    	}
+    	else{
+            return 0;
+    	}
+    }  
     
+    //---------------------------------------------------------
     public boolean canTakeCrystal(){
 	return !(this.crystal == MAX_CRYSTAL);
     }
+    //---------------------------------------------------------
+    public boolean canDropCrystal(){
+        return !(this.crystal == 0);
+    }
 
+    //---------------------------------------------------------
     public Double getCrystalQuantity(){
     	return 1.0*this.crystal;
     }
