@@ -16,10 +16,10 @@ class Crystal {
     int x;
     int y;
     
-    // Com o robô, no chão, etc.
+    // Status: com o robô, no chão, etc.
     String status;
     
-    // Contrutor
+    // Construtor
     public Crystal(int x, int y, String status) {
         this.x = x;
         this.y = y;

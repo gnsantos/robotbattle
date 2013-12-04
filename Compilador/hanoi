@@ -1,0 +1,12 @@
+func hanoi (n,orig,dest) {
+	 if (n > 1) then {
+     	 outro = 6 - orig - dest;
+		 hanoi(n-1,orig,outro);
+		 hanoi(1, orig,dest);
+		 return hanoi(n-1,outro,dest);
+     }
+	 print orig, " para ", dest; println;
+}
+
+hanoi(5,1,2);
+0;

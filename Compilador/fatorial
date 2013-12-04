@@ -1,0 +1,16 @@
+func fat (x) {
+	 if (x < 1) then {
+	    print "Erro no fatorial!!!!";
+		return 0;
+	 }	 
+	 if (x < 3) then {
+	 	return x;
+	 }
+	 else  {
+        return x*fat(x-1);
+    }
+}
+a= 5; print a, " fatorial é ";
+b=fat(a);
+print b; println;
+

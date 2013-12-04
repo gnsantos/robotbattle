@@ -1,0 +1,2 @@
+func f(s) {return s+1 ; }
+42;

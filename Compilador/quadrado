@@ -1,0 +1,7 @@
+func fat (x) {
+		 return x*x;
+}
+a= 2; print a, "+2 ao quadrado é ";
+b=fat(2+a);
+
+
