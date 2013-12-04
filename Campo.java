@@ -35,7 +35,7 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
         
         // cada try..catch que segue carregará uma textura, ou levantará uma exceção que encerrará a aplicação com erro
         try {
-            grama = ImageIO.read(this.getClass().getResource("grama6.png"));
+            grama = ImageIO.read(this.getClass().getResource("grama3.png"));
         }
         catch (Exception e) {
             System.exit(1);

@@ -1,14 +1,14 @@
-// Tudo o que pode ser manipulável pela máquina virtual
-interface Empilhável {
+// Tudo o que pode ser manipulavel pela maquina virtual
+interface Empilhavel {
 	String Show();
 }
 
 // Tipos numéricos
-abstract class Número {
+abstract class Numero {
 	abstract double val();
 }
 
-class Inteiro extends Número implements Empilhável {
+class Inteiro extends Numero implements Empilhavel {
 	int v;
 	Inteiro(int n) {
 		v = n;
@@ -20,7 +20,7 @@ class Inteiro extends Número implements Empilhável {
 	}
 }
 
-class Real extends Número implements Empilhável {
+class Real extends Numero implements Empilhavel {
 	double v;
 	Real(double n) {
 		v = n;
@@ -31,10 +31,10 @@ class Real extends Número implements Empilhável {
 	}
 }
 
-// endereço de instruções na máquina virtual
-class Endereço implements Empilhável {
+// endereco de instrucões na maquina virtual
+class Endereco implements Empilhavel {
 	int v;
-	Endereço(int n) {
+	Endereco(int n) {
 		v = n;
 	}
 	int  val() {return v;}
@@ -44,7 +44,7 @@ class Endereço implements Empilhável {
 }
 
 // Cadeia de caracteres
-class Cadeia implements Empilhável {
+class Cadeia implements Empilhavel {
 	String v;
 	Cadeia(String s) { v = s;}
 	String val() {return v;}

@@ -2,21 +2,21 @@ import java.util.*;
 
 /** Tabela de simbolos.*/
 public class TabSim {
-    HashMap<String,Símbolo> H;
+    HashMap<String,Simbolo> H;
 	int pos=0;
 	
     TabSim() {
-		H = new HashMap<String,Símbolo>(128);
+		H = new HashMap<String,Simbolo>(128);
     }
 
-	public void add(String s, Símbolo o) {
+	public void add(String s, Simbolo o) {
 		H.put(s,o);
-		if (o instanceof Variável)
+		if (o instanceof Variavel)
 			o.SetPos(pos++);
 	}
 	
-    public Símbolo get(String s) {
-		return (Símbolo) H.get(s);
+    public Simbolo get(String s) {
+		return (Simbolo) H.get(s);
     }
 	
     public boolean exists(String s) {

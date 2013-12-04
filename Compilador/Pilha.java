@@ -1,17 +1,17 @@
 class Pilha {
-	private Empilhável[] Stack;
+	private Empilhavel[] Stack;
 	private int topo=0;
 
 	Pilha(int n) {
-		Stack = new Empilhável[n];
+		Stack = new Empilhavel[n];
 		topo=0;
 	}
 
-	void push(Empilhável x) {
+	void push(Empilhavel x) {
 		Stack[topo++] = x;
 	}
 
-	Empilhável pop() {
+	Empilhavel pop() {
 		return Stack[--topo];
 	}
 	void Mostra() {

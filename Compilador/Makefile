@@ -21,6 +21,6 @@ clean:
 
 pacote:
 	tar czf Compilador.tgz Calc.jj   TabSim.java  Pilha.java \
-							Computador.java Instrução.java Símbolo.java \
-							Empilhável.java Makefile simples simples2 \
+							Computador.java Instrucao.java Simbolo.java \
+							Empilhavel.java Makefile simples simples2 \
 							fatorial hanoi quadrado yara
