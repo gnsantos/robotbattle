@@ -323,6 +323,7 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
     }
     
     Campo(int L, int W, int H, int[][] Terreno, Vector<BattleRobot> army, Vector<Crystal> crystalsVector, Stack<Bomb> bombStack) {
+	this.setBackground(Color.black);
         this.Terreno = Terreno;
         this.m = Terreno[0].length;
         this.n = Terreno.length;
