@@ -77,14 +77,14 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
             System.exit(1);        }
         
         try {
-            roboA = ImageIO.read(this.getClass().getResource("/img/roboA3.png"));
+            roboA = ImageIO.read(this.getClass().getResource("/img/roboB2.png"));
         }
         catch (Exception e) {
             e.printStackTrace();
             System.exit(1);        }
         
         try {
-            roboB = ImageIO.read(this.getClass().getResource("/img/roboB2.png"));
+            roboB = ImageIO.read(this.getClass().getResource("/img/roboA3.png"));
         }
         catch (Exception e) {
             e.printStackTrace();

@@ -27,7 +27,7 @@ public class Battlefield extends JFrame{
     private static final int HEXAGON_SIZE = 20;
     
     // Coordenadas no mapa da base A
-    private static final int BASE_A_X = 31;
+    private static final int BASE_A_X = 32;
     private static final int BASE_A_Y = 3;
     
     // Coordenadas no mapa da base B
@@ -107,7 +107,7 @@ public class Battlefield extends JFrame{
     static int Width = Terreno[0].length;
     
     private static int numRobots = 4;       // Número de robôs ativos
-    private static int NUM_CRYSTALS = 10;   //Número de cristais ativos
+    private static int NUM_CRYSTALS = 15;   //Número de cristais ativos
     private static int NUM_DROPPED_CRYSTALS = 0;    // Número de cristais que já estão na base
     
     // Estruturas com as entidades do sistema
@@ -196,7 +196,7 @@ public class Battlefield extends JFrame{
                 System.out.print("YOU LOSERS\n");
                 break;
             }
-            else if(NUM_DROPPED_CRYSTALS == 1) {
+            else if(NUM_DROPPED_CRYSTALS == 3) {
                 System.out.print("GANHEI GG\n");
                 break;
             }
@@ -545,24 +545,15 @@ public class Battlefield extends JFrame{
                 sony.returnAnswer(sony.getCrystalQuantity());
                 break;
             case IS_IN_ENEMY_BASE:
-                if (sony.getTeam().equals("Team A")){
-                    x = getBaseX("Team B");
-                    y = getBaseY("Team B");
-                    System.out.print("");
-                }
-                else {
-                    x = getBaseX("Team A");
-                    y = getBaseY("Team A");
-                }
-                if (sony.getX() == x && sony.getY() == y) {
+                if (sony.getTeam().equals("Team A"))
+                    x = 3;
+                else
+                    x = 4;
+                if (Terreno[sony.getY()][sony.getX()] == x) {
                     sony.returnAnswer(1.0);
-                    System.out.print("\nTÁ NA BASEEEEEEE\n");
-                    System.out.print("Número de cristais = "+sony.crystal+"\n");
-                    System.out.print("x = "+sony.getX()+"\tY = "+sony.getY()+"\n");
                 }
                 else {
                     sony.returnAnswer(0.0);
-                    System.out.print(".");
                 }
                 // Calcula a distância de ponto a ponto do robô a ponta da base inimiga ou sua própria base
             case ENEMY_BASE_DISTANCE:
@@ -590,7 +581,7 @@ public class Battlefield extends JFrame{
     
     // Retorna a coordenada x da base especificada
     public static double getBaseX(String team){
-        if (team.equals("Time A")){
+        if (team.equals("Team A")){
             return 1.0*BASE_A_X;
         }
         else{
@@ -600,7 +591,7 @@ public class Battlefield extends JFrame{
     
     // Retorna a coordenada y da base especificada
     public static double getBaseY(String team){
-        if (team.equals("Time A")){
+        if (team.equals("Team A")){
             return 1.0*BASE_A_Y;
         }
         else{
