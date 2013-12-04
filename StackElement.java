@@ -88,7 +88,6 @@ Memória
 */
 	//Salva na posição de memória fornecida
 	public void salveMem(int position){
-		int x = stackSize();
 		StackableInterface foo = stackTeste.remove(stackSize() -1);
 		memorySegment.set(position, foo);
 	}
