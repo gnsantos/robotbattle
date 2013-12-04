@@ -548,6 +548,7 @@ public class Battlefield extends JFrame{
                 if (sony.getTeam().equals("Team A")){
                     x = getBaseX("Team B");
                     y = getBaseY("Team B");
+                    System.out.print("");
                 }
                 else {
                     x = getBaseX("Team A");
