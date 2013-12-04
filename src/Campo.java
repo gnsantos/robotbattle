@@ -49,7 +49,7 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
         }
         
         try {
-            agua = ImageIO.read(this.getClass().getResource("agua3.png"));
+            agua = ImageIO.read(this.getClass().getResource("/img/agua3.png"));
         }
         catch (Exception e) {
             System.exit(1);
@@ -77,29 +77,21 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
         }
         
         try {
-            roboA = ImageIO.read(this.getClass().getResource("roboA3.png"));
+            roboA = ImageIO.read(this.getClass().getResource("/img/roboA3.png"));
         }
         catch (Exception e) {
             System.exit(1);
         }
         
         try {
-            roboB = ImageIO.read(this.getClass().getResource("roboB2.png"));
+            roboB = ImageIO.read(this.getClass().getResource("/img/roboB2.png"));
         }
         catch (Exception e) {
             System.exit(1);
         }
         
         try {
-            crystalN = ImageIO.read(this.getClass().getResource("crystal2N.png"));
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-        
-        try {
-            crystalW = ImageIO.read(this.getClass().getResource("crystal2W.png"));
+            crystalN = ImageIO.read(this.getClass().getResource("/img/crystal2N.png"));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -107,7 +99,7 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
         }
         
         try {
-            crystalS = ImageIO.read(this.getClass().getResource("crystal2S.png"));
+            crystalW = ImageIO.read(this.getClass().getResource("/img/crystal2W.png"));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -115,7 +107,15 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
         }
         
         try {
-            crystalE = ImageIO.read(this.getClass().getResource("crystal2E.png"));
+            crystalS = ImageIO.read(this.getClass().getResource("/img/crystal2S.png"));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+        
+        try {
+            crystalE = ImageIO.read(this.getClass().getResource("/img/crystal2E.png"));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -131,7 +131,7 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
 
         //X
         try {
-            bombaX = ImageIO.read(this.getClass().getResource("bombaX.png"));
+            bombaX = ImageIO.read(this.getClass().getResource("/img/bombaX.png"));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -140,7 +140,7 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
 
         //9
         try {
-            bomba9 = ImageIO.read(this.getClass().getResource("bomba9.png"));
+            bomba9 = ImageIO.read(this.getClass().getResource("/img/bomba9.png"));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -149,7 +149,7 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
 
         //8
         try {
-            bomba8 = ImageIO.read(this.getClass().getResource("bomba8.png"));
+            bomba8 = ImageIO.read(this.getClass().getResource("/img/bomba8.png"));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -158,7 +158,7 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
 
         //7
         try {
-            bomba7 = ImageIO.read(this.getClass().getResource("bomba7.png"));
+            bomba7 = ImageIO.read(this.getClass().getResource("/img/bomba7.png"));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -167,7 +167,7 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
 
         //6
         try {
-            bomba6 = ImageIO.read(this.getClass().getResource("bomba6.png"));
+            bomba6 = ImageIO.read(this.getClass().getResource("/img/bomba6.png"));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -176,7 +176,7 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
 
         //5
         try {
-            bomba5 = ImageIO.read(this.getClass().getResource("bomba5.png"));
+            bomba5 = ImageIO.read(this.getClass().getResource("/img/bomba5.png"));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -185,7 +185,7 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
 
         //4
         try {
-            bomba4 = ImageIO.read(this.getClass().getResource("bomba4.png"));
+            bomba4 = ImageIO.read(this.getClass().getResource("/img/bomba4.png"));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -194,7 +194,7 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
 
         //3
         try {
-            bomba3 = ImageIO.read(this.getClass().getResource("bomba3.png"));
+            bomba3 = ImageIO.read(this.getClass().getResource("/img/bomba3.png"));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -203,7 +203,7 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
 
         //2
         try {
-            bomba2 = ImageIO.read(this.getClass().getResource("bomba2.png"));
+            bomba2 = ImageIO.read(this.getClass().getResource("/img/bomba2.png"));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -211,8 +211,8 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
         }
 
         //1
-        try {
-            bomba1 = ImageIO.read(this.getClass().getResource("bomba1.png"));
+try {
+            bomba1 = ImageIO.read(this.getClass().getResource("/img/bomba1.png"));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -330,6 +330,7 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
     }
     
     Campo(int L, int W, int H, int[][] Terreno, Vector<BattleRobot> army, Vector<Crystal> crystalsVector, Stack<Bomb> bombStack) {
+	this.setBackground(Color.black);
         this.Terreno = Terreno;
         this.m = Terreno[0].length;
         this.n = Terreno.length;

@@ -26,8 +26,6 @@ public class Battlefield extends JFrame{
     
     private static final int HEXAGON_SIZE = 20;
     
-    private static final int NUM_CRYSTALS = 10;
-    
     // Coordenadas no mapa da base A
     private static final int BASE_A_X = 3;
     private static final int BASE_A_Y = 16;
@@ -44,37 +42,37 @@ public class Battlefield extends JFrame{
     // Possíveis chamadas do robô ao sistema
     private enum SysCallOperations{
         WLK,
-    	FIRE,
-    	BOMB,
-    	TAKE,
-    	LOOK,
-    	ASK,
-    	NONE,
-    	EXC
-    }
+	    FIRE,
+	    BOMB,
+	    TAKE,
+	    LOOK,
+	    ASK,
+	    NONE,
+	    EXC
+	    }
     
     // Possíveis direções de movimento (em um mapa hexagonal)
     private enum DirMov{
         E,
-    	W,
-        SW,
-    	SE,
-    	NE,
-    	NW
-    }
+	    W,
+	    SW,
+	    SE,
+	    NE,
+	    NW
+	    }
     
     // Possíveis perguntas a serem feitas pelo robô ao sistema
     private enum AskOptions {
         MY_HEALTH,
-        HAS_ENEMY,
-        HAS_CRYSTAL,
-        NUMBER_OF_CRYSTAL,
-        ENEMY_BASE_DISTANCE,
-        TEAM_BASE_DISTANCE,
-        ITS_ENEMY,
-        THEIR_HEALTH,
-        WHY
-    }
+	    HAS_ENEMY,
+	    HAS_CRYSTAL,
+	    NUMBER_OF_CRYSTAL,
+	    ENEMY_BASE_DISTANCE,
+	    TEAM_BASE_DISTANCE,
+	    ITS_ENEMY,
+	    THEIR_HEALTH,
+	    WHY
+	    }
     
     // Configuração do mapa
     static int[][] Terreno = {
@@ -110,14 +108,15 @@ public class Battlefield extends JFrame{
     static int Width = Terreno[0].length;
     
     
+    private static int numRobots = 2;       // Número de robôs ativos
+    private static int NUM_CRYSTALS = 10;  //Número de cristais ativos
+
     // Estruturas com as entidades do sistema
     private static Vector<BattleRobot> army = new Vector<BattleRobot>();            // Vetor com os robôs
     private static Vector<Crystal> crystals = new Vector<Crystal>(NUM_CRYSTALS);    // Vetor com os cristais
     private static Stack<Bomb> groundMine = new Stack<Bomb>();                      // Pilhas das bombas
     private static Stack<Bomb> mineExploded = new Stack<Bomb>();
-    
-    private static int numRobots = 2;       // Número de robôs
-    
+
     private static Vector<SystemRequest> requestList = new Vector<SystemRequest>(); // Vetor com as chamadas ao sistema
     
     public static final String codeName = "sourceCode";     // Nome do arquivo default de código fonte dos robôs
@@ -156,11 +155,11 @@ public class Battlefield extends JFrame{
         // Paralelamente, atualiza o componente gráfico
     	SwingUtilities.invokeLater(new Runnable() {
     		@Override
-    		public void run() {
+		    public void run() {
     		    Battlefield bf = Battlefield.getInstanceOfBattlefield();
     		    bf.setVisible(true);
     		}
-        });
+	    });
     	controlador.repaint();
     }
     
@@ -174,9 +173,9 @@ public class Battlefield extends JFrame{
         
         setSize(m, n);
         addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
+		public void windowClosing(WindowEvent e) {
+		    System.exit(0);
+		}
 	    });
         
         // Cria o gerenciador gráfico
@@ -200,7 +199,7 @@ public class Battlefield extends JFrame{
             if(condition == numRobots)
                 break;
             else
-                pauseSystem(1000);
+                pauseSystem(300);
         }
         System.out.println("Execution ended");
     }
@@ -296,7 +295,7 @@ public class Battlefield extends JFrame{
             j = gen.nextInt(mapWidth);
             if (k < numRobots/2){
                 insertArmy(codeName + "-" + k,k,"A","TX",j,i,gen.nextInt(1000));
-	        }
+	    }
             else{
                 insertArmy(codeName + "-" + k,k,"B","ZT",j,i,gen.nextInt(1000));
             }
@@ -326,32 +325,58 @@ public class Battlefield extends JFrame{
         String sucessStr;
         
         switch(op) {
-            case WLK: /*Anda pelo mapa*/
-                sucessNum = moveCall(request.getInstructionArgument(),request.getSerialNumberRequester());
-                sony.returnAnswer(sucessNum);
-                break;
-            case FIRE: /*Atira no oponente*/
-                sucessNum = fireCall(request.getInstructionArgument(),request.getSerialNumberRequester());
-                sony.returnAnswer(sucessNum);
-                break;
-            case BOMB: /*Planta uma bomba*/ 
-                sucessNum = bombCall(request.getInstructionArgument(),request.getSerialNumberRequester());
-                sony.returnAnswer(sucessNum);
-                break;
-            case TAKE: /*Pega um Cristal*/
-                break;
-            case LOOK: /*Olha para uma direcao e retorna-se o que existe la*/
-                sucessStr = lookCall(request.getInstructionArgument(), request.getSerialNumberRequester());
-                sony.returnAnswer(sucessStr);
-                break;
-            case ASK: /*Faz perguntas ao sistema */
-                askCall(request.getInstructionArgument(),request.getSerialNumberRequester());
-                break;
-            default:
-                break;
+	case WLK: /*Anda pelo mapa*/
+	    sucessNum = moveCall(request.getInstructionArgument(),request.getSerialNumberRequester());
+	    sony.returnAnswer(sucessNum);
+	    break;
+	case FIRE: /*Atira no oponente*/
+	    sucessNum = fireCall(request.getInstructionArgument(),request.getSerialNumberRequester());
+	    sony.returnAnswer(sucessNum);
+	    break;
+	case BOMB: /*Planta uma bomba*/ 
+	    sucessNum = bombCall(request.getInstructionArgument(),request.getSerialNumberRequester());
+	    sony.returnAnswer(sucessNum);
+	    break;
+	case TAKE: /*Pega um Cristal*/
+	    takeCall(request.getInstructionArgument(), request.getSerialNumberRequester());
+	    break;
+	case LOOK: /*Olha para uma direcao e retorna-se o que existe la*/
+	    sucessStr = lookCall(request.getInstructionArgument(), request.getSerialNumberRequester());
+	    sony.returnAnswer(sucessStr);
+	    break;
+	case ASK: /*Faz perguntas ao sistema */
+	    askCall(request.getInstructionArgument(),request.getSerialNumberRequester());
+	    break;
+	default:
+	    break;
         }
     }
+
+    public static void takeCall(String dir, int robotSerial){
+	BattleRobot sony = getRobotBySerial(robotSerial);
+	if(!sony.canTakeCrystal()) return ;
+	
+	int x = xMove(sony.getX(), sony.getY(), dir);
+	int y = yMove(sony.getX(), sony.getY(), dir);
+	
+	String what = lookAt(x,y,sony.getTeam());
+	Crystal taken = null;
+	if(what.equals("HAS_CRYSTAL")){
+	    Iterator cs = crystals.iterator();
+	    while(cs.hasNext()){
+		taken = (Crystal) cs.next();
+		if(taken.getX() == x && taken.getY() == y)
+		    break;
+	    }
+	}
+
+	if(taken != null){
+	    crystals.removeElement(taken);
+	    sony.incrementCrystalCount();
+	}
+    }
     
+
     // Olha para uma direção
     public static String lookCall(String dir, int robotSerial){
         BattleRobot sony = getRobotBySerial(robotSerial);
@@ -476,28 +501,28 @@ public class Battlefield extends JFrame{
         AskOptions question = AskOptions.valueOf(asked);
         BattleRobot sony = getRobotBySerial(robotSerial);
         switch(question){
-                // Devolve a quantidade de vida do robô
-            case MY_HEALTH:
-                sony.returnAnswer(sony.getHealth());
-                break;
-                // Devolve a quantidade de cristais do robô
-            case NUMBER_OF_CRYSTAL:
-                sony.returnAnswer(sony.getCrystalQuantity());
-                break;
-                // Calcula a distância de ponto a ponto do robô a ponta da base inimiga ou sua própria base
-            case ENEMY_BASE_DISTANCE:
-                if (sony.getTeam().equals("Team A")){
-                    sony.returnAnswer(calculeDistance("Team B",sony));    
-                }
-                else{
-                    sony.returnAnswer(calculeDistance("Team A",sony));    
-                }
-                break;
-            case TEAM_BASE_DISTANCE:
-                sony.returnAnswer(calculeDistance(sony.getTeam(),sony));
-                break;
-            default:
-                break;
+	    // Devolve a quantidade de vida do robô
+	case MY_HEALTH:
+	    sony.returnAnswer(sony.getHealth());
+	    break;
+	    // Devolve a quantidade de cristais do robô
+	case NUMBER_OF_CRYSTAL:
+	    sony.returnAnswer(sony.getCrystalQuantity());
+	    break;
+	    // Calcula a distância de ponto a ponto do robô a ponta da base inimiga ou sua própria base
+	case ENEMY_BASE_DISTANCE:
+	    if (sony.getTeam().equals("Team A")){
+		sony.returnAnswer(calculeDistance("Team B",sony));    
+	    }
+	    else{
+		sony.returnAnswer(calculeDistance("Team A",sony));    
+	    }
+	    break;
+	case TEAM_BASE_DISTANCE:
+	    sony.returnAnswer(calculeDistance(sony.getTeam(),sony));
+	    break;
+	default:
+	    break;
         }
     }
     
@@ -559,24 +584,24 @@ public class Battlefield extends JFrame{
     public static int xMove(int x, int y, String direction){
         DirMov dir = DirMov.valueOf( direction);
         switch(dir) {
-            case E:
-                return (x + 1 + Width)%Width;
-            case W:
-                return (x - 1 + Width)%Width;
-            case NW:
-            case SW:
-                if (y%2 == 0)
-                    return (x - 1 + Width)%Width;
-                else 
-                    return (x + Width)%Width;
-            case NE:
-            case SE:
-                if (y%2 != 0)
-                    return (x + 1 + Width)%Width;
-                else 
-                    return (x + Width)%Width;
-            default:
-                break;
+	case E:
+	    return (x + 1 + Width)%Width;
+	case W:
+	    return (x - 1 + Width)%Width;
+	case NW:
+	case SW:
+	    if (y%2 == 0)
+		return (x - 1 + Width)%Width;
+	    else 
+		return (x + Width)%Width;
+	case NE:
+	case SE:
+	    if (y%2 != 0)
+		return (x + 1 + Width)%Width;
+	    else 
+		return (x + Width)%Width;
+	default:
+	    break;
         }
         return x;
     }
@@ -584,17 +609,17 @@ public class Battlefield extends JFrame{
     public static int yMove(int x, int y, String direction){
         DirMov dir = DirMov.valueOf(direction);
         switch(dir) {
-            case E:
-            case W:
-                return y;
-            case NW:
-            case NE:
-                return (y - 1 + Height)%Height;
-            case SW:
-            case SE:
-                return (y + 1 + Height)%Height;
-            default:
-                break;
+	case E:
+	case W:
+	    return y;
+	case NW:
+	case NE:
+	    return (y - 1 + Height)%Height;
+	case SW:
+	case SE:
+	    return (y + 1 + Height)%Height;
+	default:
+	    break;
         }
         return y;   
     }
@@ -605,7 +630,7 @@ public class Battlefield extends JFrame{
     /////////////////////////////////////////////////////////////////////////////////////////
     // Funções disponibilizadas às outras entidades para requisicoes a arena
     public static void systemCall(SystemRequest request){
-        pauseSystem(100);
+	// pauseSystem(100);
         requestList.add(request);
     }
     
