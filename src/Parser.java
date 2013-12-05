@@ -31,7 +31,7 @@ public class Parser{
 	}
 	String line;
 	int pc = 0;
-	Pattern comline = Pattern.compile("(\\b[a-zA-Z]*\\b:\\s*)?(\\b[a-zA-Z]{2,4}\\b)[^:]?((-?\\d+\\.?\\d*|[^#]*|\\s*))\\s*[\n\f#]*");
+	Pattern comline = Pattern.compile("(\\b[a-zA-Z]*\\b:\\s*)?(\\b[a-zA-Z]{2,10}\\b)[^:]?((-?\\d+\\.?\\d*|[^#]*|\\s*))\\s*[\n\f#]*");
 	Pattern labeline = Pattern.compile("(\\b[a-zA-Z]*\\b:\\s*)[\n\f#]*$");
 	Pattern other = Pattern.compile("^#.*[\n\f]*|^[ \t\n]*$");
 

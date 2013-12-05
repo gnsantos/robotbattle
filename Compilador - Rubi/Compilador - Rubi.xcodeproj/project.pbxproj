@@ -1,0 +1,150 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXFileReference section */
+		24E0889C1850DF3D00FAD6A2 /* Calc.jj */ = {isa = PBXFileReference; lastKnownFileType = text; path = Calc.jj; sourceTree = "<group>"; };
+		24E088AB1850DF3D00FAD6A2 /* fatorial */ = {isa = PBXFileReference; lastKnownFileType = text; path = fatorial; sourceTree = "<group>"; };
+		24E088B01850DF3D00FAD6A2 /* hanoi */ = {isa = PBXFileReference; lastKnownFileType = text; path = hanoi; sourceTree = "<group>"; };
+		24E088B81850DF3D00FAD6A2 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		24E088C71850DF3D00FAD6A2 /* quadrado */ = {isa = PBXFileReference; lastKnownFileType = text; path = quadrado; sourceTree = "<group>"; };
+		24E088D01850DF3D00FAD6A2 /* simples */ = {isa = PBXFileReference; lastKnownFileType = text; path = simples; sourceTree = "<group>"; };
+		24E088D11850DF3D00FAD6A2 /* simples2 */ = {isa = PBXFileReference; lastKnownFileType = text; path = simples2; sourceTree = "<group>"; };
+		24E088DC1850DF3D00FAD6A2 /* yara */ = {isa = PBXFileReference; lastKnownFileType = text; path = yara; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		24E088901850DF3D00FAD6A2 = {
+			isa = PBXGroup;
+			children = (
+				24E088AB1850DF3D00FAD6A2 /* fatorial */,
+				24E088B01850DF3D00FAD6A2 /* hanoi */,
+				24E088B81850DF3D00FAD6A2 /* Makefile */,
+				24E088C71850DF3D00FAD6A2 /* quadrado */,
+				24E088D01850DF3D00FAD6A2 /* simples */,
+				24E088D11850DF3D00FAD6A2 /* simples2 */,
+				24E088DC1850DF3D00FAD6A2 /* yara */,
+				24E0889C1850DF3D00FAD6A2 /* Calc.jj */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXLegacyTarget section */
+		24E088951850DF3D00FAD6A2 /* Compilador - Rubi */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "$(ACTION)";
+			buildConfigurationList = 24E088DE1850DF3D00FAD6A2 /* Build configuration list for PBXLegacyTarget "Compilador - Rubi" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = "/Users/vini/Development/Academic/LabProg 2/robotbattle/Compilador - Rubi";
+			dependencies = (
+			);
+			name = "Compilador - Rubi";
+			passBuildSettingsInEnvironment = 1;
+			productName = "Compilador - Rubi";
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXProject section */
+		24E088911850DF3D00FAD6A2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+			};
+			buildConfigurationList = 24E088941850DF3D00FAD6A2 /* Build configuration list for PBXProject "Compilador - Rubi" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 24E088901850DF3D00FAD6A2;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				24E088951850DF3D00FAD6A2 /* Compilador - Rubi */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		24E088921850DF3D00FAD6A2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		24E088931850DF3D00FAD6A2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+		24E088DF1850DF3D00FAD6A2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEBUGGING_SYMBOLS = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "Compilador - Rubi";
+			};
+			name = Debug;
+		};
+		24E088E01850DF3D00FAD6A2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "Compilador - Rubi";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		24E088941850DF3D00FAD6A2 /* Build configuration list for PBXProject "Compilador - Rubi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				24E088921850DF3D00FAD6A2 /* Debug */,
+				24E088931850DF3D00FAD6A2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		24E088DE1850DF3D00FAD6A2 /* Build configuration list for PBXLegacyTarget "Compilador - Rubi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				24E088DF1850DF3D00FAD6A2 /* Debug */,
+				24E088E01850DF3D00FAD6A2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 24E088911850DF3D00FAD6A2 /* Project object */;
+}

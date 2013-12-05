@@ -39,16 +39,30 @@ class Endereco implements Empilhavel {
 	}
 	int  val() {return v;}
 	public String Show() {
-		return "> "+v;
+		return ""+v;
 	}
 }
 
 // Cadeia de caracteres
 class Cadeia implements Empilhavel {
-	String v;
-	Cadeia(String s) { v = s;}
-	String val() {return v;}
+	String s;
+    
+	Cadeia(String v) {
+        s = v;
+    }
+    
+	String val() {
+        return s;
+    }
+    
 	public String Show() {
-		return "\"" + v + "\"";
+        s = s.replaceAll("\n", "\\n");
+        s = s.replaceAll("\t", "\\t");
+        s = s.replaceAll("\b", "\\b");
+        s = s.replaceAll("\r", "\\r");
+        s = s.replaceAll("\f", "\\f");
+        s = s.replaceAll("\\\\", "\\\\");
+        
+		return "\"" + s + "\"";
 	}
 }

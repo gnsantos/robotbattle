@@ -18,7 +18,7 @@ public class Calc {
         Calc parser = new Calc(System.in); // cria o compilador
         Prog = parser.Programa();          // compila e retorna o código de maquina
         C.Dump(Prog);                      // imprime o código objeto
-        System.out.println(((Real)C.Roda(Prog)).val()); // roda e mostra o resultado
+//        System.out.println(((Real)C.Roda(Prog)).val()); // roda e mostra o resultado
     }
 }
 

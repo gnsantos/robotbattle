@@ -1,0 +1,37 @@
+  0: GOTO > 6
+  1: PUSHLV > 0
+  2: PUSHLV > 1
+  3: SOMA
+  4: RET
+  5: RET
+  6: GOTO > 6
+  7: PUSHLV > 0
+  8: PUSHLV > 1
+  9: SUB
+ 10: RET
+ 11: RET
+ 12: PUSH 5.0
+ 13: PUSH 2.0
+ 14: ENTRA
+ 15: SETLV > 1
+ 16: SETLV > 0
+ 17: CALL > 1
+ 18: PRINT
+ 19: PUSH "
+"
+ 20: PRINT
+ 21: PUSH 6.0
+ 22: PUSH 2.0
+ 23: ENTRA
+ 24: SETLV > 1
+ 25: SETLV > 0
+ 26: CALL > 7
+ 27: PRINT
+ 28: PUSH "
+"
+ 29: PRINT
+ 30: PUSH 0.0
+ 31: RET
+7.0
+4.0
+0.0

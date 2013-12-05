@@ -2,9 +2,18 @@
 class Instrucao {
 	Empilhavel val;
 
-	Instrucao(Empilhavel v) {val = v;}
-	Instrucao() {val = null;}
-	int Exec(Computador C) {return 1;} // retorna o incremento do ip
+	Instrucao(Empilhavel v) {
+        val = v;
+    }
+    
+	Instrucao() {
+        val = null;
+    }
+    
+	int Exec(Computador C) {     // retorna o incremento do ip
+        return 1;
+    }
+    
 	String Show() {
 		String res =  this.toString().replaceFirst("@.+","");
 		if (val != null) res += " " + val.Show();
@@ -14,13 +23,13 @@ class Instrucao {
 
 
 // Empilha uma Cadeia com a descricao do Empilhavel
-class Mostra extends Instrucao {
+/*class Mostra extends Instrucao {
 	int Exec(Computador C) {
 		Pilha  p = C.p;
 		p.push(new Cadeia(p.pop().Show()));
 		return 1;
 	} 
-}
+}*/
 
 ////////////////////////////////////
 // Instrucoes aritméticas
@@ -254,7 +263,7 @@ class SETLV extends Instrucao {
 }
 
 // troca os dois elementos do topo
-class SWAP extends Instrucao {
+/*class SWAP extends Instrucao {
 	int Exec(Computador C) {
 		Pilha  p = C.p;
 		Empilhavel e1 = p.pop();
@@ -264,7 +273,7 @@ class SWAP extends Instrucao {
 		
 		return 1;
 	}
-}
+}*/
 
 class POP extends Instrucao {
 	int Exec(Computador C) {
@@ -288,12 +297,12 @@ class DUP extends Instrucao {
 ////////////////////////////////////
 // Controle de fluxo
 
-class LT extends Instrucao {
+/*class LT extends Instrucao {
 	LT(Empilhavel x) {super(x);}
 	LT(int n) {super(new Endereco(n));}
 
 	int Exec(Computador C) {
-		Pilha  p = C.p;
+		Pilha p = C.p;
 		Empilhavel e2 = p.pop();
 		Empilhavel e1 = p.pop();
 		Numero n1,n2;
@@ -306,9 +315,9 @@ class LT extends Instrucao {
 			return ((Endereco) val).val();
 		else return 1;
 	}
-}
+}*/
 
-class GT extends Instrucao {
+/*class GT extends Instrucao {
 	GT(Empilhavel x) {super(x);}
 	GT(int n) {super(new Endereco(n));}
 
@@ -327,11 +336,16 @@ class GT extends Instrucao {
 			return  end.val();
 		else return 1;
 	}
-}
+}*/
 
 class ZERO extends Instrucao {
-	ZERO(Empilhavel x) {super(x);}
-	ZERO(int n) {super(new Endereco(n));}
+	ZERO(Empilhavel x) {
+        super(x);
+    }
+    
+	ZERO(int n) {
+        super(new Endereco(n));
+    }
 
 	int Exec(Computador C) {
 		Pilha  p = C.p;
@@ -349,15 +363,23 @@ class ZERO extends Instrucao {
 }
 
 class GOTO extends Instrucao {
-	GOTO (Empilhavel x) {super(x);}
-	GOTO (int x) {super(new Endereco(x));}
+	GOTO (Empilhavel x) {
+        super(x);
+    }
+    
+	GOTO (int x) {
+        super(new Endereco(x));
+    }
 
 	int Exec(Computador C) {
 		return ((Endereco) val).val();
 	}
 }
 
-class RET extends Instrucao {
+class RET extends Instrucao {           // Dá pop no valor de retorno da função,
+                                        // dá pop no endereço pro qual ele tem que voltar,
+                                        // pusha de volta o valor de retorno e
+                                        // jumpa pra esse endereço.
 	int Exec(Computador C) {
 		Pilha  p = C.p;
 		Empilhavel r = p.pop();
@@ -372,7 +394,7 @@ class PRINT extends Instrucao {
 		Pilha  p = C.p;
 		Empilhavel x = p.pop();
 		if (x instanceof Cadeia) 
-			System.out.print(((Cadeia) x).v);
+			System.out.print(((Cadeia) x).s);
 		else if (x instanceof Inteiro) 
 			System.out.print(((Inteiro) x).val());
 		else if (x instanceof Real) 
@@ -383,7 +405,8 @@ class PRINT extends Instrucao {
 	}
 }
 
-class CALL extends Instrucao {
+class CALL extends Instrucao {          // Empilha o índice atual + 1 e jumpa pro
+                                        // endereço da declaração da função
 	CALL (Empilhavel x) {super(x);}
 	int Exec(Computador C) {
 		Pilha  p = C.p;
