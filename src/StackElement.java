@@ -20,6 +20,10 @@ public class StackElement{
 		stackTeste.add(val);
 	}
 
+    public void pile(StackableInterface stackable){
+		stackTeste.add(stackable);
+	}
+    
 	public StackableInterface pop(){
 		StackableInterface foo = stackTeste.remove(stackSize() -1);
 		return foo;
@@ -45,7 +49,7 @@ public class StackElement{
 	}
 	//Pop da pilha
 
-	public void discartTop(){
+	public void discardTop(){
 		if (!itsEmpty()){
 			stackTeste.remove(stackSize() -1);
 		}

@@ -11,6 +11,6 @@ public class Stackable_Number implements StackableInterface{
 		return this.myValue;
 	}
 	public void printYourself(){
-		System.out.println("My Value is : " + this.myValue);
+		System.out.print(myValue);
 	}
 }

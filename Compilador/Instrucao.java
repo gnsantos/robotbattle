@@ -419,7 +419,7 @@ class CALL extends Instrucao {          // Empilha o índice atual + 1 e jumpa p
 	} 
 }
 
-class ENTRA extends Instrucao {
+class ENTRA extends Instrucao {     // Cria uma nova f
 	int Exec(Computador C) {
 		C.Contexto.push(C.frame);
 		C.frame=new Frame();

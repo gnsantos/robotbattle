@@ -8,7 +8,7 @@ public class Stackable_String implements StackableInterface{
 		myValue = value;
 	}
 	public void printYourself(){
-		System.out.println("My Value is : " + myValue);
+		System.out.print(myValue);
 	}
 
 	public double getValue(){

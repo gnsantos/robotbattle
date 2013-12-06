@@ -106,7 +106,7 @@ public class Battlefield extends JFrame{
     static int Height = Terreno.length;
     static int Width = Terreno[0].length;
     
-    private static int numRobots = 4;       // Número de robôs ativos
+    private static int numRobots = 1;       // Número de robôs ativos
     private static int NUM_CRYSTALS = 15;   //Número de cristais ativos
     private static int NUM_DROPPED_CRYSTALS = 0;    // Número de cristais que já estão na base
     

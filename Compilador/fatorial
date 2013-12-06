@@ -10,7 +10,7 @@ func fat (x) {
         return x*fat(x-1);
     }
 }
-a= 5; print a, " fatorial é ";
+a= 5; print a, " fatorial eh ";
 b=fat(a);
 print b; println;
 

@@ -48,15 +48,22 @@ class Computador {
 class Frame {
 	Empilhavel[] loc;			// memória local à funcao
 
-	Frame(int n) {loc = new Empilhavel[n];}
-	Frame()   	 {this(10);}
+	Frame(int n) {
+        loc = new Empilhavel[n];
+    }
+    
+	Frame() {
+        this(10);
+    }
 
 	Empilhavel get(int n) {
 		return loc[n];
 	}
+    
 	Empilhavel set(Empilhavel e, int n) {
 		return loc[n] = e;
 	}
+    
 	String Show() {
 		String s = ":::\n";
 		for (int i = 0; loc[i]!=null; i++) 

@@ -16,6 +16,9 @@ class VirtualMachine{
     private static final int MAX_IC = 10;
     private int serialNumber;
     
+    private StackFrame frame;
+	private Stack<StackFrame> Contexto = new Stack<StackFrame>();
+    
     private enum SysCallOperations{
         WLK,
         FIRE,
@@ -30,6 +33,13 @@ class VirtualMachine{
     private enum SetOperation{ 
         PUSH, 
         POP, 
+        PUSHV,
+        PUSHLV,
+        SETV,
+        SETLV,
+        RET,
+        CALL,
+        ENTRA,
         DUP, 
         PRINT,
         SHW,
@@ -53,7 +63,8 @@ class VirtualMachine{
     private enum MachineStates{
         WAITING,
         RUNNING,
-        CALLING
+        CALLING,
+        FINISHED
     }
     public VirtualMachine(String sourceCode, int serialNumber) throws IOException{
         this.startSourceCode(sourceCode);
@@ -99,6 +110,11 @@ class VirtualMachine{
     
     private void makeOperation(int index){
         boolean decision;
+        int address;
+        StackableInterface stackable;
+        
+        System.out.print("\n\t\t"+pc+"\t"+programArray.get(index)[0]+"\t"+programArray.get(index)[1]+"\n");
+        
         String opCode = programArray.get(index)[0];
         try{
             SetOperation myOperation = SetOperation.valueOf(opCode);
@@ -112,7 +128,44 @@ class VirtualMachine{
                     }
                     break;
                 case POP:
-                    myStack.discartTop();
+                    myStack.discardTop();
+                    break;
+                case PUSHV:
+                        myStack.retriveMem(Integer.parseInt(programArray.get(index)[1]));
+                    break;
+                case SETV:
+                        myStack.salveMem(Integer.parseInt(programArray.get(index)[1]));
+                    break;
+                case PUSHLV:
+                    address = Integer.parseInt(programArray.get(index)[1]);
+                    stackable = frame.get(address);
+                    myStack.pile(stackable);
+                    break;
+                case SETLV:
+                    stackable = myStack.pop();
+                    address = Integer.parseInt(programArray.get(index)[1]);
+                    frame.set(stackable, address);
+                    break;
+                case RET:
+                    if(pc == programArray.size()-1) {
+                        this.myState = MachineStates.valueOf("FINISHED");
+                        break;
+                    }
+                    StackableInterface returnValue = myStack.pop();
+                    StackableInterface returnAddress = myStack.pop();
+                    myStack.pile(returnValue);
+                    address = (int)returnAddress.getValue();
+                    jumpAbsoluto(address);
+                    frame = Contexto.pop();
+                    break;
+                case CALL:
+                    myStack.pile(pc+1);     // Empilha o endereço atual
+                    address = Integer.parseInt(programArray.get(index)[1]);   // Pega o endereço da função
+                    jumpAbsoluto(address);  // Pula pro endereço da função
+                    break;
+                case ENTRA:
+                    Contexto.push(frame);
+                    frame = new StackFrame();
                     break;
                 case DUP:
                     myStack.dupTop();
@@ -181,6 +234,7 @@ class VirtualMachine{
                     myStack.operation(11);
                     decision = myStack.jumpFalse();
                     if(!decision){
+                        System.out.print("PULEI\n");
                         jumpPC(index);
                     }
                     break;
@@ -233,7 +287,7 @@ class VirtualMachine{
     private void jumpPC(int position) {
         String rangeString = programArray.get(position)[1];
         int range = Integer.parseInt(rangeString);
-        this.pc += range;
+        this.pc += range-1;
         //    Integer val = labelsHash.get(key);
         //    if(labelsHash.containsKey(key)) {
         //      this.pc = val -1;
@@ -243,6 +297,10 @@ class VirtualMachine{
         //      val = labelsHash.get(key);
         //      this.pc = val -1;
         //    }
+    }
+    
+    private void jumpAbsoluto(double address) {
+        this.pc = (int)address-1;
     }
     
     private void setPC(int value){
@@ -280,7 +338,8 @@ class VirtualMachine{
             if(getInstructionCounter() == MAX_IC){
                 makeSysCall("NONE","NONE");
             }
-            if (programArray.get(getPC())[0].compareTo("END") == 0){return -1;}
+            if (this.myState.toString().compareTo("FINISHED") == 0)
+                return -1;
         }
         return 1;
     }
@@ -289,18 +348,20 @@ class VirtualMachine{
         myStack.eraseData();
         this.startSourceCode(newSource);
     }
+    
     public static void main (String argv[]){
         String my = argv[0];
         int serie = 10;
         try{
             VirtualMachine vm = new VirtualMachine(my,serie);
-            vm.showProgram(); 
+            vm.showProgram();
+            
         }
         catch(IOException e){
             System.out.println("ERRO : " + e.toString());
             e.printStackTrace();
             System.exit(0);
         }
-        System.out.println("Deu certo");
+        System.out.println("\nDeu certo");
     }
 }
