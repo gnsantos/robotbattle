@@ -33,19 +33,19 @@ public class Operation{
 		return new Stackable_Number((x.getValue() == y.getValue())? 1: 0);
 	}
 	public StackableInterface greatThan(StackableInterface x, StackableInterface y){
-		return new Stackable_Number((x.getValue() > y.getValue())? 1: 0);
+		return new Stackable_Number((y.getValue() > x.getValue())? 1: 0);
 	}
 	public StackableInterface greatEqual(StackableInterface x, StackableInterface y){
-		return new Stackable_Number((x.getValue() >= y.getValue())? 1: 0);
+		return new Stackable_Number((y.getValue() >= x.getValue())? 1: 0);
 	}
 	public StackableInterface notEqual(StackableInterface x, StackableInterface y){
-		return new Stackable_Number((x.getValue() != y.getValue())? 1: 0);
+		return new Stackable_Number((y.getValue() != x.getValue())? 1: 0);
 	}
 	public StackableInterface lessThan(StackableInterface x, StackableInterface y){
-		return new Stackable_Number((x.getValue() < y.getValue())? 1: 0);
+		return new Stackable_Number((y.getValue() < x.getValue())? 1: 0);
 	}
 	public StackableInterface lessEqual(StackableInterface x, StackableInterface y){
-		return new Stackable_Number((x.getValue() <= y.getValue())? 1: 0);
+		return new Stackable_Number((y.getValue() <= x.getValue())? 1: 0);
 	}
 	public StackableInterface itsTrue(StackableInterface x){
 		return new Stackable_Number((x.getValue() != 0)? 1: 0);
