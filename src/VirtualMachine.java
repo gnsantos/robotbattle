@@ -112,9 +112,7 @@ class VirtualMachine{
         boolean decision;
         int address;
         StackableInterface stackable;
-        
-        System.out.print("\n\t\t"+pc+"\t"+programArray.get(index)[0]+"\t"+programArray.get(index)[1]+"\n");
-        
+                
         String opCode = programArray.get(index)[0];
         try{
             SetOperation myOperation = SetOperation.valueOf(opCode);

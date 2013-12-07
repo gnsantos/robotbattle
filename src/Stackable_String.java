@@ -8,7 +8,13 @@ public class Stackable_String implements StackableInterface{
 		myValue = value;
 	}
 	public void printYourself(){
-		System.out.print(myValue);
+        String newString = myValue.replaceAll("\"","");
+        newString = newString.replaceAll("\\\\n","\n");
+        newString = newString.replaceAll("\\\\t","\t");
+        newString = newString.replaceAll("\\\\b","\b");
+        newString = newString.replaceAll("\\\\r","\r");
+        newString = newString.replaceAll("\\\\f","\f");
+        System.out.print(newString);
 	}
 
 	public double getValue(){
