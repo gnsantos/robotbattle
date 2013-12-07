@@ -427,51 +427,57 @@ class ENTRA extends Instrucao {     // Cria uma nova f
 	}
 }
 
+// ====================================
+// SYSCALLS
+// ====================================
+
+// Syscalls particulares
 class WLK extends Instrucao {
     WLK (String dir) {
         super(new Direcao(dir));
     }
 }
-
 class FIRE extends Instrucao {
     FIRE (String dir) {
         super(new Direcao(dir));
     }
 }
-
 class BOMB extends Instrucao {
     BOMB (String dir) {
         super(new Direcao(dir));
     }
 }
-
 class TAKE extends Instrucao {
     TAKE (String dir) {
         super(new Direcao(dir));
     }
 }
-
 class DROP extends Instrucao {
     DROP (String dir) {
         super(new Direcao(dir));
     }
 }
-
 class LOOK extends Instrucao {
     LOOK (String dir) {
         super(new Direcao(dir));
     }
 }
-
 class ASK extends Instrucao {
     ASK (String dir) {
         super(new Direcao(dir));
     }
 }
 
+// Syscall genérica
 class SYSCALL extends Instrucao {
-    static Instrucao newSyscall (String syscall, String dir) {
-        String newParam = correctParameter(dir);
+    
+    // Devolve uma nova instrucao da classe certa, de acordo com a syscall
+    // passada pela String syscall. É como um construtor, só que melhor :D
+    static Instrucao newSyscall (String syscall, String param) {
+        // Traduz a string param da linguagem alta para a baixa
+        String newParam = correctParameter(param);
+        
+        // Cria e retorna o objeto adequado
         if (syscall.equals("WALK")) {
             return new WLK(newParam);
         }
@@ -496,8 +502,10 @@ class SYSCALL extends Instrucao {
         return null;
     }
     
+    // Traduz os parametros recebidos da linguagem alta para a baixa
     static String correctParameter (String param) {
         String newParam;
+        // Directions
         if (param.equals("East"))
             newParam = "E";
         else if (param.equals("West"))
@@ -510,6 +518,7 @@ class SYSCALL extends Instrucao {
             newParam = "NE";
         else if (param.equals("Northwest"))
             newParam = "NW";
+        // Ask Options
         else if (param.equals("Health"))
             newParam = "MY_HEALTH";
         else if (param.equals("Crystals"))

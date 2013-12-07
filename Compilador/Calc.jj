@@ -511,11 +511,11 @@ Vector<Instrucao> ItemPrint() :
 TOKEN :
 {
  < NUM: ( ["0"-"9"] )+ >
-|
- <QUESTION: "Health" | "Crystals" | "Is_in_enemy_base" | "Enemy_base_distance" | "Base_distance" >
-|
+|       // Possíveis perguntas a serem feitas pela syscall ASK
+ <QUESTION: "Health" | "Crystals" | "Is_in_enemy_base" | "Enemy_base_distance" | "Base_distance" > 
+|       // Possíveis syscalls
  <CHAMADA: "WALK" | "FIRE" | "BOMB" | "TAKE" | "DROP" | "LOOK" | "ASK">
-|
+|       // Possíveis direções a serem passadas para determinadas syscalls
  <DIRECAO: "East" | "West" | "Southwest" | "Southeast" | "Northeast" | "Northwest" >
 |
  < ID: ["a"-"z","A"-"Z","_"] ( ["a"-"z","A"-"Z","_","0"-"9","@"] )* >
