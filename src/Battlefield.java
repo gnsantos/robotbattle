@@ -69,8 +69,10 @@ public class Battlefield extends JFrame{
 	    HAS_CRYSTAL,
 	    NUMBER_OF_CRYSTAL,
         IS_IN_ENEMY_BASE,
-	    ENEMY_BASE_DISTANCE,
-	    TEAM_BASE_DISTANCE,
+	    ENEMY_BASE_DISTANCE_Y,
+        ENEMY_BASE_DISTANCE_X,
+	    TEAM_BASE_DISTANCE_Y,
+        TEAM_BASE_DISTANCE_X,
     }
     
     // Configuração do mapa
@@ -254,7 +256,8 @@ public class Battlefield extends JFrame{
     }
     
     public static void rearrangeAll(){
-       	visualComponent.setRobots(army, visualComponent.getDx(), visualComponent.getDy(), HEXAGON_SIZE);
+       	resetRobotShot(army, 3);
+        visualComponent.setRobots(army, visualComponent.getDx(), visualComponent.getDy(), HEXAGON_SIZE);
         visualComponent.setCrystals(crystals, visualComponent.getDx(), visualComponent.getDy(), HEXAGON_SIZE);
         
         // Atualiza as estruturas de dados dos robôs, dos cristais e das bombas
@@ -265,6 +268,17 @@ public class Battlefield extends JFrame{
             mineExploded =  visualComponent.setMines(groundMine, visualComponent.getDx(), visualComponent.getDy(), HEXAGON_SIZE);
             if(!mineExploded.empty()){
                 processTheDamage();
+            }
+        }
+        resetRobotShot(army, 2);
+    }
+    
+    public static void resetRobotShot(Vector<BattleRobot> army, int damageType){
+        Iterator itr = army.iterator();
+        while(itr.hasNext()){
+            BattleRobot robot = (BattleRobot) itr.next();
+            if (robot.getTakingDamage() == damageType){
+                robot.setTakingDamage(0);
             }
         }
     }
@@ -481,6 +495,7 @@ public class Battlefield extends JFrame{
                 hal = (BattleRobot)it.next();
                 if(i == hal.getX() && j == hal.getY()){
                     damageRobot(hal, BOMB_DAMAGE);
+                    hal.setTakingDamage(3);
                 }
             }
             auxMines.push(b);            
@@ -509,6 +524,9 @@ public class Battlefield extends JFrame{
             }
             
             damageRobot(hal, FIRE_DAMAGE);
+            if(hal.getTakingDamage() == 0){
+                hal.setTakingDamage(2);
+            }
             
             return 1;
         }
@@ -562,18 +580,25 @@ public class Battlefield extends JFrame{
                     sony.returnAnswer(0.0);
                 }
                 // Calcula a distância de ponto a ponto do robô a ponta da base inimiga ou sua própria base
-            case ENEMY_BASE_DISTANCE:
+            case ENEMY_BASE_DISTANCE_X:
                 if (sony.getTeam().equals("Team A")){
-                    x = calculeDistance("Team B",sony);
-                    sony.returnAnswer(x);
+                    sony.returnAnswer(getBaseX("Team B"));
                 }
                 else{
-                    x = calculeDistance("Team A",sony);
-                    sony.returnAnswer(x);    
-                }
+                    sony.returnAnswer(getBaseX("Team A"));                }
                 break;
-            case TEAM_BASE_DISTANCE:
-                sony.returnAnswer(calculeDistance(sony.getTeam(),sony));
+            case ENEMY_BASE_DISTANCE_Y:
+                if (sony.getTeam().equals("Team A")){
+                    sony.returnAnswer(getBaseX("Team B"));
+                }
+                else{
+                    sony.returnAnswer(getBaseX("Team A"));
+                break;
+            case TEAM_BASE_DISTANCE_Y: /*Retorna no topo da pilha a coordenada Y e em seguida a coordenada X*/
+                sony.returnAnswer(getBaseY(sony.getTeam()));
+                break;
+            case TEAM_BASE_DISTANCE_X: /*Retorna no topo da pilha a coordenada Y e em seguida a coordenada X*/
+                sony.returnAnswer(getBaseX(sony.getTeam()));
                 break;
             default:
                 break;
@@ -621,6 +646,12 @@ public class Battlefield extends JFrame{
                         
             if (Terreno[y][x] == 0) {   // Se o robo tá na água
                 damageRobot(sony, WATER_DAMAGE);
+                sony.setTakingDamage(1);
+            }
+            else{
+                if(sony.getTakingDamage() == 1){
+                    sony.setTakingDamage(0);
+                }
             }
             
             return 1;

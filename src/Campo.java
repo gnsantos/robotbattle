@@ -15,7 +15,7 @@ import java.io.*;
 
 class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do output gráfico
     int Larg, Alt, Dx, Dy; // largura do terreno, altura do terreno, incremento em x e incremento em y
-    BufferedImage grama, terra, agua, ponte, baseA, baseB, roboA, roboB, crystalN, crystalW, crystalS, crystalE; // texturas a serem carregadas para o terreno
+    BufferedImage grama, terra, agua, ponte, baseA, baseB, roboA, roboB, roboAd, roboBd, crystalN, crystalW, crystalS, crystalE; // texturas a serem carregadas para o terreno
     BufferedImage bombaX, bomba0, bomba1, bomba2, bomba3, bomba4, bomba5, bomba6, bomba7, bomba8, bomba9;
     int[][] Terreno;
     
@@ -89,6 +89,20 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
         catch (Exception e) {
             e.printStackTrace();
             System.exit(1);        }
+
+        try {
+            roboAd = ImageIO.read(this.getClass().getResource("/img/roboB2d.png"));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);        }
+        
+        try {
+            roboBd = ImageIO.read(this.getClass().getResource("/img/roboA3d.png"));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);        }
         
         try {
             crystalN = ImageIO.read(this.getClass().getResource("/img/crystal2N.png"));
@@ -122,7 +136,7 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
             System.exit(1);
         }
         
-        BufferedImage[] imageArray = {agua, terra, grama, baseA, baseB, roboA, roboB, ponte, crystalN, crystalW, crystalS, crystalE};
+        BufferedImage[] imageArray = {agua, terra, grama, baseA, baseB, roboA, roboB, ponte, crystalN, crystalW, crystalS, crystalE, roboAd, roboBd};
         this.Textura = imageArray;
         initExplosives();
     }
@@ -242,10 +256,22 @@ try {
             if (posY%2 == 1)
                 psi = 0.6;
             
-            if(team.equals("Team A"))
-                robos[posX][posY] = new CelExtra( (int)((posX + psi)*Dx), posY*Dy, L, Textura[5]);
-            else
-                robos[posX][posY] = new CelExtra( (int)((posX + psi)*Dx), posY*Dy, L, Textura[6]);
+            if(team.equals("Team A")){
+                if (robot.getTakingDamage() != 0){
+                    robos[posX][posY] = new CelExtra( (int)((posX + psi)*Dx), posY*Dy, L, Textura[12]);
+                }
+                else{
+                     robos[posX][posY] = new CelExtra( (int)((posX + psi)*Dx), posY*Dy, L, Textura[5]);   
+                }
+            }
+            else{
+                if (robot.getTakingDamage() != 0){
+                    robos[posX][posY] = new CelExtra( (int)((posX + psi)*Dx), posY*Dy, L, Textura[13]);
+                }
+                else{
+                     robos[posX][posY] = new CelExtra( (int)((posX + psi)*Dx), posY*Dy, L, Textura[6]);   
+                }    
+            }
         }
     }
     

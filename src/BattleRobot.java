@@ -16,6 +16,7 @@ public class BattleRobot implements Robot{
     private final Integer MAX_CRYSTAL = 3;
     private final Integer MAX_BOMB = 10;
     private Vector<Bomb> groundMine = new Vector<Bomb>(MAX_BOMB);
+    private int takingDamage = 0;
     
     public BattleRobot(String name, int serialNumber, String sourceCode) throws IOException{
 	this.robotName = name;
@@ -134,5 +135,12 @@ public class BattleRobot implements Robot{
 	    return b;
 	}
 	else return null;
+    }
+
+    void setTakingDamage(int takingDamage){
+        this.takingDamage = takingDamage;
+    }
+    int getTakingDamage(){
+        return this.takingDamage;
     }
 }
