@@ -426,3 +426,46 @@ class ENTRA extends Instrucao {     // Cria uma nova f
 		return 1;
 	}
 }
+
+class WLK extends Instrucao {
+    WLK (String dir) {
+        super(new Cadeia(dir));
+    }
+}
+
+class TAKE extends Instrucao {
+    TAKE (String dir) {
+        super(new Cadeia(dir));
+    }
+}
+
+class SYSCALL extends Instrucao {
+    SYSCALL (String syscall, String dir) {
+        String shortDirection = shortenDirection(dir);
+        if (syscall.equals("WALK")) {
+            new WLK(shortDirection);
+        }
+        else if (syscall.equals("TAKE")) {
+            new TAKE(shortDirection);
+        }
+    }
+    
+    static String shortenDirection (String dir) {
+        String shortDirection;
+        if (dir.equals("East"))
+            shortDirection = "E";
+        if (dir.equals("West"))
+            shortDirection = "W";
+        if (dir.equals("Southwest"))
+            shortDirection = "SW";
+        if (dir.equals("Southeast"))
+            shortDirection = "SE";
+        if (dir.equals("Northeast"))
+            shortDirection = "NE";
+        else
+            shortDirection = "NW";
+        
+        return shortDirection;
+    }
+}
+

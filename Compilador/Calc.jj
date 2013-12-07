@@ -105,7 +105,30 @@ Vector<Instrucao> Expressao() :
      |
      ">"  x = Arit() {p.addAll(x); p.add(new MAIOR());}
      )* {return p;}
+    |
+    x = SysCall() {p.addAll(x); }
 }
+
+Vector<Instrucao> SysCall() :
+{
+    Vector<Instrucao> p = new Vector<Instrucao>(0);
+    Vector<Instrucao> x = new Vector<Instrucao>(0);
+    Token t;
+    String s;
+}
+{
+    "["
+    (
+    s = "WALK"
+    |
+    s = "TAKE"
+    )
+    t = <DIRECAO>
+    {String dir = t.image;}
+    {p.add(new SYSCALL(s, dir));}        
+    "]" {return p;}
+}
+
 
 // Artiméticas
 Vector<Instrucao> Arit() :
@@ -489,10 +512,11 @@ TOKEN :
 {
  < NUM: ( ["0"-"9"] )+ >
 |
+ <DIRECAO: "East" | "West" | "Southwest" | "Southeast" | "Northeast" | "Northwest" >
+|
  < ID: ["a"-"z","A"-"Z","_"] ( ["a"-"z","A"-"Z","_","0"-"9","@"] )* >
 |
-  <STRING_LITERAL: "\"" ( ~["\"","\\","\n","\r"] | "\\" ( ["n","t","b","r","f","\\","\'","\""] | ["0"-"7"] (["0"-"7"])?  | ["0"-"3"] ["0"-"7"] ["0"-"7"] | ( ["\n","\r"] | "\r\n")))* "\"">
-
+ <STRING_LITERAL: "\"" ( ~["\"","\\","\n","\r"] | "\\" ( ["n","t","b","r","f","\\","\'","\""] | ["0"-"7"] (["0"-"7"])?  | ["0"-"3"] ["0"-"7"] ["0"-"7"] | ( ["\n","\r"] | "\r\n")))* "\"">
 }
 
 

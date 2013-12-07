@@ -112,9 +112,7 @@ class VirtualMachine{
         boolean decision;
         int address;
         StackableInterface stackable;
-        
-        System.out.print("\n\t\t"+pc+"\t"+programArray.get(index)[0]+"\t"+programArray.get(index)[1]+"\n");
-        
+                
         String opCode = programArray.get(index)[0];
         try{
             SetOperation myOperation = SetOperation.valueOf(opCode);
@@ -159,9 +157,9 @@ class VirtualMachine{
                     frame = Contexto.pop();
                     break;
                 case CALL:
-                    myStack.pile(pc+1);     // Empilha o endereço atual
+                    myStack.pile(pc+1);             // Empilha o endereço atual
                     address = Integer.parseInt(programArray.get(index)[1]);   // Pega o endereço da função
-                    jumpAbsoluto(address);  // Pula pro endereço da função
+                    jumpAbsoluto(address);          // Pula pro endereço da função
                     break;
                 case ENTRA:
                     Contexto.push(frame);
@@ -234,7 +232,6 @@ class VirtualMachine{
                     myStack.operation(11);
                     decision = myStack.jumpFalse();
                     if(!decision){
-                        System.out.print("PULEI\n");
                         jumpPC(index);
                     }
                     break;
@@ -323,10 +320,10 @@ class VirtualMachine{
     }
     private void makeSysCall(String sysCallCode, String sysCallArg){
         setInstructionCounter(0);
-        this.myState = MachineStates.valueOf("CALLING");
+//        this.myState = MachineStates.valueOf("CALLING");
         SystemRequest newReq = new SystemRequest(sysCallCode,sysCallArg,serialNumber);
         Battlefield.systemCall(newReq);
-        this.myState = MachineStates.valueOf("WAITING");
+//        this.myState = MachineStates.valueOf("WAITING");
     }
     
     public int runCode(){
@@ -338,8 +335,9 @@ class VirtualMachine{
             if(getInstructionCounter() == MAX_IC){
                 makeSysCall("NONE","NONE");
             }
-            if (this.myState.toString().compareTo("FINISHED") == 0)
+            if (this.myState.toString().compareTo("FINISHED") == 0) {
                 return -1;
+            }
         }
         return 1;
     }

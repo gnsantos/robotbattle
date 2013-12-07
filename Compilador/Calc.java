@@ -88,44 +88,74 @@ public class Calc implements CalcConstants {
   static final public Vector<Instrucao> Expressao() throws ParseException {
     Vector<Instrucao> p = new Vector<Instrucao>(0);
     Vector<Instrucao> x = new Vector<Instrucao>(0);
-    x = Arit();
+    if (jj_2_17(2)) {
+      x = Arit();
                  p.addAll(x);
-    label_2:
-    while (true) {
-      if (jj_2_10(2)) {
-        ;
-      } else {
-        break label_2;
-      }
-      if (jj_2_11(2)) {
-        jj_consume_token(11);
-        x = Arit();
+      label_2:
+      while (true) {
+        if (jj_2_10(2)) {
+          ;
+        } else {
+          break label_2;
+        }
+        if (jj_2_11(2)) {
+          jj_consume_token(11);
+          x = Arit();
                       p.addAll(x); p.add(new MENORIGUAL());
-      } else if (jj_2_12(2)) {
-        jj_consume_token(12);
-        x = Arit();
+        } else if (jj_2_12(2)) {
+          jj_consume_token(12);
+          x = Arit();
                       p.addAll(x); p.add(new MAIORIGUAL());
-      } else if (jj_2_13(2)) {
-        jj_consume_token(13);
-        x = Arit();
+        } else if (jj_2_13(2)) {
+          jj_consume_token(13);
+          x = Arit();
                       p.addAll(x); p.add(new DIFERENTE());
-      } else if (jj_2_14(2)) {
-        jj_consume_token(14);
-        x = Arit();
+        } else if (jj_2_14(2)) {
+          jj_consume_token(14);
+          x = Arit();
                       p.addAll(x); p.add(new IGUAL());
-      } else if (jj_2_15(2)) {
-        jj_consume_token(15);
-        x = Arit();
+        } else if (jj_2_15(2)) {
+          jj_consume_token(15);
+          x = Arit();
                       p.addAll(x); p.add(new MENOR());
-      } else if (jj_2_16(2)) {
-        jj_consume_token(16);
-        x = Arit();
+        } else if (jj_2_16(2)) {
+          jj_consume_token(16);
+          x = Arit();
                       p.addAll(x); p.add(new MAIOR());
-      } else {
-        jj_consume_token(-1);
-        throw new ParseException();
+        } else {
+          jj_consume_token(-1);
+          throw new ParseException();
+        }
       }
+         {if (true) return p;}
+    } else if (jj_2_18(2)) {
+      x = SysCall();
+                   p.addAll(x);
+    } else {
+      jj_consume_token(-1);
+      throw new ParseException();
     }
+    throw new Error("Missing return statement in function");
+  }
+
+  static final public Vector<Instrucao> SysCall() throws ParseException {
+    Vector<Instrucao> p = new Vector<Instrucao>(0);
+    Vector<Instrucao> x = new Vector<Instrucao>(0);
+    Token t;
+    String s;
+    jj_consume_token(17);
+    if (jj_2_19(2)) {
+      s = jj_consume_token(18);
+    } else if (jj_2_20(2)) {
+      s = jj_consume_token(19);
+    } else {
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+    t = jj_consume_token(DIRECAO);
+     String dir = t.image;
+     p.add(new SYSCALL(s, dir));
+    jj_consume_token(20);
          {if (true) return p;}
     throw new Error("Missing return statement in function");
   }
@@ -138,17 +168,17 @@ public class Calc implements CalcConstants {
                   p.addAll(x);
     label_3:
     while (true) {
-      if (jj_2_17(2)) {
+      if (jj_2_21(2)) {
         ;
       } else {
         break label_3;
       }
-      if (jj_2_18(2)) {
-        jj_consume_token(17);
+      if (jj_2_22(2)) {
+        jj_consume_token(21);
         x = Termo();
                       p.addAll(x); p.add(new SOMA());
-      } else if (jj_2_19(2)) {
-        jj_consume_token(18);
+      } else if (jj_2_23(2)) {
+        jj_consume_token(22);
         x = Termo();
                       p.addAll(x); p.add(new SUB());
       } else {
@@ -167,17 +197,17 @@ public class Calc implements CalcConstants {
                   p.addAll(x);
     label_4:
     while (true) {
-      if (jj_2_20(2)) {
+      if (jj_2_24(2)) {
         ;
       } else {
         break label_4;
       }
-      if (jj_2_21(2)) {
-        jj_consume_token(19);
+      if (jj_2_25(2)) {
+        jj_consume_token(23);
         x = Fator();
                       p.addAll(x); p.add(new MULT());
-      } else if (jj_2_22(2)) {
-        jj_consume_token(20);
+      } else if (jj_2_26(2)) {
+        jj_consume_token(24);
         x = Fator();
                       p.addAll(x); p.add(new DIV());
       } else {
@@ -194,15 +224,15 @@ public class Calc implements CalcConstants {
     Vector<Instrucao> x = new Vector<Instrucao>(0);
     Token t;
     Simbolo v;
-    if (jj_2_23(2)) {
+    if (jj_2_27(2)) {
       x = Chamada();
                                  // Chamada de funcao
         p.addAll(x);
         {if (true) return p;}
-    } else if (jj_2_24(2)) {
+    } else if (jj_2_28(2)) {
       // Atribuicao
            t = jj_consume_token(ID);
-      jj_consume_token(21);
+      jj_consume_token(25);
       x = Expressao();
         p.addAll(x);
         p.add(new DUP());        // deixa uma cópia na pilha
@@ -230,7 +260,7 @@ public class Calc implements CalcConstants {
             }
         }
         {if (true) return p;}
-    } else if (jj_2_25(2)) {
+    } else if (jj_2_29(2)) {
       t = jj_consume_token(ID);
                                 // variavel, tratamento similar ao de cima
         if ((Locais != null) && Locais.exists(t.image)) {
@@ -258,14 +288,14 @@ public class Calc implements CalcConstants {
             }
          }
         {if (true) return p;}
-    } else if (jj_2_26(2)) {
+    } else if (jj_2_30(2)) {
       t = jj_consume_token(NUM);
         p.add(new PUSH(new Real(Double.parseDouble(t.image))));
         {if (true) return p;}
-    } else if (jj_2_27(2)) {
-      jj_consume_token(22);
+    } else if (jj_2_31(2)) {
+      jj_consume_token(26);
       x = Expressao();
-      jj_consume_token(23);
+      jj_consume_token(27);
         p.addAll(x);
         {if (true) return p;}
     } else {
@@ -279,22 +309,22 @@ public class Calc implements CalcConstants {
     Vector<Instrucao> p = new Vector<Instrucao>(0);
     Vector<Instrucao> x = new Vector<Instrucao>(0);
     int delta, pos;
-    if (jj_2_28(2)) {
-      jj_consume_token(24);
-    } else if (jj_2_29(2)) {
-      jj_consume_token(25);
+    if (jj_2_32(2)) {
+      jj_consume_token(28);
+    } else if (jj_2_33(2)) {
+      jj_consume_token(29);
     } else {
       jj_consume_token(-1);
       throw new ParseException();
     }
-    jj_consume_token(22);
+    jj_consume_token(26);
     x = Expressao();
                        p.addAll(x);
-    jj_consume_token(23);
-    if (jj_2_30(2)) {
-      jj_consume_token(26);
-    } else if (jj_2_31(2)) {
-      jj_consume_token(27);
+    jj_consume_token(27);
+    if (jj_2_34(2)) {
+      jj_consume_token(30);
+    } else if (jj_2_35(2)) {
+      jj_consume_token(31);
     } else {
       jj_consume_token(-1);
       throw new ParseException();
@@ -306,11 +336,11 @@ public class Calc implements CalcConstants {
         p.addAll(x);
         //        return p;
 
-    if (jj_2_34(2)) {
-      if (jj_2_32(2)) {
-        jj_consume_token(28);
-      } else if (jj_2_33(2)) {
-        jj_consume_token(29);
+    if (jj_2_38(2)) {
+      if (jj_2_36(2)) {
+        jj_consume_token(32);
+      } else if (jj_2_37(2)) {
+        jj_consume_token(33);
       } else {
         jj_consume_token(-1);
         throw new ParseException();
@@ -331,23 +361,23 @@ public class Calc implements CalcConstants {
     Vector<Instrucao> p = new Vector<Instrucao>(0);
     Vector<Instrucao> x = new Vector<Instrucao>(0);
     int exp, delta;
-    if (jj_2_35(2)) {
-      jj_consume_token(30);
-    } else if (jj_2_36(2)) {
-      jj_consume_token(31);
+    if (jj_2_39(2)) {
+      jj_consume_token(34);
+    } else if (jj_2_40(2)) {
+      jj_consume_token(35);
     } else {
       jj_consume_token(-1);
       throw new ParseException();
     }
-    jj_consume_token(22);
+    jj_consume_token(26);
     x = Expressao();
         exp = x.size();
         p.addAll(x);
-    jj_consume_token(23);
-    if (jj_2_37(2)) {
-      jj_consume_token(32);
-    } else if (jj_2_38(2)) {
-      jj_consume_token(33);
+    jj_consume_token(27);
+    if (jj_2_41(2)) {
+      jj_consume_token(36);
+    } else if (jj_2_42(2)) {
+      jj_consume_token(37);
     } else {
       jj_consume_token(-1);
       throw new ParseException();
@@ -364,10 +394,10 @@ public class Calc implements CalcConstants {
   static final public Vector<Instrucao> Bloco() throws ParseException {
     Vector<Instrucao> p = new Vector<Instrucao>(0);
     Vector<Instrucao> x = new Vector<Instrucao>(0);
-    jj_consume_token(34);
+    jj_consume_token(38);
     label_5:
     while (true) {
-      if (jj_2_39(2)) {
+      if (jj_2_43(2)) {
         ;
       } else {
         break label_5;
@@ -375,7 +405,7 @@ public class Calc implements CalcConstants {
       x = Comando();
                         p.addAll(x);
     }
-    jj_consume_token(35);
+    jj_consume_token(39);
                                                {if (true) return p;}
     throw new Error("Missing return statement in function");
   }
@@ -388,7 +418,7 @@ public class Calc implements CalcConstants {
     Funcao v;
     String nome;
     TabSim Lorig;
-    jj_consume_token(36);
+    jj_consume_token(40);
     t = jj_consume_token(ID);
                                    // t.image contém o nome
         if (Nomes.exists(nome = t.image)) { // ja foi definida?
@@ -407,13 +437,13 @@ public class Calc implements CalcConstants {
                                 // apesar do escopo de funcao ser
                                 // global)
         Locais = v.Vars;
-    jj_consume_token(22);
-    if (jj_2_40(2)) {
+    jj_consume_token(26);
+    if (jj_2_44(2)) {
       Args(nome,v);
     } else {
       ;
     }
-    jj_consume_token(23);
+    jj_consume_token(27);
     // lista de argumentos
         x = Bloco();
         p.addAll(x);
@@ -428,12 +458,12 @@ public class Calc implements CalcConstants {
     Arg(fnom,v);
     label_6:
     while (true) {
-      if (jj_2_41(2)) {
+      if (jj_2_45(2)) {
         ;
       } else {
         break label_6;
       }
-      jj_consume_token(37);
+      jj_consume_token(41);
       Arg(fnom,v);
     }
   }
@@ -471,10 +501,10 @@ public class Calc implements CalcConstants {
         }
         Lorig = Locais;             // disponibiliza o nome dos argumentos
         Locais = f.Vars;
-    jj_consume_token(22);
+    jj_consume_token(26);
     x = ListParms(f);
                         p.addAll(x);
-    jj_consume_token(23);
+    jj_consume_token(27);
         p.add(new CALL(e));         // chama
         Locais = Lorig;             // restaura
         {if (true) return p;}
@@ -493,12 +523,12 @@ public class Calc implements CalcConstants {
                      p.addAll(x);
     label_7:
     while (true) {
-      if (jj_2_42(2)) {
+      if (jj_2_46(2)) {
         ;
       } else {
         break label_7;
       }
-      jj_consume_token(37);
+      jj_consume_token(41);
       x = Parm(f,n++);
                       p.addAll(x);
     }
@@ -538,12 +568,12 @@ public class Calc implements CalcConstants {
         p.addAll(x);
     label_8:
     while (true) {
-      if (jj_2_43(2)) {
+      if (jj_2_47(2)) {
         ;
       } else {
         break label_8;
       }
-      jj_consume_token(37);
+      jj_consume_token(41);
       x = ItemPrint();
          p.addAll(x);
     }
@@ -556,11 +586,11 @@ public class Calc implements CalcConstants {
     Vector<Instrucao> p = new Vector<Instrucao>(0);
     Vector<Instrucao> x = new Vector<Instrucao>(0);
     Token t;
-    if (jj_2_44(2)) {
+    if (jj_2_48(2)) {
       x = Expressao();
          p.addAll(x);
          p.add(new PRINT());
-    } else if (jj_2_45(2)) {
+    } else if (jj_2_49(2)) {
       t = jj_consume_token(STRING_LITERAL);
          String s =  t.image;
          while (s.contains("\u005c\u005cn"))
@@ -901,28 +931,58 @@ public class Calc implements CalcConstants {
     finally { jj_save(44, xla); }
   }
 
+  static private boolean jj_2_46(int xla) {
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return !jj_3_46(); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(45, xla); }
+  }
+
+  static private boolean jj_2_47(int xla) {
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return !jj_3_47(); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(46, xla); }
+  }
+
+  static private boolean jj_2_48(int xla) {
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return !jj_3_48(); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(47, xla); }
+  }
+
+  static private boolean jj_2_49(int xla) {
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return !jj_3_49(); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(48, xla); }
+  }
+
+  static private boolean jj_3_47() {
+    if (jj_scan_token(41)) return true;
+    if (jj_3R_24()) return true;
+    return false;
+  }
+
   static private boolean jj_3_2() {
     if (jj_3R_10()) return true;
     return false;
   }
 
-  static private boolean jj_3_45() {
-    if (jj_scan_token(STRING_LITERAL)) return true;
-    return false;
-  }
-
-  static private boolean jj_3_25() {
-    if (jj_scan_token(ID)) return true;
-    return false;
-  }
-
-  static private boolean jj_3_38() {
+  static private boolean jj_3_37() {
     if (jj_scan_token(33)) return true;
     return false;
   }
 
-  static private boolean jj_3_44() {
-    if (jj_3R_10()) return true;
+  static private boolean jj_3_45() {
+    if (jj_scan_token(41)) return true;
+    if (jj_3R_22()) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_14() {
+    if (jj_3R_24()) return true;
     return false;
   }
 
@@ -932,18 +992,9 @@ public class Calc implements CalcConstants {
     return false;
   }
 
-  static private boolean jj_3_36() {
-    if (jj_scan_token(31)) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_23() {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_44()) {
-    jj_scanpos = xsp;
-    if (jj_3_45()) return true;
-    }
+  static private boolean jj_3_28() {
+    if (jj_scan_token(ID)) return true;
+    if (jj_scan_token(25)) return true;
     return false;
   }
 
@@ -962,8 +1013,53 @@ public class Calc implements CalcConstants {
     return false;
   }
 
-  static private boolean jj_3_37() {
+  static private boolean jj_3R_22() {
+    if (jj_scan_token(ID)) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_18() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_27()) {
+    jj_scanpos = xsp;
+    if (jj_3_28()) {
+    jj_scanpos = xsp;
+    if (jj_3_29()) {
+    jj_scanpos = xsp;
+    if (jj_3_30()) {
+    jj_scanpos = xsp;
+    if (jj_3_31()) return true;
+    }
+    }
+    }
+    }
+    return false;
+  }
+
+  static private boolean jj_3_36() {
     if (jj_scan_token(32)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_27() {
+    if (jj_3R_19()) return true;
+    return false;
+  }
+
+  static private boolean jj_3_38() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_36()) {
+    jj_scanpos = xsp;
+    if (jj_3_37()) return true;
+    }
+    if (jj_3R_20()) return true;
+    return false;
+  }
+
+  static private boolean jj_3_35() {
+    if (jj_scan_token(31)) return true;
     return false;
   }
 
@@ -972,30 +1068,8 @@ public class Calc implements CalcConstants {
     return false;
   }
 
-  static private boolean jj_3R_18() {
-    if (jj_scan_token(ID)) return true;
-    if (jj_scan_token(22)) return true;
-    return false;
-  }
-
   static private boolean jj_3_5() {
     if (jj_3R_12()) return true;
-    return false;
-  }
-
-  static private boolean jj_3_35() {
-    if (jj_scan_token(30)) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_12() {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_35()) {
-    jj_scanpos = xsp;
-    if (jj_3_36()) return true;
-    }
-    if (jj_scan_token(22)) return true;
     return false;
   }
 
@@ -1004,9 +1078,34 @@ public class Calc implements CalcConstants {
     return false;
   }
 
+  static private boolean jj_3_33() {
+    if (jj_scan_token(29)) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_23() {
+    if (jj_3R_10()) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_21() {
+    if (jj_3R_22()) return true;
+    Token xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3_45()) { jj_scanpos = xsp; break; }
+    }
+    return false;
+  }
+
   static private boolean jj_3_3() {
     if (jj_3R_10()) return true;
     if (jj_scan_token(7)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_34() {
+    if (jj_scan_token(30)) return true;
     return false;
   }
 
@@ -1035,59 +1134,24 @@ public class Calc implements CalcConstants {
     return false;
   }
 
-  static private boolean jj_3_43() {
-    if (jj_scan_token(37)) return true;
-    if (jj_3R_23()) return true;
-    return false;
-  }
-
-  static private boolean jj_3_33() {
-    if (jj_scan_token(29)) return true;
-    return false;
-  }
-
-  static private boolean jj_3_41() {
-    if (jj_scan_token(37)) return true;
-    if (jj_3R_21()) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_14() {
-    if (jj_3R_23()) return true;
+  static private boolean jj_3_26() {
+    if (jj_scan_token(24)) return true;
+    if (jj_3R_18()) return true;
     return false;
   }
 
   static private boolean jj_3_24() {
-    if (jj_scan_token(ID)) return true;
-    if (jj_scan_token(21)) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_21() {
-    if (jj_scan_token(ID)) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_17() {
     Token xsp;
     xsp = jj_scanpos;
-    if (jj_3_23()) {
-    jj_scanpos = xsp;
-    if (jj_3_24()) {
-    jj_scanpos = xsp;
     if (jj_3_25()) {
     jj_scanpos = xsp;
-    if (jj_3_26()) {
-    jj_scanpos = xsp;
-    if (jj_3_27()) return true;
-    }
-    }
-    }
+    if (jj_3_26()) return true;
     }
     return false;
   }
 
-  static private boolean jj_3_23() {
+  static private boolean jj_3_25() {
+    if (jj_scan_token(23)) return true;
     if (jj_3R_18()) return true;
     return false;
   }
@@ -1097,19 +1161,29 @@ public class Calc implements CalcConstants {
     return false;
   }
 
-  static private boolean jj_3_31() {
-    if (jj_scan_token(27)) return true;
-    return false;
-  }
-
-  static private boolean jj_3_34() {
+  static private boolean jj_3R_11() {
     Token xsp;
     xsp = jj_scanpos;
     if (jj_3_32()) {
     jj_scanpos = xsp;
     if (jj_3_33()) return true;
     }
-    if (jj_3R_19()) return true;
+    if (jj_scan_token(26)) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_17() {
+    if (jj_3R_18()) return true;
+    Token xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3_24()) { jj_scanpos = xsp; break; }
+    }
+    return false;
+  }
+
+  static private boolean jj_3_44() {
+    if (jj_3R_21()) return true;
     return false;
   }
 
@@ -1118,130 +1192,104 @@ public class Calc implements CalcConstants {
     return false;
   }
 
-  static private boolean jj_3_29() {
-    if (jj_scan_token(25)) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_22() {
-    if (jj_3R_10()) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_20() {
-    if (jj_3R_21()) return true;
-    Token xsp;
-    while (true) {
-      xsp = jj_scanpos;
-      if (jj_3_41()) { jj_scanpos = xsp; break; }
-    }
-    return false;
-  }
-
-  static private boolean jj_3_30() {
-    if (jj_scan_token(26)) return true;
-    return false;
-  }
-
-  static private boolean jj_3_22() {
-    if (jj_scan_token(20)) return true;
+  static private boolean jj_3_23() {
+    if (jj_scan_token(22)) return true;
     if (jj_3R_17()) return true;
-    return false;
-  }
-
-  static private boolean jj_3_20() {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_21()) {
-    jj_scanpos = xsp;
-    if (jj_3_22()) return true;
-    }
     return false;
   }
 
   static private boolean jj_3_21() {
-    if (jj_scan_token(19)) return true;
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_22()) {
+    jj_scanpos = xsp;
+    if (jj_3_23()) return true;
+    }
+    return false;
+  }
+
+  static private boolean jj_3_22() {
+    if (jj_scan_token(21)) return true;
     if (jj_3R_17()) return true;
     return false;
   }
 
-  static private boolean jj_3_28() {
-    if (jj_scan_token(24)) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_11() {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_28()) {
-    jj_scanpos = xsp;
-    if (jj_3_29()) return true;
-    }
-    if (jj_scan_token(22)) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_16() {
-    if (jj_3R_17()) return true;
-    Token xsp;
-    while (true) {
-      xsp = jj_scanpos;
-      if (jj_3_20()) { jj_scanpos = xsp; break; }
-    }
-    return false;
-  }
-
-  static private boolean jj_3_40() {
-    if (jj_3R_20()) return true;
-    return false;
-  }
-
-  static private boolean jj_3_19() {
-    if (jj_scan_token(18)) return true;
-    if (jj_3R_16()) return true;
-    return false;
-  }
-
-  static private boolean jj_3_17() {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_18()) {
-    jj_scanpos = xsp;
-    if (jj_3_19()) return true;
-    }
-    return false;
-  }
-
-  static private boolean jj_3_18() {
-    if (jj_scan_token(17)) return true;
-    if (jj_3R_16()) return true;
-    return false;
-  }
-
-  static private boolean jj_3_27() {
-    if (jj_scan_token(22)) return true;
+  static private boolean jj_3_31() {
+    if (jj_scan_token(26)) return true;
     if (jj_3R_10()) return true;
     return false;
   }
 
   static private boolean jj_3R_15() {
-    if (jj_3R_16()) return true;
+    if (jj_3R_17()) return true;
     Token xsp;
     while (true) {
       xsp = jj_scanpos;
-      if (jj_3_17()) { jj_scanpos = xsp; break; }
+      if (jj_3_21()) { jj_scanpos = xsp; break; }
     }
     return false;
   }
 
-  static private boolean jj_3_26() {
+  static private boolean jj_3_30() {
     if (jj_scan_token(NUM)) return true;
     return false;
   }
 
-  static private boolean jj_3_42() {
-    if (jj_scan_token(37)) return true;
-    if (jj_3R_22()) return true;
+  static private boolean jj_3_46() {
+    if (jj_scan_token(41)) return true;
+    if (jj_3R_23()) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_13() {
+    if (jj_scan_token(40)) return true;
+    if (jj_scan_token(ID)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_20() {
+    if (jj_scan_token(19)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_19() {
+    if (jj_scan_token(18)) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_16() {
+    if (jj_scan_token(17)) return true;
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_19()) {
+    jj_scanpos = xsp;
+    if (jj_3_20()) return true;
+    }
+    return false;
+  }
+
+  static private boolean jj_3_43() {
+    if (jj_3R_9()) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_20() {
+    if (jj_scan_token(38)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_49() {
+    if (jj_scan_token(STRING_LITERAL)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_18() {
+    if (jj_3R_16()) return true;
+    return false;
+  }
+
+  static private boolean jj_3_29() {
+    if (jj_scan_token(ID)) return true;
     return false;
   }
 
@@ -1251,9 +1299,8 @@ public class Calc implements CalcConstants {
     return false;
   }
 
-  static private boolean jj_3R_13() {
-    if (jj_scan_token(36)) return true;
-    if (jj_scan_token(ID)) return true;
+  static private boolean jj_3_42() {
+    if (jj_scan_token(37)) return true;
     return false;
   }
 
@@ -1263,15 +1310,40 @@ public class Calc implements CalcConstants {
     return false;
   }
 
+  static private boolean jj_3_48() {
+    if (jj_3R_10()) return true;
+    return false;
+  }
+
+  static private boolean jj_3_40() {
+    if (jj_scan_token(35)) return true;
+    return false;
+  }
+
   static private boolean jj_3_14() {
     if (jj_scan_token(14)) return true;
     if (jj_3R_15()) return true;
     return false;
   }
 
+  static private boolean jj_3R_24() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_48()) {
+    jj_scanpos = xsp;
+    if (jj_3_49()) return true;
+    }
+    return false;
+  }
+
   static private boolean jj_3_13() {
     if (jj_scan_token(13)) return true;
     if (jj_3R_15()) return true;
+    return false;
+  }
+
+  static private boolean jj_3_41() {
+    if (jj_scan_token(36)) return true;
     return false;
   }
 
@@ -1309,12 +1381,23 @@ public class Calc implements CalcConstants {
     return false;
   }
 
-  static private boolean jj_3_39() {
-    if (jj_3R_9()) return true;
+  static private boolean jj_3R_19() {
+    if (jj_scan_token(ID)) return true;
+    if (jj_scan_token(26)) return true;
     return false;
   }
 
   static private boolean jj_3R_10() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_17()) {
+    jj_scanpos = xsp;
+    if (jj_3_18()) return true;
+    }
+    return false;
+  }
+
+  static private boolean jj_3_17() {
     if (jj_3R_15()) return true;
     Token xsp;
     while (true) {
@@ -1324,8 +1407,19 @@ public class Calc implements CalcConstants {
     return false;
   }
 
-  static private boolean jj_3R_19() {
+  static private boolean jj_3_39() {
     if (jj_scan_token(34)) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_12() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_39()) {
+    jj_scanpos = xsp;
+    if (jj_3_40()) return true;
+    }
+    if (jj_scan_token(26)) return true;
     return false;
   }
 
@@ -1354,7 +1448,7 @@ public class Calc implements CalcConstants {
    private static void jj_la1_init_1() {
       jj_la1_1 = new int[] {};
    }
-  static final private JJCalls[] jj_2_rtns = new JJCalls[45];
+  static final private JJCalls[] jj_2_rtns = new JJCalls[49];
   static private boolean jj_rescan = false;
   static private int jj_gc = 0;
 
@@ -1559,7 +1653,7 @@ public class Calc implements CalcConstants {
   /** Generate ParseException. */
   static public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[41];
+    boolean[] la1tokens = new boolean[46];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -1576,7 +1670,7 @@ public class Calc implements CalcConstants {
         }
       }
     }
-    for (int i = 0; i < 41; i++) {
+    for (int i = 0; i < 46; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;
@@ -1603,7 +1697,7 @@ public class Calc implements CalcConstants {
 
   static private void jj_rescan_token() {
     jj_rescan = true;
-    for (int i = 0; i < 45; i++) {
+    for (int i = 0; i < 49; i++) {
     try {
       JJCalls p = jj_2_rtns[i];
       do {
@@ -1655,6 +1749,10 @@ public class Calc implements CalcConstants {
             case 42: jj_3_43(); break;
             case 43: jj_3_44(); break;
             case 44: jj_3_45(); break;
+            case 45: jj_3_46(); break;
+            case 46: jj_3_47(); break;
+            case 47: jj_3_48(); break;
+            case 48: jj_3_49(); break;
           }
         }
         p = p.next;

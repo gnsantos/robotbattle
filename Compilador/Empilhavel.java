@@ -56,11 +56,11 @@ class Cadeia implements Empilhavel {
     }
     
 	public String Show() {
-        s = s.replaceAll("\n", "\\n");
-        s = s.replaceAll("\t", "\\t");
-        s = s.replaceAll("\b", "\\b");
-        s = s.replaceAll("\r", "\\r");
-        s = s.replaceAll("\f", "\\f");
+        s = s.replaceAll("\n", "\\\\n");
+        s = s.replaceAll("\t", "\\\\t");
+        s = s.replaceAll("\b", "\\\\b");
+        s = s.replaceAll("\r", "\\\\r");
+        s = s.replaceAll("\f", "\\\\f");
         s = s.replaceAll("\\\\", "\\\\");
         
 		return "\"" + s + "\"";
