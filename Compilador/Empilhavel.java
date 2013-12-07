@@ -66,3 +66,19 @@ class Cadeia implements Empilhavel {
 		return "\"" + s + "\"";
 	}
 }
+
+class Direcao implements Empilhavel {
+    String s;
+    
+    Direcao (String v) {
+        s = v;
+    }
+    
+    String val() {
+        return s;
+    }
+    
+    public String Show() {
+        return s;
+    }
+}

@@ -65,8 +65,6 @@ public class Battlefield extends JFrame{
     // Possíveis perguntas a serem feitas pelo robô ao sistema
     private enum AskOptions {
         MY_HEALTH,
-	    HAS_ENEMY,
-	    HAS_CRYSTAL,
 	    NUMBER_OF_CRYSTAL,
         IS_IN_ENEMY_BASE,
 	    ENEMY_BASE_DISTANCE,

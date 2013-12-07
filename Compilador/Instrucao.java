@@ -429,43 +429,101 @@ class ENTRA extends Instrucao {     // Cria uma nova f
 
 class WLK extends Instrucao {
     WLK (String dir) {
-        super(new Cadeia(dir));
+        super(new Direcao(dir));
+    }
+}
+
+class FIRE extends Instrucao {
+    FIRE (String dir) {
+        super(new Direcao(dir));
+    }
+}
+
+class BOMB extends Instrucao {
+    BOMB (String dir) {
+        super(new Direcao(dir));
     }
 }
 
 class TAKE extends Instrucao {
     TAKE (String dir) {
-        super(new Cadeia(dir));
+        super(new Direcao(dir));
+    }
+}
+
+class DROP extends Instrucao {
+    DROP (String dir) {
+        super(new Direcao(dir));
+    }
+}
+
+class LOOK extends Instrucao {
+    LOOK (String dir) {
+        super(new Direcao(dir));
+    }
+}
+
+class ASK extends Instrucao {
+    ASK (String dir) {
+        super(new Direcao(dir));
     }
 }
 
 class SYSCALL extends Instrucao {
-    SYSCALL (String syscall, String dir) {
-        String shortDirection = shortenDirection(dir);
+    static Instrucao newSyscall (String syscall, String dir) {
+        String newParam = correctParameter(dir);
         if (syscall.equals("WALK")) {
-            new WLK(shortDirection);
+            return new WLK(newParam);
+        }
+        else if (syscall.equals("FIRE")) {
+            return new FIRE(newParam);
+        }
+        else if (syscall.equals("BOMB")) {
+            return new BOMB(newParam);
         }
         else if (syscall.equals("TAKE")) {
-            new TAKE(shortDirection);
+            return new TAKE(newParam);
         }
+        else if (syscall.equals("DROP")) {
+            return new DROP(newParam);
+        }
+        else if (syscall.equals("LOOK")) {
+            return new LOOK(newParam);
+        }
+        else if (syscall.equals("ASK")) {
+            return new ASK(newParam);
+        }
+        return null;
     }
     
-    static String shortenDirection (String dir) {
-        String shortDirection;
-        if (dir.equals("East"))
-            shortDirection = "E";
-        if (dir.equals("West"))
-            shortDirection = "W";
-        if (dir.equals("Southwest"))
-            shortDirection = "SW";
-        if (dir.equals("Southeast"))
-            shortDirection = "SE";
-        if (dir.equals("Northeast"))
-            shortDirection = "NE";
-        else
-            shortDirection = "NW";
+    static String correctParameter (String param) {
+        String newParam;
+        if (param.equals("East"))
+            newParam = "E";
+        else if (param.equals("West"))
+            newParam = "W";
+        else if (param.equals("Southwest"))
+            newParam = "SW";
+        else if (param.equals("Southeast"))
+            newParam = "SE";
+        else if (param.equals("Northeast"))
+            newParam = "NE";
+        else if (param.equals("Northwest"))
+            newParam = "NW";
+        else if (param.equals("Health"))
+            newParam = "MY_HEALTH";
+        else if (param.equals("Crystals"))
+            newParam = "NUMBER_OF_CRYSTAL";
+        else if (param.equals("Enemy_base_distance"))
+            newParam = "ENEMY_BAS_DISTANCE";
+        else if (param.equals("Base_distance"))
+            newParam = "TEMA_BASE_DISTANCE";
+        else if (param.equals("Is_in_enemy_base"))
+            newParam = "IS_IN_ENEMY_BASE";
+        else 
+            newParam = param;
         
-        return shortDirection;
+        return newParam;
     }
 }
 

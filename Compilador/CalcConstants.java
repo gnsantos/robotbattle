@@ -9,7 +9,11 @@ public interface CalcConstants {
   /** End of File. */
   int EOF = 0;
   /** RegularExpression Id. */
-  int NUM = 42;
+  int NUM = 40;
+  /** RegularExpression Id. */
+  int QUESTION = 41;
+  /** RegularExpression Id. */
+  int CHAMADA = 42;
   /** RegularExpression Id. */
   int DIRECAO = 43;
   /** RegularExpression Id. */
@@ -40,8 +44,6 @@ public interface CalcConstants {
     "\"<\"",
     "\">\"",
     "\"[\"",
-    "\"WALK\"",
-    "\"TAKE\"",
     "\"]\"",
     "\"+\"",
     "\"-\"",
@@ -65,6 +67,8 @@ public interface CalcConstants {
     "\"func\"",
     "\",\"",
     "<NUM>",
+    "<QUESTION>",
+    "<CHAMADA>",
     "<DIRECAO>",
     "<ID>",
     "<STRING_LITERAL>",

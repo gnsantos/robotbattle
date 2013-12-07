@@ -10,7 +10,8 @@ func fat (x) {
         return x*fat(x-1);
     }
 }
-a= 5; print a, " fatorial \\ eh ";
+a= 5; print a, " fatorial eh ";
+[WALK Southwest];
 b=fat(a);
 print b; println;
 

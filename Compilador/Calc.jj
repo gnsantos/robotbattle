@@ -90,7 +90,7 @@ Vector<Instrucao> Expressao() :
     Vector<Instrucao> p = new Vector<Instrucao>(0);
     Vector<Instrucao> x = new Vector<Instrucao>(0);
 }
-{
+{   
     x = Arit() { p.addAll(x); }
     (
      "<=" x = Arit() {p.addAll(x); p.add(new MENORIGUAL());}
@@ -105,8 +105,6 @@ Vector<Instrucao> Expressao() :
      |
      ">"  x = Arit() {p.addAll(x); p.add(new MAIOR());}
      )* {return p;}
-    |
-    x = SysCall() {p.addAll(x); }
 }
 
 Vector<Instrucao> SysCall() :
@@ -114,18 +112,17 @@ Vector<Instrucao> SysCall() :
     Vector<Instrucao> p = new Vector<Instrucao>(0);
     Vector<Instrucao> x = new Vector<Instrucao>(0);
     Token t;
-    String s;
+    Token u;
 }
 {
     "["
+    u = <CHAMADA>
     (
-    s = "WALK"
-    |
-    s = "TAKE"
-    )
     t = <DIRECAO>
-    {String dir = t.image;}
-    {p.add(new SYSCALL(s, dir));}        
+    |
+    t = <QUESTION>
+    )
+    {p.add(SYSCALL.newSyscall(u.image, t.image));}        
     "]" {return p;}
 }
 
@@ -238,6 +235,9 @@ Vector<Instrucao> Fator() :
         p.addAll(x); 
         return p;
     }
+|
+    x = SysCall() {p.addAll(x); return p;}
+
 }
 
 Vector<Instrucao> Condicional() :
@@ -511,6 +511,10 @@ Vector<Instrucao> ItemPrint() :
 TOKEN :
 {
  < NUM: ( ["0"-"9"] )+ >
+|
+ <QUESTION: "Health" | "Crystals" | "Is_in_enemy_base" | "Enemy_base_distance" | "Base_distance" >
+|
+ <CHAMADA: "WALK" | "FIRE" | "BOMB" | "TAKE" | "DROP" | "LOOK" | "ASK">
 |
  <DIRECAO: "East" | "West" | "Southwest" | "Southeast" | "Northeast" | "Northwest" >
 |
