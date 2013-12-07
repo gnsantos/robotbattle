@@ -42,61 +42,61 @@ public class Battlefield extends JFrame{
     // Possíveis chamadas do robô ao sistema
     private enum SysCallOperations{
         WLK,
-	    FIRE,
-	    BOMB,
-	    TAKE,
+	FIRE,
+	BOMB,
+	TAKE,
         DROP,
-	    LOOK,
-	    ASK,
-	    NONE,
-	    EXC
+	LOOK,
+	ASK,
+	NONE,
+	EXC
     }
     
     // Possíveis direções de movimento (em um mapa hexagonal)
     private enum DirMov{
         E,
-	    W,
-	    SW,
-	    SE,
-	    NE,
-	    NW
+	W,
+	SW,
+	SE,
+	NE,
+	NW
     }
     
     // Possíveis perguntas a serem feitas pelo robô ao sistema
     private enum AskOptions {
         MY_HEALTH,
-	    NUMBER_OF_CRYSTAL,
+	NUMBER_OF_CRYSTAL,
         IS_IN_ENEMY_BASE,
-	    ENEMY_BASE_DISTANCE_Y,
+	ENEMY_BASE_DISTANCE_Y,
         ENEMY_BASE_DISTANCE_X,
-	    TEAM_BASE_DISTANCE_Y,
+	TEAM_BASE_DISTANCE_Y,
         TEAM_BASE_DISTANCE_X,
     }
     
     // Configuração do mapa
     static int[][] Terreno = {
-    {0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
-     {0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,4,4,2,2},
-    {2,0,0,0,0,7,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,4,4,4,2},
-     {2,2,0,0,7,7,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,4,4,2,2},
-    {2,2,2,0,7,7,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,2,2},
-     {2,2,1,1,7,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2,2,1,1,1,2,2},
-    {2,2,1,1,1,2,0,0,0,0,0,0,2,2,2,2,2,2,2,2,1,1,1,1,1,2,2,2,2,2,1,1,2,2},
-     {2,2,1,1,2,2,2,2,0,0,0,0,2,2,2,2,2,1,1,1,1,1,1,2,2,2,2,2,2,2,1,1,2,2},
-    {2,2,1,1,2,2,2,2,2,2,0,0,0,0,0,0,1,1,1,1,1,2,2,2,2,2,2,2,2,2,1,1,2,2},
-     {2,2,1,1,2,2,2,2,2,2,0,0,0,0,0,0,0,1,1,2,2,2,2,2,2,2,2,2,2,2,1,1,2,2},
-    {2,2,1,1,2,2,2,2,2,2,1,1,1,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,1,1,2,2},
-     {2,2,1,1,2,2,2,2,1,1,1,1,1,1,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,1,1,2,2},
-    {2,2,1,1,2,2,1,1,1,1,1,1,2,2,2,2,2,0,0,0,0,2,2,2,2,2,2,2,2,2,1,1,2,2},
-     {2,2,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,0,0,0,0,0,2,2,2,2,2,2,2,1,1,2,2},
-    {2,2,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,2,2,2,2,1,1,2,2},
-     {2,2,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,2,2,1,1,2,2},
-    {2,2,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,7,7,2,2},
-     {2,2,3,3,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,7,7,0,0,0},
-    {2,2,3,3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,7,7,0,0,0},
-     {2,2,3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0},
-    {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0},
-     {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0}
+	{0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
+	{0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,4,4,2,2},
+	{2,0,0,0,0,7,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,4,4,4,2},
+	{2,2,0,0,7,7,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,4,4,2,2},
+	{2,2,2,0,7,7,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,2,2},
+	{2,2,1,1,7,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2,2,1,1,1,2,2},
+	{2,2,1,1,1,2,0,0,0,0,0,0,2,2,2,2,2,2,2,2,1,1,1,1,1,2,2,2,2,2,1,1,2,2},
+	{2,2,1,1,2,2,2,2,0,0,0,0,2,2,2,2,2,1,1,1,1,1,1,2,2,2,2,2,2,2,1,1,2,2},
+	{2,2,1,1,2,2,2,2,2,2,0,0,0,0,0,0,1,1,1,1,1,2,2,2,2,2,2,2,2,2,1,1,2,2},
+	{2,2,1,1,2,2,2,2,2,2,0,0,0,0,0,0,0,1,1,2,2,2,2,2,2,2,2,2,2,2,1,1,2,2},
+	{2,2,1,1,2,2,2,2,2,2,1,1,1,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,1,1,2,2},
+	{2,2,1,1,2,2,2,2,1,1,1,1,1,1,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,1,1,2,2},
+	{2,2,1,1,2,2,1,1,1,1,1,1,2,2,2,2,2,0,0,0,0,2,2,2,2,2,2,2,2,2,1,1,2,2},
+	{2,2,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,0,0,0,0,0,2,2,2,2,2,2,2,1,1,2,2},
+	{2,2,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,2,2,2,2,1,1,2,2},
+	{2,2,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,2,2,1,1,2,2},
+	{2,2,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,7,7,2,2},
+	{2,2,3,3,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,7,7,0,0,0},
+	{2,2,3,3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,7,7,0,0,0},
+	{2,2,3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0},
+	{2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0},
+	{2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0}
     
     };
     
@@ -152,7 +152,7 @@ public class Battlefield extends JFrame{
         // Paralelamente, atualiza o componente gráfico
     	SwingUtilities.invokeLater(new Runnable() {
     		@Override
-		    public void run() {
+		public void run() {
     		    Battlefield bf = Battlefield.getInstanceOfBattlefield();
     		    bf.setVisible(true);
     		}
@@ -170,9 +170,9 @@ public class Battlefield extends JFrame{
         
         setSize(m, n);
         addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
+		public void windowClosing(WindowEvent e) {
+		    System.exit(0);
+		}
 	    });
         
         // Cria o gerenciador gráfico
@@ -187,12 +187,10 @@ public class Battlefield extends JFrame{
     
     public static void runtheGame(){
         int condition = 0;
-        
         // Rodar enquanto houver robôs executando ações
         while (true){
             condition = runRobotStateCycle();
             processRequestList();
-            
             if(condition == numRobots) {
                 quemGanhou = "Nobody";
                 break;
@@ -229,12 +227,10 @@ public class Battlefield extends JFrame{
     public static void processRequestList(){
         shuffleList();
         Iterator it = requestList.iterator();
-        
         // Itera pela lista de chamadas e executa cada uma delas
         while(it.hasNext()){
             executeCall((SystemRequest)it.next());
         }
-        
         requestList.clear();
         updateArena();
     }
@@ -342,35 +338,34 @@ public class Battlefield extends JFrame{
         BattleRobot sony = getRobotBySerial(request.getSerialNumberRequester());
         double sucessNum = 0;
         String sucessStr;
-        
         switch(op) {
-            case WLK: /*Anda pelo mapa*/
-                sucessNum = moveCall(request.getInstructionArgument(),request.getSerialNumberRequester());
-                sony.returnAnswer(sucessNum);
-                break;
-            case FIRE: /*Atira no oponente*/
-                sucessNum = fireCall(request.getInstructionArgument(),request.getSerialNumberRequester());
-                sony.returnAnswer(sucessNum);
-                break;
-            case BOMB: /*Planta uma bomba*/ 
-                sucessNum = bombCall(request.getInstructionArgument(),request.getSerialNumberRequester());
-                sony.returnAnswer(sucessNum);
-                break;
-            case TAKE: /*Pega um Cristal*/
-                takeCall(request.getInstructionArgument(), request.getSerialNumberRequester());
-                break;
-            case DROP: /*Solta um Cristal*/
-                dropCall(request.getInstructionArgument(), request.getSerialNumberRequester());
-                break;
-            case LOOK: /*Olha para uma direcao e retorna-se o que existe la*/
-                sucessStr = lookCall(request.getInstructionArgument(), request.getSerialNumberRequester());
-                sony.returnAnswer(sucessStr);
-                break;
-            case ASK: /*Faz perguntas ao sistema */
-                askCall(request.getInstructionArgument(),request.getSerialNumberRequester());
-                break;
-            default:
-                break;
+	case WLK: /*Anda pelo mapa*/
+	    sucessNum = moveCall(request.getInstructionArgument(),request.getSerialNumberRequester());
+	    sony.returnAnswer(sucessNum);
+	    break;
+	case FIRE: /*Atira no oponente*/
+	    sucessNum = fireCall(request.getInstructionArgument(),request.getSerialNumberRequester());
+	    sony.returnAnswer(sucessNum);
+	    break;
+	case BOMB: /*Planta uma bomba*/ 
+	    sucessNum = bombCall(request.getInstructionArgument(),request.getSerialNumberRequester());
+	    sony.returnAnswer(sucessNum);
+	    break;
+	case TAKE: /*Pega um Cristal*/
+	    takeCall(request.getInstructionArgument(), request.getSerialNumberRequester());
+	    break;
+	case DROP: /*Solta um Cristal*/
+	    dropCall(request.getInstructionArgument(), request.getSerialNumberRequester());
+	    break;
+	case LOOK: /*Olha para uma direcao e retorna-se o que existe la*/
+	    sucessStr = lookCall(request.getInstructionArgument(), request.getSerialNumberRequester());
+	    sony.returnAnswer(sucessStr);
+	    break;
+	case ASK: /*Faz perguntas ao sistema */				
+	    askCall(request.getInstructionArgument(),request.getSerialNumberRequester());
+	    break;
+	default:
+	    break;
         }
     }
     
@@ -556,50 +551,50 @@ public class Battlefield extends JFrame{
         AskOptions question = AskOptions.valueOf(asked);
         BattleRobot sony = getRobotBySerial(robotSerial);
         double x,y;
-
         switch(question){
-                // Devolve a quantidade de vida do robô
-            case MY_HEALTH:
-                sony.returnAnswer(sony.getHealth());
-                break;
-                // Devolve a quantidade de cristais do robô
-            case NUMBER_OF_CRYSTAL:
-                sony.returnAnswer(sony.getCrystalQuantity());
-                break;
-            case IS_IN_ENEMY_BASE:
-                if (sony.getTeam().equals("Team A"))
-                    x = 3;
-                else
-                    x = 4;
-                if (Terreno[sony.getY()][sony.getX()] == x) {
-                    sony.returnAnswer(1.0);
-                }
-                else {
-                    sony.returnAnswer(0.0);
-                }
-                // Calcula a distância de ponto a ponto do robô a ponta da base inimiga ou sua própria base
-            case ENEMY_BASE_DISTANCE_X:
-                if (sony.getTeam().equals("Team A")){
-                    sony.returnAnswer(getBaseX("Team B"));
-                }
-                else{
-                    sony.returnAnswer(getBaseX("Team A"));                }
-                break;
-            case ENEMY_BASE_DISTANCE_Y:
-                if (sony.getTeam().equals("Team A")){
-                    sony.returnAnswer(getBaseX("Team B"));
-                }
-                else{
-                    sony.returnAnswer(getBaseX("Team A"));
-                break;
-            case TEAM_BASE_DISTANCE_Y: /*Retorna no topo da pilha a coordenada Y e em seguida a coordenada X*/
-                sony.returnAnswer(getBaseY(sony.getTeam()));
-                break;
-            case TEAM_BASE_DISTANCE_X: /*Retorna no topo da pilha a coordenada Y e em seguida a coordenada X*/
-                sony.returnAnswer(getBaseX(sony.getTeam()));
-                break;
-            default:
-                break;
+	    // Devolve a quantidade de vida do robô
+	case MY_HEALTH:
+	    sony.returnAnswer(sony.getHealth());
+	    break;
+	    // Devolve a quantidade de cristais do robô
+	case NUMBER_OF_CRYSTAL:
+	    sony.returnAnswer(sony.getCrystalQuantity());
+	    break;
+	case IS_IN_ENEMY_BASE:
+	    if (sony.getTeam().equals("Team A"))
+		x = 3;
+	    else
+		x = 4;
+	    if (Terreno[sony.getY()][sony.getX()] == x) {
+		sony.returnAnswer(1.0);
+	    }
+	    else {
+		sony.returnAnswer(0.0);
+	    }
+	    // Calcula a distância de ponto a ponto do robô a ponta da base inimiga ou sua própria base
+	case ENEMY_BASE_DISTANCE_X:
+	    if (sony.getTeam().equals("Team A")){
+		sony.returnAnswer(getBaseX("Team B"));
+	    }
+	    else{
+		sony.returnAnswer(getBaseX("Team A"));                }
+	    break;
+	case ENEMY_BASE_DISTANCE_Y:
+	    if (sony.getTeam().equals("Team A")){
+		sony.returnAnswer(getBaseX("Team B"));
+	    }
+	    else{
+		sony.returnAnswer(getBaseX("Team A"));
+	    }
+	    break;
+	case TEAM_BASE_DISTANCE_Y: /*Retorna no topo da pilha a coordenada Y e em seguida a coordenada X*/
+	    sony.returnAnswer(getBaseY(sony.getTeam()));
+	    break;
+	case TEAM_BASE_DISTANCE_X: /*Retorna no topo da pilha a coordenada Y e em seguida a coordenada X*/
+	    sony.returnAnswer(getBaseX(sony.getTeam()));
+	    break;
+	default:
+	    break;
         }
     }
     
@@ -675,24 +670,24 @@ public class Battlefield extends JFrame{
     public static int xMove(int x, int y, String direction){
         DirMov dir = DirMov.valueOf( direction);
         switch(dir) {
-            case E:
-                return (x + 1 + Width)%Width;
-            case W:
-                return (x - 1 + Width)%Width;
-            case NW:
-            case SW:
-                if (y%2 == 0)
-                    return (x - 1 + Width)%Width;
-                else 
-                    return (x + Width)%Width;
-            case NE:
-            case SE:
-                if (y%2 != 0)
-                    return (x + 1 + Width)%Width;
-                else 
-                    return (x + Width)%Width;
-            default:
-                break;
+	case E:
+	    return (x + 1 + Width)%Width;
+	case W:
+	    return (x - 1 + Width)%Width;
+	case NW:
+	case SW:
+	    if (y%2 == 0)
+		return (x - 1 + Width)%Width;
+	    else 
+		return (x + Width)%Width;
+	case NE:
+	case SE:
+	    if (y%2 != 0)
+		return (x + 1 + Width)%Width;
+	    else 
+		return (x + Width)%Width;
+	default:
+	    break;
         }
         return x;
     }
@@ -700,17 +695,17 @@ public class Battlefield extends JFrame{
     public static int yMove(int x, int y, String direction){
         DirMov dir = DirMov.valueOf(direction);
         switch(dir) {
-            case E:
-            case W:
-                return y;
-            case NW:
-            case NE:
-                return (y - 1 + Height)%Height;
-            case SW:
-            case SE:
-                return (y + 1 + Height)%Height;
-            default:
-                break;
+	case E:
+	case W:
+	    return y;
+	case NW:
+	case NE:
+	    return (y - 1 + Height)%Height;
+	case SW:
+	case SE:
+	    return (y + 1 + Height)%Height;
+	default:
+	    break;
         }
         return y;   
     }
