@@ -126,9 +126,9 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
         this.Textura = imageArray;
         initExplosives();
     }
-
+    
     public void initExplosives(){
-
+        
         //X
         try {
             bombaX = ImageIO.read(this.getClass().getResource("/img/bombaX.png"));
@@ -137,7 +137,7 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
             e.printStackTrace();
             System.exit(1);
         }
-
+        
         //9
         try {
             bomba9 = ImageIO.read(this.getClass().getResource("/img/bomba9.png"));
@@ -146,7 +146,7 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
             e.printStackTrace();
             System.exit(1);
         }
-
+        
         //8
         try {
             bomba8 = ImageIO.read(this.getClass().getResource("/img/bomba8.png"));
@@ -155,7 +155,7 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
             e.printStackTrace();
             System.exit(1);
         }
-
+        
         //7
         try {
             bomba7 = ImageIO.read(this.getClass().getResource("/img/bomba7.png"));
@@ -164,7 +164,7 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
             e.printStackTrace();
             System.exit(1);
         }
-
+        
         //6
         try {
             bomba6 = ImageIO.read(this.getClass().getResource("/img/bomba6.png"));
@@ -173,7 +173,7 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
             e.printStackTrace();
             System.exit(1);
         }
-
+        
         //5
         try {
             bomba5 = ImageIO.read(this.getClass().getResource("/img/bomba5.png"));
@@ -182,7 +182,7 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
             e.printStackTrace();
             System.exit(1);
         }
-
+        
         //4
         try {
             bomba4 = ImageIO.read(this.getClass().getResource("/img/bomba4.png"));
@@ -191,7 +191,7 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
             e.printStackTrace();
             System.exit(1);
         }
-
+        
         //3
         try {
             bomba3 = ImageIO.read(this.getClass().getResource("/img/bomba3.png"));
@@ -200,7 +200,7 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
             e.printStackTrace();
             System.exit(1);
         }
-
+        
         //2
         try {
             bomba2 = ImageIO.read(this.getClass().getResource("/img/bomba2.png"));
@@ -209,16 +209,16 @@ class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do out
             e.printStackTrace();
             System.exit(1);
         }
-
+        
         //1
-try {
+        try {
             bomba1 = ImageIO.read(this.getClass().getResource("/img/bomba1.png"));
         }
         catch (Exception e) {
             e.printStackTrace();
             System.exit(1);
         }
-
+        
         BufferedImage[] bombArray = {bombaX, bomba1, bomba2, bomba3, bomba4, bomba5, bomba6, bomba7, bomba8, bomba9};
         this.ExplosivesTexture = bombArray;
     }
@@ -265,7 +265,7 @@ try {
             double psi = 0;
             if (posY%2 == 1)
                 psi = 0.6;
-                        
+            
             cristais[posX][posY] = new CelExtra( (int)((posX + psi)*Dx), posY*Dy, L, Textura[8+((posX*posY)%4)]);
             
         }
@@ -289,20 +289,20 @@ try {
             
             timer = b.updateBombTimer();
             countdown = b.getTimer();
-
+            
             if (posY%2 == 0){
                 psi = 0.2; 
                 minesField[posX][posY] = new CelExtra( (int)((posX+psi)*Dx), 
-                                                        (int)((posY+psi)*Dy), L, 
-                                                        ExplosivesTexture[countdown]);
+                                                      (int)((posY+psi)*Dy), L, 
+                                                      ExplosivesTexture[countdown]);
             }
             else{
                 psi = 0.3; 
                 minesField[posX][posY] = new CelExtra( (int)((posX+2.2*psi)*Dx), 
-                                                        (int)((posY+psi/2)*Dy), L, 
-                                                        ExplosivesTexture[countdown]); 
+                                                      (int)((posY+psi/2)*Dy), L, 
+                                                      ExplosivesTexture[countdown]); 
             }
-
+            
             if (timer){
                 mineExploded.push(b);
             }
@@ -319,7 +319,7 @@ try {
     public int getDy(){
         return this.Dy;
     }
-
+    
     public void removeLastExplosions(Stack<Bomb> mineExploded){
         while (!mineExploded.empty()){
             Bomb b = mineExploded.pop();
@@ -330,7 +330,7 @@ try {
     }
     
     Campo(int L, int W, int H, int[][] Terreno, Vector<BattleRobot> army, Vector<Crystal> crystalsVector, Stack<Bomb> bombStack) {
-	this.setBackground(Color.black);
+        this.setBackground(Color.black);
         this.Terreno = Terreno;
         this.m = Terreno[0].length;
         this.n = Terreno.length;
@@ -339,7 +339,7 @@ try {
         this.robos = new CelExtra[m][n];
         this.cristais = new CelExtra[m][n];
         this.minesField = new CelExtra[m][n];
-
+        
         Dx = (int) (2 * L * Math.sin(2 * Math.PI / 6)); // incremento em x para desenhar os hexágonos
         Dy = 3* L/2; // idem para y
         Larg = W; Alt = H;
