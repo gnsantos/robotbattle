@@ -106,7 +106,7 @@ public class Battlefield extends JFrame{
     static int Height = Terreno.length;
     static int Width = Terreno[0].length;
     
-    private static int numRobots = 1;       // Número de robôs ativos
+    private static int numRobots = 20;       // Número de robôs ativos
     private static int NUM_CRYSTALS = 15;   //Número de cristais ativos
     private static int NUM_DROPPED_CRYSTALS = 0;    // Número de cristais que já estão na base
     
@@ -468,9 +468,12 @@ public class Battlefield extends JFrame{
     // Planta uma bomba em uma célula
     public static double bombCall(String dir, int robotSerial){
         BattleRobot sony = getRobotBySerial(robotSerial);
-        Bomb plantedBomb = sony.placeTheBomb(xMove(sony.getX(), sony.getY(), dir),yMove(sony.getX(), sony.getY(), dir));
-        groundMine.push(plantedBomb);
-        return 1;
+        if (sony.hasBomb() > 0){
+            Bomb plantedBomb = sony.placeTheBomb(xMove(sony.getX(), sony.getY(), dir),yMove(sony.getX(), sony.getY(), dir));
+            groundMine.push(plantedBomb);
+            return 1;
+        }
+        else{ return 0; }
     }
     
     public static void processTheDamage(){
@@ -489,7 +492,9 @@ public class Battlefield extends JFrame{
                 if(i == hal.getX() && j == hal.getY()){
                     damageRobot(hal, BOMB_DAMAGE);
                     hal.setTakingDamage(3);
+                    DebugJav.sayCrash("CRASH HERE");
                 }
+            DebugJav.sayCrash("CRASH END");
             }
             auxMines.push(b);            
         }

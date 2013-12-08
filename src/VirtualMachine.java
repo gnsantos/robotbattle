@@ -113,6 +113,7 @@ class VirtualMachine{
         int address;
         StackableInterface stackable;
         String opCode = programArray.get(index)[0];
+        
         try{
             SetOperation myOperation = SetOperation.valueOf(opCode);
             switch (myOperation) {

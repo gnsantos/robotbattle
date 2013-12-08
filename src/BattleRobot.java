@@ -129,12 +129,13 @@ public class BattleRobot implements Robot{
     
     public Bomb placeTheBomb(int x, int y){
         int size = groundMine.size();
-        if (size > 0){
-            Bomb b = groundMine.remove(size-1);
-            b.plantTheBomb(x, y);
-            return b;
-        }
-        else return null;
+        Bomb b = groundMine.remove(size-1);
+        b.plantTheBomb(x, y);
+        return b;
+    }
+
+    public int hasBomb(){
+        return groundMine.size();
     }
 
     void setTakingDamage(int takingDamage){
