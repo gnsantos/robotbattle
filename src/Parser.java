@@ -6,28 +6,34 @@ import java.util.regex.Pattern;
 
 public class Parser{
 
-	/*Constant Variables help to open a file*/
-	final static String sourcePath = "/sourceCodes";
+    /*Constant Variables help to open a file*/
+    final static String sourcePath = "/sourceCodes";
     final static String directoryPath = System.getProperty("user.dir");
     final static String defaultSource = "defaultSource";
+    
 
+    public static String compileHighLevel(){
+	return "foo";
+    }
+
+    //Recebe uma string contendo um codigo fonte em linguagem de maquina e constroi o vetor de instrucoes da maquina virtual
     public static void parseToMe (LinkedList<String[]> programArray, Hashtable<String, Integer> labelsHash, String name) throws IOException{
 	String path = directoryPath + sourcePath;
 	File file;
 	FileReader reader;
 	BufferedReader buffer;
 	try{
-		// System.out.println("Path - " + directoryPath);
-		file = new File(path,name);
-		reader = new FileReader(file);
-		buffer =  new BufferedReader(reader);
+	    // System.out.println("Path - " + directoryPath);
+	    file = new File(path,name);
+	    reader = new FileReader(file);
+	    buffer =  new BufferedReader(reader);
 	
 	}
 	catch(IOException e){
-		System.out.println("I didn\'t find "+ name +"\nUsing default Source Code");
-		file = new File(path,defaultSource);
-		reader = new FileReader(file);
-		buffer =  new BufferedReader(reader);
+	    System.out.println("I didn\'t find "+ name +"\nUsing default Source Code");
+	    file = new File(path,defaultSource);
+	    reader = new FileReader(file);
+	    buffer =  new BufferedReader(reader);
 	}
 	String line;
 	int pc = 0;
