@@ -600,6 +600,7 @@ public class Battlefield extends JFrame{
 	    else {
 		sony.returnAnswer(0.0);
 	    }
+	    break;
 	    // Calcula a distância de ponto a ponto do robô a ponta da base inimiga ou sua própria base
 	case ENEMY_BASE_DISTANCE_X:
 	    if (sony.getTeam().equals("Team A")){
