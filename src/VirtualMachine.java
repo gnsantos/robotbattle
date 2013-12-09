@@ -266,7 +266,7 @@ class VirtualMachine{
                         makeSysCall(programArray.get(index)[0], programArray.get(index)[1]);
                         break;
                     case ASK:
-                        makeSysCall(programArray.get(index)[0], programArray.get(index)[1]);
+			makeSysCall(programArray.get(index)[0],programArray.get(index)[1]);
                         break;
                     case EXC:
                         makeSysCall(programArray.get(index)[0], programArray.get(index)[1]);

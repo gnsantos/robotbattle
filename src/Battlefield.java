@@ -209,7 +209,7 @@ public class Battlefield extends JFrame{
                 break;
             }
             else
-                pauseSystem(300);
+                pauseSystem(70);
         }
         endTheGame();
     }
@@ -573,51 +573,50 @@ public class Battlefield extends JFrame{
         
 
         switch(question){
-                // Devolve a quantidade de vida do robô
-            case MY_HEALTH:
-                sony.returnAnswer(sony.getHealth());
-                break;
-                // Devolve a quantidade de cristais do robô
-            case NUMBER_OF_CRYSTAL:
-                sony.returnAnswer(sony.getCrystalQuantity());
-                break;
-            case IS_IN_ENEMY_BASE:
-                if (sony.getTeam().equals("Team A"))
-                    x = 3;
-                else
-                    x = 4;
-                if (Terreno[sony.getY()][sony.getX()] == x) {
-                    sony.returnAnswer(1.0);
-                }
-                else {
-                    sony.returnAnswer(0.0);
-                }
-                break;
-                // Calcula a distância de ponto a ponto do robô a ponta da base inimiga ou sua própria base
-            case ENEMY_BASE_DISTANCE_X:
-                if (sony.getTeam().equals("Team A")){
-                    sony.returnAnswer(getBaseX("Team B"));
-                }
-                else{
-                    sony.returnAnswer(getBaseX("Team A"));
-                }
-                break;
-            case ENEMY_BASE_DISTANCE_Y:
-                if (sony.getTeam().equals("Team A")){
-                    sony.returnAnswer(getBaseX("Team B"));
-                }
-                else{
-                    sony.returnAnswer(getBaseX("Team A"));
-                }
-                break;
-            case TEAM_BASE_DISTANCE_Y: /*Retorna no topo da pilha a coordenada Y e em seguida a coordenada X*/
-                sony.returnAnswer(getBaseY(sony.getTeam()));
-                break;
-            case TEAM_BASE_DISTANCE_X: /*Retorna no topo da pilha a coordenada Y e em seguida a coordenada X*/
-                sony.returnAnswer(getBaseX(sony.getTeam()));
-                break;
-            default:
-                break;
+	    // Devolve a quantidade de vida do robô
+	case MY_HEALTH:
+	    sony.returnAnswer(sony.getHealth());
+	    break;
+	    // Devolve a quantidade de cristais do robô
+	case NUMBER_OF_CRYSTAL:
+	    sony.returnAnswer(sony.getCrystalQuantity());
+	    break;
+	case IS_IN_ENEMY_BASE:
+	    if (sony.getTeam().equals("Team A"))
+		x = 3;
+	    else
+		x = 4;
+	    if (Terreno[sony.getY()][sony.getX()] == x) {
+		sony.returnAnswer(1.0);
+	    }
+	    else {
+		sony.returnAnswer(0.0);
+	    }
+	    break;
+	    // Calcula a distância de ponto a ponto do robô a ponta da base inimiga ou sua própria base
+	case ENEMY_BASE_DISTANCE_X:
+	    if (sony.getTeam().equals("Team A")){
+		sony.returnAnswer(getBaseX("Team B"));
+	    }
+	    else{
+		sony.returnAnswer(getBaseX("Team A"));                }
+	    break;
+	case ENEMY_BASE_DISTANCE_Y:
+	    if (sony.getTeam().equals("Team A")){
+		sony.returnAnswer(getBaseX("Team B"));
+	    }
+	    else{
+		sony.returnAnswer(getBaseX("Team A"));
+	    }
+	    break;
+	case TEAM_BASE_DISTANCE_Y: /*Retorna no topo da pilha a coordenada Y e em seguida a coordenada X*/
+	    sony.returnAnswer(getBaseY(sony.getTeam()));
+	    break;
+	case TEAM_BASE_DISTANCE_X: /*Retorna no topo da pilha a coordenada Y e em seguida a coordenada X*/
+	    sony.returnAnswer(getBaseX(sony.getTeam()));
+	    break;
+	default:
+	    break;
         }
     }
     
@@ -739,7 +738,6 @@ public class Battlefield extends JFrame{
     /////////////////////////////////////////////////////////////////////////////////////////
     // Funções disponibilizadas às outras entidades para requisicoes a arena
     public static void systemCall(SystemRequest request){
-        // pauseSystem(100);
         requestList.add(request);
     }
     

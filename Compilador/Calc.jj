@@ -169,7 +169,7 @@ Vector<Instrucao> Fator() :
         return p;
     }
 |                                // Atribuicao
-     t=<ID> "=" x=Expressao() {    
+    t=<ID> "=" x=Expressao() {    
         p.addAll(x);
         p.add(new DUP());        // deixa uma cópia na pilha
 
@@ -177,12 +177,14 @@ Vector<Instrucao> Fator() :
         if ((Locais != null) && Locais.exists(t.image)) {
             v = Locais.get(t.image);
             p.add(new SETLV(v.pos));
-         }
-        else if (Nomes.exists(t.image)) { // existe como global?
+        }
+        else if (Nomes.exists(t.image)) {   // existe como global?
             v = Nomes.get(t.image);
             if (v instanceof Variavel)
                 p.add(new SETV(v.pos));
-            else p.add(new PRINT()); // colocar erro de compilacao aqui
+            else {                          // Se a variável não existir, lança um erro
+                throw new Error("\nA variável "+t.image+"referenciada não existe, nem em âmbito local nem em âmbito global.");
+            }
         }
         else {                    // cria local ou global, de acordo
             v = new Variavel();
@@ -207,7 +209,8 @@ Vector<Instrucao> Fator() :
             v = Nomes.get(t.image);
             if (v instanceof Variavel)
                 p.add(new PUSHV(v.pos));
-            else p.add(new PRINT()); // colocar erro de compilacao aqui
+            else
+                throw new Error("\nA variável "+t.image+"referenciada não existe, nem em âmbito local nem em âmbito global.");
         }
          else {
              // Variavel nao inicializada
@@ -315,13 +318,9 @@ Vector<Instrucao> Funcao() :
     TabSim Lorig;
 }
 {
-    "func" t=<ID> {                // t.image contém o nome
-        if (Nomes.exists(nome = t.image)) { // ja foi definida?
-            v = (Funcao)Nomes.get(nome);
-            // Isto NaO é um tratamento de erro decente!!!!!
-            // Melhore
-            p.add(new PUSH(new Cadeia("Nome ja usado:" + nome)));
-            p.add(new PRINT());
+    "func" t=<ID> {                 // t.image contém o nome
+        if (Nomes.exists(nome = t.image)) {     // ja foi definida?
+            throw new Error("\nDefinição duplicada de função: a função "+t.image+" já foi definida anteriormente.");
         }
         else {                    // cria a funcao
             v = new Funcao(tam+1);
@@ -378,15 +377,11 @@ Vector<Instrucao> Chamada() :
 {
     t=<ID> {                        // nome da funcao
         if (Nomes.exists(nome = t.image)) {
-            f = (Funcao) Nomes.get(t.image);    // Aqui gera erro se nao for funcao
+            f = (Funcao) Nomes.get(t.image);
             e = f.pos;
         }
-        else { 
-            e  = new Endereco(-1);  //MUITO ARRISCADO!!!! Colete os
-                                    //pontos na tabela de simbolos e
-                                    //corrija os pontos depois
-            f = new Funcao(0);
-            System.out.println("Erro no uso de "+nome);
+        else {              // Se a função não existe, joga um erro
+            throw new Error("\nAchei uma chamada à função "+t.image+", mas não achei nenhuma definição dela.\nDica: tenha certeza de que o nome está certo ou coloque a definição da função ANTES da chamada.");
         }
         Lorig = Locais;             // disponibiliza o nome dos argumentos
         Locais = f.Vars;

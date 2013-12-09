@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
+		2495646C185602F4003EF183 /* executar */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file; path = executar; sourceTree = "<group>"; };
 		24E0884B1850DF3C00FAD6A2 /* Calc.jj */ = {isa = PBXFileReference; lastKnownFileType = text; path = Calc.jj; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.java; };
 		24E0885A1850DF3C00FAD6A2 /* fatorial */ = {isa = PBXFileReference; lastKnownFileType = text; path = fatorial; sourceTree = "<group>"; };
 		24E0885F1850DF3C00FAD6A2 /* hanoi */ = {isa = PBXFileReference; lastKnownFileType = text; path = hanoi; sourceTree = "<group>"; };
@@ -28,6 +29,7 @@
 		249564661855F35B003EF183 /* Code */ = {
 			isa = PBXGroup;
 			children = (
+				2495646C185602F4003EF183 /* executar */,
 				24E0885A1850DF3C00FAD6A2 /* fatorial */,
 				24E0885F1850DF3C00FAD6A2 /* hanoi */,
 				24E088671850DF3C00FAD6A2 /* Makefile */,
