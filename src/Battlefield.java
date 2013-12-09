@@ -338,8 +338,6 @@ public class Battlefield extends JFrame{
             else
                 k--;
         }
-        System.out.println("Team A : " + teamAarmy);
-        System.out.println("Team B : " + teamBarmy);
     }
     
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -549,14 +547,10 @@ public class Battlefield extends JFrame{
     }
     
     public static void damageRobot(BattleRobot hal, double x) {
-        System.out.println("HAL SERIAL : " + hal.saySerialNumber() + "\n");
-        System.out.println("LIFE ANTES : " + hal.getHealth() + "\n");
-
         if(hal.getHealth() > 0)
             hal.updateHealth(x);
         else
             robotDied(hal);
-        System.out.println("LIFE DEPOIS : " + hal.getHealth() + "\n");
     }
     
     // Desliga o robo se seu HP chegar a 0
