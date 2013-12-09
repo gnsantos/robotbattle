@@ -14,7 +14,7 @@ public class BattleRobot implements Robot{
     private VirtualMachine vm;
     private String robotState;
     private final Integer MAX_CRYSTAL = 3;
-    private final Integer MAX_BOMB = 10;
+    private final Integer MAX_BOMB = 50;
     private Vector<Bomb> groundMine = new Vector<Bomb>(MAX_BOMB);
     private int takingDamage = 0;
     
@@ -129,12 +129,13 @@ public class BattleRobot implements Robot{
     
     public Bomb placeTheBomb(int x, int y){
         int size = groundMine.size();
-        if (size > 0){
-            Bomb b = groundMine.remove(size-1);
-            b.plantTheBomb(x, y);
-            return b;
-        }
-        else return null;
+        Bomb b = groundMine.remove(size-1);
+        b.plantTheBomb(x, y);
+        return b;
+    }
+
+    public int hasBomb(){
+        return groundMine.size();
     }
 
     void setTakingDamage(int takingDamage){

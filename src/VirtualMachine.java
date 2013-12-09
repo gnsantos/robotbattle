@@ -112,8 +112,8 @@ class VirtualMachine{
         boolean decision;
         int address;
         StackableInterface stackable;
-                
         String opCode = programArray.get(index)[0];
+        
         try{
             SetOperation myOperation = SetOperation.valueOf(opCode);
             switch (myOperation) {
@@ -318,12 +318,12 @@ class VirtualMachine{
     private void addInstructionCount(){
         this.instructionCounter++;
     }
-    private void makeSysCall(String sysCallCode, String sysCallArg){
+    private void makeSysCall(String sysCallCode, String sysCallArg){				
         setInstructionCounter(0);
 //        this.myState = MachineStates.valueOf("CALLING");
         SystemRequest newReq = new SystemRequest(sysCallCode,sysCallArg,serialNumber);
         Battlefield.systemCall(newReq);
-//        this.myState = MachineStates.valueOf("WAITING");
+	this.myState = MachineStates.valueOf("WAITING");		
     }
     
     public int runCode(){

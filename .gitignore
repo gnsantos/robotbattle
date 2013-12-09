@@ -25,3 +25,8 @@ monitor/
 imagens\ conceituais/
 exemplos/
 vinis-stuff/
+
+# Tex
+*.aux
+*.log
+*.synctex.gz

@@ -1,0 +1,12 @@
+x = [ASK Health];
+print "Minha saude eh ", x;
+i = 0;
+j = 0;
+while(i < 34) do{
+	while(j < 22) do{
+		[WALK Southeast];
+		j = j +1;
+	}
+	[WALK East];
+	i = i + 1;
+}
