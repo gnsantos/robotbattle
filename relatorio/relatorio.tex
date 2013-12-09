@@ -7,8 +7,9 @@
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage[colorinlistoftodos]{todonotes}
+\usetikzlibrary{arrows,positioning,automata}
 
-\title{Relatório Exercício Programa III - Batalha de Robôs}
+\title{Relatório Exercício Programa IV - Batalha de Robôs}
 \author{
 Fellipe Souto Sampaio \footnote{Número USP: 7990422 e-mail: fellipe.sampaio@usp.com}\\
 Gervásio Protásio dos Santos Neto \footnote{Número USP: 7990996 e-mail: gervasio.neto@usp.br}\\
@@ -31,82 +32,139 @@ Instituto de Matemática e Estatística - IME USP \\
 \end{center}
 
 \newpage
+\tableofcontents
+\newpage
 
 \section{Introdução}
 
-Esse relatório se destina a explicar a implementação do Terceiro Exercicío-Programa da disciplina de Laborátorio de Programação II.\\
-Nesta etapa do projeto houve um refinamento das etapas anteriores através da implementação de uma interface gráfica e do processamento das chamadas ao sistema.\\
-No tocante gráfico utilizou-se das bibliotecas padrões do java Swing e Jframe como arcabouço para criação de uma arena virtual e para representação das demais entidades que estão presente no jogo.\\
-Na maquina virtual houve uma otimização do seu funcionamento através de certas mudanças feitas no Parser\\
-Por fim diversas chamadas ao sistema foram implementadas e estão operantes e visualizaveis através da interface gráfica.
+Esse relatório se destina a explicar a implementação da quarta e última fase Exercicío-Programa da disciplina de Laborátorio de Programação II bem como os resultados finais que obtivemos ao longo do desenvolvimento do projeto.\\
+Nesta etapa do projeto houve a implementação do compilador da linguagem de alto nível para o baixo, que é intendido pela máquina virtual. O conjunto de instruções , chamadas ao sistema e operações lógico-aritméticas, foram adaptados dentro do modelo fornecido pelo professor e expandindo sempre que fosse necessário. \\
+Na parte gráfica houve uma refatoração total dos sprites usados ao longo do jogo. Alem disso mudou-se a cor do background, sumiu-se com as linhas brancas que contornavam cada hexagono e por fim implementou-se janelas interativas que informam quando o jogo termina.\\
+Na arena foi corrigido diversos bugs relacionados com o funcionamento das bombas e do processamento do dano nos robôs.
 
 \newpage
-\section{Interface Gráfica}
-\subsection{Aspectos Estruturais}
-falar sobre como é dividido
+\section{Compilador}
+\subsection{Composição Léxica}
+quais as palavras reservadas
+\subsection{Sintaxe}
+como é a estrutura da linguagem
+\subsection{Semântica}
+qual o significado de cada coisa
+
+\section{O Robô}
+O robô é, depois da arena, o elemento principal na execução do jogo, toda a dinâmica de interação que acontece dentro do jogo é resultado de alguma ação dessa inteligência autônoma. 
+\subsection{A Entidade}
+A entidade robô foi criada como uma interface na intenção que fosse possível implementar mais de um tipo de robô, todavia, durante o desenvolvimento optamos por implementar apenas uma espécie de maquina, o robô de batalha.\\\\
+O robô de batalha busca modelar todos os atributos e comportamentos que um robô deste tipo teria. Cada robô tem o seguinte conjunto de atributos:
+
+\begin{itemize}
+\item[-]{Nome}
+\item[-]{Número serial}
+\item[-]{Time}
+\item[-]{Energia}
+\item[-]{Coordenadas}
+\item[-]{Quantidade de cristais}
+\item[-]{Estado do robô}
+\item[-]{Maquina virtual}
+\item[-]{Vetor de bombas}
+\item[-]{Flag de dano}
+\end{itemize}
+Cada atributo desempenha um papel no funcionamento da entidade, como por exemplo, o vetor de bombas diz quantas bombas o robô colocou no chão e estão ativas ou ainda a flag de dano que informa ao sistema se o robô está sofrendo dano, para que assim seu sprite seja trocado.
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[scale=1]{images/roboA3.png}
+\caption{Sprite do robo do time azul}
+\end{center}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[scale=1]{images/roboB2.png}
+\caption{Sprite do robo do time vermelho}
+\end{center}
+\end{figure}
+
+
+
+\subsection{A Maquina Virtual}
+A maquina virtual atua como ator principal no comportamento do robô, executando as chamadas ao sistema e o processamento do vetor de instruções. O conjunto de instruções que serão executadas é lido linearmente, caso uma chamada ao sistema seja feita ou se o limite de linhas de código processada atingir seu máximo uma interrupção é criada, colocando o robô em estado \textit{WAITING}. A chamada ao sistema é feita através do método \textbf{makeSysCall}, um método estático da Arena que permite que cada máquina virtual insira um objeto do tipo \textbf{SystemRequest} em uma lista, que ao final da rodada será aleatoriamente processada.
+\subsubsection{Fluxo de Processamento}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+vou editar
+
+
+\begin{center}
+\textbf{\text{\Large  Anexo 3 - Fluxo de funcionamento da interface gráfica}}
+\begin{tikzpicture}[>=stealth',shorten >=1pt,node distance=3cm,on grid,initial/.style    ={}]
+  \node[state]          (P)                         {$PrtF$};
+  \node[state]          (B) [ left =of P]           {$FrtF$};
+  \node[state]          (C) [left =of B]            {$STall$};
+  \node[state]          (F) [below right   =of P]    {$inK$};
+  \node[state]          (M) [below left =of F]     {$NxtF$};
+  \node[state]          (G) [above left =of M]           {$outK$};
+  \node[state]          (R) [below left =of G]           {$endE$};
+\tikzset{mystyle/.style={->,double=orange}} 
+\tikzset{every node/.style={fill=white}} 
+\path (C)     edge [mystyle]    node   {$1$} (B)
+      (B)     edge [mystyle]    node   {$2$} (P)
+      (P)     edge [mystyle]    node   {$3$} (F)  
+      (F)     edge [mystyle]    node   {$4$} (M)
+      (M)     edge [mystyle]    node   {$5$} (G)
+      (G)     edge [mystyle]    node   {$6$} (P)
+      (G)     edge [mystyle]    node   {$7$} (R);
+\end{tikzpicture}
+\end{center}
+\textbf{\text{  Fluxo de funcionamento da interface gráfica - Legenda }}
+\begin{enumerate}
+\item[-]{STall - Inicialização do allegro}
+\item[-]{FrtF - Criação do primero frame}
+\item[-]{PrtF - Impressão do frame}
+\item[-]{inK - Leitura de um evento do teclado}
+\item[-]{NxtF - Criação dos novos frames}
+\item[-]{outK - Execução de um evento  do teclado}
+\item[-]{endE - Fim da execução}
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{A Arena}
+
+\subsection{Aspectos Gráficos}
+
+\subsubsection{Arena}
+\subsubsection{Robos}
+\subsubsection{Bombas}
+\subsubsection{Cristais}
+\subsubsection{Terreno e Base}
+
 \subsection{Aspectos Funcionais}
-Explicar sucintamente como funciona
-elencar a estrutura de dependência das classes e falar um pouco sobre os principais métodos
+Vou editar (Fellipe)
+\subsubsection{O Processamento dos Robôs}
+Vou editar (Fellipe)
+\subsubsection{As Chamadas ao Sistema}
+Vou editar (Fellipe)
+\subsubsection{A Atualização da Arena}
+Vou editar (Fellipe)
+\subsubsection{O Fluxo de Funcionamento}
+Vou editar (Fellipe)
 
-\section{Robôs}
-\subsection{Battlerobot}
-\subsection{Maquina Virtual}
-\subsection{Syscall}
-\subsection{Parser}
+\section{Funcionamento}
+\subsection{Escrevendo e Compilando um Programa}
+explicar via exemplo
+\subsection{Compilando o Jogo}
+como compilar e explicar o que é cada pasta
+\subsection{Executando o Jogo}
+como executar e várias screenshots
 
-Uma das principais mudanças em relação à fase anterior reside na classe Parser. Anteriormente cada time possuía um código fonte próprio, restringindo a diversidade de funcionamento dos robôs em campo. Nesta fase Parser foi alterado de forma que agora seja possível que cada robo tenha um source code próprio, aumentando substancialmente a gama de possibilidades do jogo. Para isso o sistema procura um arquivo chamado \textit{sourceCode-x}, onde x varia de 0 até n-1 quantidade de robôs em jogo. Caso o código fonte não seja encontrado o jogo carrega no robô o código \textit{defaultSource}, que possui um conjunto de instruções básicas definidas pelo usuário, essa decisão é tomada com intuito de possibilitar o funcionamento do jogo mesmo que nenhum código tenha sido escrito para um robô em específico.\\
-Por fim utilizou-se algumas técnicas do Java para navegação através de diretórios para centralizar os códigos fonte utilizados ao longo do jogo. O diretório padrão de leitura dos códigos é \textit{sourceCodes}, subdiretório da pasta principal do Battlefield.
-
-
-
-
-\section{Battlefield}
-\subsection{Funcionamento do jogo}
-O laço principal de funcionamento do jogo acontece na função \textit{runTheGame}. Esta função pode ser dividida em três etapas:
-
-\begin{itemize}
-\item[•]{Execução de um ciclo de instruções da máquina.}
-\item[•]{Processamento das requisições ao sistema feitas pelos robôs.}
-\item[•]{Verificação se a condição de funcionamento do laço ainda é verdadeira.}
-\end{itemize}
-
-No primeiro item a arena navega linearmente através do vetor de robôs deixando com que cada um execute um número $\psi$ fixo de instruções de máquina. A arena espera que o robô faça uma requisição ao sistema durante essas ins-truções, todavia se o robô executar $\psi$ instruções sem nenhuma chamada ao sistema a arena causa uma interrupção no processamento da maquina virtual e força que esta faça uma chamada vazia, para assim permitir que outros robôs executem suas instruções evitando que o sistema fique preso em um looping infinito. As chamadas ao sistema são feitas através do método \textit{systemCall}, no qual cada robô insere na lista requesList um pedido, modelado através do objeto \textit{SystemRequest}. 
-
-Na segunda etapa o sistema, que ja terminou de processar todas os robos, começa a processar as requisições que foram feitas. Embora o vetor de robôs sempre seja percorrido linearmente o sistema aleatoriza o vetor de requisições, evitado com que um robô tenha vantagem sobre outro. Após a aleatorização da lista um iterador percorre-a executando cada chamada através do método \textit{executeCall}. A arena é atualizadas graficamente ao final desta etapa.
-
-E no fim o sistema verifica se a condição que o mantem dentro do laço do jogo ainda é verdadeira. Ao navegar linearmente através do vetor de robôs o sistema conta quantos estão inativos\footnote{entende-se \textit{inativo} como um robô que chegou a o fim da sua execução (comando END) ou que foi destruído durante a batalha.}, caso o número de robôs inativos seja o mesmo de robôs em jogo o laço é quebrado e a execução do jogo termina. 
-
-\subsection{Processamento das syscalls}
-Cada chamada ao sistema é um solicitação muito bem definida para que não exis-ta ambiguidade. Em cada uma dessas chamadas uma ação diferente acontece, como é explicitado a seguir:
-
-\begin{itemize}
-\item[•]{WLK - Anda pela arena utilizando uma das seis direções possíveis (leste,oeste, nordeste,sudeste,sudoeste e noroeste).}
-\item[•]{FIRE - Atira na direção solicitada.}
-\item[•]{BOMB - Planta uma bomba na direção solicitada e a cada nova rodada o timer é decrementado.}
-\item[•]{LOOK - Olha para uma direção solicitada e pergunta o que existe ai, podendo ser cristal, bomba, inimigo, amigo ou nada.}
-\item[•]{ASK - Faz perguntas ao sistema sobre a quantidade de energia que um robô tem, sua quantidade de cristais, a distância em linha reta até a base inimiga e o mesmo calculo de distância até a sua base.}
-\end{itemize}
-\subsection{Atualização da arena}
-Explicar como funciona a atualização da arena
-
-\section{Compilação e funcionamento}
-Para compilar utilize o makefile que está dentro da pasta com o comando \textit{make} via terminal. A classe principal é Battlefield.java e para executar o programa é necessário escrever os códigos fonte para os robôs e guardar na pasta \textit{sourceCodes} com o nome apropriado, caso contrário pode-se utilizar o \textit{defaultCode} como código default para os robôs. A parte final dos aspectos do jogo, como carregar o cristal até a base inimiga e poder visualizar o dano causado em um robô por um tiro ou explosão, ainda serão implementados na fase seguinte, listamos a seguir as mudanças programadas para a próxima fase
-
-
-\subsection{Tarefas futuras}
-\begin{itemize}
-\item[]{Implementação das ultimas instruções do sistema.}
-\item[•]{Melhora em certas animações.}
-\item[•]{Limpeza do código quanto a disposição das classes.}
-\item[•]{Redução de redundâncias e pleonasmos no código.}
-\item[•]{Separação dos arquivos quanto ao seu tipo através de pastas.}
-\item[•]{Compactação em um arquivo jar.}
-\end{itemize}
-
-Mais alguma?
-->Melhoridas na parte gráfica
-	-->Background
-	-->Tamanho fixo da janela
-	-->Contorno dos hexagonos
-
+\section{Conclusão e Feedback}
+escrever uma conclusão e dar um pequeno feedback do que achou do projeto, como foi o desenvolvimento, o que poderia ser melhorado e como foi para você desenvolver.
+\subsection{Fellipe}
+Vou editar (Fellipe)
+\subsection{Gervásio}
+\subsection{Vinícius}
 \end{document}
