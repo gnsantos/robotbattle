@@ -106,7 +106,7 @@ public class Battlefield extends JFrame{
     static int Height = Terreno.length;
     static int Width = Terreno[0].length;
     
-    private static int numRobots = 8;       // Número de robôs ativos
+    private static int numRobots = 4;       // Número de robôs ativos
     private static int NUM_CRYSTALS = 15;   //Número de cristais ativos
     private static int NUM_DROPPED_CRYSTALS = 0;    // Número de cristais que já estão na base
     
@@ -199,7 +199,7 @@ public class Battlefield extends JFrame{
                 break;
             }
             else
-                pauseSystem(80);
+                pauseSystem(100);
         }
         endTheGame();
     }
@@ -576,6 +576,7 @@ public class Battlefield extends JFrame{
 	    else {
 		sony.returnAnswer(0.0);
 	    }
+	    break;
 	    // Calcula a distância de ponto a ponto do robô a ponta da base inimiga ou sua própria base
 	case ENEMY_BASE_DISTANCE_X:
 	    if (sony.getTeam().equals("Team A")){
