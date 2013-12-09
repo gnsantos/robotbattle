@@ -91,18 +91,11 @@ Cada atributo desempenha um papel no funcionamento da entidade, como por exemplo
 A maquina virtual atua como ator principal no comportamento do robô, executando as chamadas ao sistema e o processamento do vetor de instruções. O conjunto de instruções que serão executadas é lido linearmente, caso uma chamada ao sistema seja feita ou se o limite de linhas de código processada atingir seu máximo uma interrupção é criada, colocando o robô em estado \textit{WAITING}. A chamada ao sistema é feita através do método \textbf{makeSysCall}, um método estático da Arena que permite que cada máquina virtual insira um objeto do tipo \textbf{SystemRequest} em uma lista, que ao final da rodada será aleatoriamente processada.
 \subsubsection{Fluxo de Processamento}
 
-\section{Compilação e funcionamento}
-Para compilar utilize comando ant via terminal; será criado um arquivo executável \textit{BF.jar} na pasta \textit{dist/}. Para executar o programa é necessário escrever os códigos fonte para os robôs e guardar na pasta \textit{sourceCodes} com o nome apropriado (sourceCode-0, sourceCode-1, etc); caso contrário, será usado o \textit{defaultSource} como o arquivo padrão para os robôs.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Tarefas futuras}
-\begin{itemize}
-\item{Implementação das ultimas instruções do sistema.}
-\item{Melhora em certas animações.}
-\item{Limpeza do código quanto a disposição das classes.}
-\item{Redução de redundâncias e pleonasmos no código.}
-\item{Separação dos arquivos quanto ao seu tipo através de pastas.}
-\item{Compactação em um arquivo jar.}
-\end{itemize}
+vou editar
+
 
 \begin{center}
 \textbf{\text{\Large  Anexo 3 - Fluxo de funcionamento da interface gráfica}}
@@ -112,7 +105,7 @@ Para compilar utilize comando ant via terminal; será criado um arquivo executá
   \node[state]          (C) [left =of B]            {$STall$};
   \node[state]          (F) [below right   =of P]    {$inK$};
   \node[state]          (M) [below left =of F]     {$NxtF$};
-  \node[state]          (G) [above left =of M]           {$outK$};
+  \node[state]          (G) [above left =of M]           {$outK$};z
   \node[state]          (R) [below left =of G]           {$endE$};
 \tikzset{mystyle/.style={->,double=orange}} 
 \tikzset{every node/.style={fill=white}} 
