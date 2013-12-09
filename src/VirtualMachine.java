@@ -248,28 +248,28 @@ class VirtualMachine{
                 SysCallOperations mySysCall = SysCallOperations.valueOf(opCode);
                 switch(mySysCall){
                     case WLK:
-                        makeSysCall(programArray.get(index)[0],programArray.get(index)[1]);
+                        makeSysCall(programArray.get(index)[0], programArray.get(index)[1]);
                         break;
                     case BOMB:
-                        makeSysCall(programArray.get(index)[0],programArray.get(index)[1]);
+                        makeSysCall(programArray.get(index)[0], programArray.get(index)[1]);
                         break;
                     case FIRE:
-                        makeSysCall(programArray.get(index)[0],programArray.get(index)[1]);
+                        makeSysCall(programArray.get(index)[0], programArray.get(index)[1]);
                         break;
                     case TAKE:
-                        makeSysCall(programArray.get(index)[0],programArray.get(index)[1]);
+                        makeSysCall(programArray.get(index)[0], programArray.get(index)[1]);
                         break;
                     case DROP:
-                        makeSysCall(programArray.get(index)[0],programArray.get(index)[1]);
+                        makeSysCall(programArray.get(index)[0], programArray.get(index)[1]);
                         break;
                     case LOOK:
-                        makeSysCall(programArray.get(index)[0],programArray.get(index)[1]);
+                        makeSysCall(programArray.get(index)[0], programArray.get(index)[1]);
                         break;
                     case ASK:
-                        makeSysCall(programArray.get(index)[0],programArray.get(index)[1]);
+                        makeSysCall(programArray.get(index)[0], programArray.get(index)[1]);
                         break;
                     case EXC:
-                        makeSysCall(programArray.get(index)[0],programArray.get(index)[1]);
+                        makeSysCall(programArray.get(index)[0], programArray.get(index)[1]);
                         break;
                     default:
                         System.out.println("ERRO!");

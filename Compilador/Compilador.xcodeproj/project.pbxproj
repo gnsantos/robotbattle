@@ -25,7 +25,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
-		24E0883F1850DF3C00FAD6A2 = {
+		249564661855F35B003EF183 /* Code */ = {
 			isa = PBXGroup;
 			children = (
 				24E0885A1850DF3C00FAD6A2 /* fatorial */,
@@ -35,6 +35,14 @@
 				24E0887F1850DF3C00FAD6A2 /* simples */,
 				24E088801850DF3C00FAD6A2 /* simples2 */,
 				24E0888B1850DF3C00FAD6A2 /* yara */,
+			);
+			name = Code;
+			sourceTree = "<group>";
+		};
+		24E0883F1850DF3C00FAD6A2 = {
+			isa = PBXGroup;
+			children = (
+				249564661855F35B003EF183 /* Code */,
 				24E0884B1850DF3C00FAD6A2 /* Calc.jj */,
 				24E088E91850E10D00FAD6A2 /* Calc.java */,
 				24E088EC1850E10D00FAD6A2 /* Computador.java */,

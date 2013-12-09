@@ -13,8 +13,8 @@ import java.lang.*;
 import java.util.*;
 import java.io.*;
 
-class Campo extends JPanel { // Campo representa o mapa da arena, e cuida do output gráfico
-    int Larg, Alt, Dx, Dy; // largura do terreno, altura do terreno, incremento em x e incremento em y
+class Campo extends JPanel {    // Campo representa o mapa da arena, e cuida do output gráfico
+    int Larg, Alt, Dx, Dy;      // largura do terreno, altura do terreno, incremento em x e incremento em y
     BufferedImage grama, terra, agua, ponte, baseA, baseB, roboA, roboB, roboAd, roboBd, crystalN, crystalW, crystalS, crystalE; // texturas a serem carregadas para o terreno
     BufferedImage bombaX, bomba0, bomba1, bomba2, bomba3, bomba4, bomba5, bomba6, bomba7, bomba8, bomba9;
     int[][] Terreno;

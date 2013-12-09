@@ -7,7 +7,7 @@ public class StackElement{
 	public MemoryArray memorySegment = new MemoryArray(MAX);
 	public Operation myOperation = new Operation();
 
-	private boolean itsEmpty(){
+	private boolean isEmpty(){
 		return (stackTeste.size() == 0);
 	}
 	public void pile(double valor){
@@ -50,7 +50,7 @@ public class StackElement{
 	//Pop da pilha
 
 	public void discardTop(){
-		if (!itsEmpty()){
+		if (!isEmpty()){
 			stackTeste.remove(stackSize() -1);
 		}
 	}

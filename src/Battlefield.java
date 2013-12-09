@@ -551,11 +551,12 @@ public class Battlefield extends JFrame{
     /////////////////////////////////////////////////////////////////////////////////////////
     // Pergunta coisas para o sistema
     
-    public static void  askCall(String asked, int robotSerial){
+    public static void askCall(String asked, int robotSerial){
         // "Executa" a pergunta
         AskOptions question = AskOptions.valueOf(asked);
         BattleRobot sony = getRobotBySerial(robotSerial);
         double x,y;
+        
 
         switch(question){
                 // Devolve a quantidade de vida do robô
@@ -577,13 +578,15 @@ public class Battlefield extends JFrame{
                 else {
                     sony.returnAnswer(0.0);
                 }
+                break;
                 // Calcula a distância de ponto a ponto do robô a ponta da base inimiga ou sua própria base
             case ENEMY_BASE_DISTANCE_X:
                 if (sony.getTeam().equals("Team A")){
                     sony.returnAnswer(getBaseX("Team B"));
                 }
                 else{
-                    sony.returnAnswer(getBaseX("Team A"));                }
+                    sony.returnAnswer(getBaseX("Team A"));
+                }
                 break;
             case ENEMY_BASE_DISTANCE_Y:
                 if (sony.getTeam().equals("Team A")){
@@ -591,6 +594,7 @@ public class Battlefield extends JFrame{
                 }
                 else{
                     sony.returnAnswer(getBaseX("Team A"));
+                }
                 break;
             case TEAM_BASE_DISTANCE_Y: /*Retorna no topo da pilha a coordenada Y e em seguida a coordenada X*/
                 sony.returnAnswer(getBaseY(sony.getTeam()));
