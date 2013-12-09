@@ -106,7 +106,7 @@ public class Battlefield extends JFrame{
     static int Height = Terreno.length;
     static int Width = Terreno[0].length;
     
-    private static int numRobots = 8;       // Número de robôs ativos
+    private static int numRobots = 4;       // Número de robôs ativos
     private static int NUM_CRYSTALS = 15;   //Número de cristais ativos
     private static int NUM_DROPPED_CRYSTALS = 0;    // Número de cristais que já estão na base
     
@@ -123,6 +123,8 @@ public class Battlefield extends JFrame{
     public static Campo visualComponent;        // O controlador da parte gmovecráfica
     
     public static String quemGanhou;
+    public static int teamAarmy = 0;
+    public static int teamBarmy = 0;
     
     
     // Transforma a classe em Singleton:
@@ -192,14 +194,22 @@ public class Battlefield extends JFrame{
             condition = runRobotStateCycle();
             processRequestList();
             if(condition == numRobots) {
-                quemGanhou = "Nobody";
+                if (teamAarmy == 0){
+                    quemGanhou = "Blue Team";
+                }
+                else if(teamBarmy == 0){
+                    quemGanhou = "Red Team";
+                }
+                else{
+                    quemGanhou = "Nobody";                   
+                }
                 break;
             }
             else if(NUM_DROPPED_CRYSTALS == 1) {
                 break;
             }
             else
-                pauseSystem(80);
+                pauseSystem(100);
         }
         endTheGame();
     }
@@ -300,7 +310,7 @@ public class Battlefield extends JFrame{
     }
     
     static void initArena(int mapHeight, int mapWidth) throws IOException{
-        Random gen = new Random();
+        Random gen = new Random(2);
         int i;
         int j;
         
@@ -310,9 +320,11 @@ public class Battlefield extends JFrame{
             j = gen.nextInt(mapWidth);
             if (k < numRobots/2){
                 insertArmy(codeName + "-" + k,k,"A","TX",j,i,gen.nextInt(1000));
+                teamAarmy++;
             }
             else{
                 insertArmy(codeName + "-" + k,k,"B","ZT",j,i,gen.nextInt(1000));
+                teamBarmy++;
             }
         }
         
@@ -326,6 +338,8 @@ public class Battlefield extends JFrame{
             else
                 k--;
         }
+        System.out.println("Team A : " + teamAarmy);
+        System.out.println("Team B : " + teamBarmy);
     }
     
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -494,7 +508,7 @@ public class Battlefield extends JFrame{
                     }
                     damageRobot(hal, BOMB_DAMAGE);
                     hal.setTakingDamage(3);
-                }   
+                }
             }
             auxMines.push(b);            
         }
@@ -535,14 +549,24 @@ public class Battlefield extends JFrame{
     }
     
     public static void damageRobot(BattleRobot hal, double x) {
+        System.out.println("HAL SERIAL : " + hal.saySerialNumber() + "\n");
+        System.out.println("LIFE ANTES : " + hal.getHealth() + "\n");
+
         if(hal.getHealth() > 0)
             hal.updateHealth(x);
         else
             robotDied(hal);
+        System.out.println("LIFE DEPOIS : " + hal.getHealth() + "\n");
     }
     
     // Desliga o robo se seu HP chegar a 0
     public static void robotDied(BattleRobot hal){
+        if (hal.getTeam().equals("Team A")){
+            teamAarmy--;
+        }
+        else{
+            teamBarmy--;
+        }
         army.remove(hal);
         numRobots--;
     }
