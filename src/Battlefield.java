@@ -209,7 +209,7 @@ public class Battlefield extends JFrame{
                 break;
             }
             else
-                pauseSystem(100);
+                pauseSystem(300);
         }
         endTheGame();
     }
@@ -441,7 +441,6 @@ public class Battlefield extends JFrame{
     public static String lookAt(int i, int j, String robotTeam){
         Iterator it = army.iterator();
         BattleRobot hal;
-        
         // Olha os robôs
         while(it.hasNext()){
             hal = (BattleRobot)it.next();
@@ -451,7 +450,6 @@ public class Battlefield extends JFrame{
                 else return "HAS_ENEMY";
             }
         }
-        
         // Olha os cristais
         Iterator cs = crystals.iterator();
         Crystal c;
@@ -460,16 +458,14 @@ public class Battlefield extends JFrame{
             if(c.getX() == i && j == c.getY())
                 return "HAS_CRYSTAL";
         }
-        
         // Olha as bombas
-        Iterator bm = groundMine.iterator();
-        Bomb b;
-        while(bm.hasNext()){
-            b = (Bomb) cs.next();
-            if(b.getX() == i && j == b.getY())
-                return "HAS_BOMB";
-        }
-        
+	Bomb b;
+	for(int k = 0; k < groundMine.size(); k++){
+	    b = groundMine.get(k);
+	    if(b.getX() == i && b.getY() == j){
+		return "HAS_BOMB";
+	    }
+	}
         // A ordem de retorno das listas prioriza o que deve ser
         // mais importante para o usuário e permite, por exemplo,
         // plantar armadilhas.

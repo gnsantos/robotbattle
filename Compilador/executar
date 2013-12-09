@@ -1,17 +1,14 @@
 x = 1;
 cont = 0;
 while(x < 10000) do{
-	[WALK East];
+	[WALK West];
 	if( cont == 34 ) then{
 		[WALK Southwest];
+		[BOMB Northeast];
 		cont = 0;
 	}
-	[TAKE East];
-	[TAKE Southeast];
-	[TAKE Northeast];
+	[TAKE West];
 	decision = [ASK Is_in_enemy_base];
-	print "Minha decisao eh ", decision;
-	println;
 	if( decision == 1) then{
 		[DROP East];
 	}
