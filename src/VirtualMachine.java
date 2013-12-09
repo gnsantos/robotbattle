@@ -81,7 +81,8 @@ class VirtualMachine{
     private void startSourceCode(String sourceCode) throws IOException{
         this.programArray.clear();
         this.labelsHash.clear();
-        filter.parseToMe(this.programArray, this.labelsHash, sourceCode);
+	String s = filter.compileHighLevel(sourceCode);
+        filter.parseToMe(this.programArray, this.labelsHash, s);
         this.instructionCounter = 0;
         this.pc = 0;
     }

@@ -1,43 +1,17 @@
-  0: PUSH 1.0
-  1: DUP
-  2: SETV 0
-  3: PUSH 0.0
-  4: DUP
-  5: SETV 1
-  6: PUSHV 0
-  7: PUSH 10000.0
-  8: MENOR
-  9: ZERO 33
- 10: WLK E
- 11: PUSHV 1
- 12: PUSH 34.0
- 13: IGUAL
- 14: ZERO 6
- 15: WLK SW
- 16: BOMB NE
- 17: PUSH 0.0
- 18: DUP
- 19: SETV 1
- 20: TAKE E
- 21: TAKE SE
- 22: TAKE NE
- 23: ASK IS_IN_ENEMY_BASE
- 24: DUP
- 25: SETV 2
- 26: PUSHV 2
- 27: PUSH 1.0
- 28: IGUAL
- 29: ZERO 2
- 30: DROP E
- 31: PUSHV 0
- 32: PUSH 1.0
- 33: SOMA
- 34: DUP
- 35: SETV 0
- 36: PUSHV 1
- 37: PUSH 1.0
- 38: SOMA
- 39: DUP
- 40: SETV 1
- 41: GOTO -35
- 42: RET
+x = 1;
+cont = 0;
+while(x < 10000) do{
+	[WALK West];
+	if( cont == 34 ) then{
+		[WALK Southwest];
+		[BOMB Northeast];
+		cont = 0;
+	}
+	[TAKE West];
+	decision = [ASK Is_in_enemy_base];
+	if( decision == 1) then{
+		[DROP East];
+	}
+	x = x+1;
+	cont = cont + 1;	
+}

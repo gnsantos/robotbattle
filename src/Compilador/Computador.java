@@ -15,9 +15,11 @@ class Computador {
 		ip  = 0;
 	}
 
-	void Dump(Instrucao[] p) {
+	String Dump(Instrucao[] p) {
+		String s = "";
 		for (int i = 0; i < p.length ; i++)
-			System.out.printf("%3d: %s\n", i, p[i].Show());
+			s += String.format("%3d: %s\n", i, p[i].Show());
+		return s;
 	}
 
 	// Carrega e roda um programa

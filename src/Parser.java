@@ -11,16 +11,19 @@ public class Parser{
     final static String directoryPath = System.getProperty("user.dir");
     final static String defaultSource = "defaultSource";
     
+    private static Calc compiler;
 
-    public static String compileHighLevel(){
-	return "foo";
+    public static String compileHighLevel(String name){
+	String path = directoryPath + sourcePath;
+	String result = compiler.parse(path+"/"+name, path+"/"+defaultSource);
+	return result;
     }
 
     //Recebe uma string contendo um codigo fonte em linguagem de maquina e constroi o vetor de instrucoes da maquina virtual
-    public static void parseToMe (LinkedList<String[]> programArray, Hashtable<String, Integer> labelsHash, String name) throws IOException{
-	String path = directoryPath + sourcePath;
+    public static void parseToMe (LinkedList<String[]> programArray, Hashtable<String, Integer> labelsHash, String code) throws IOException{
+	/*String path = directoryPath + sourcePath;
 	File file;
-	FileReader reader;
+        FileReader reader;
 	BufferedReader buffer;
 	try{
 	    // System.out.println("Path - " + directoryPath);
@@ -34,14 +37,18 @@ public class Parser{
 	    file = new File(path,defaultSource);
 	    reader = new FileReader(file);
 	    buffer =  new BufferedReader(reader);
-	}
+	    }*/
 	String line;
+	String [] lines = code.split("\n");
+	int i = 0;
+	int size = lines.length;
 	int pc = 0;
 	Pattern comline = Pattern.compile("(\\b[a-zA-Z]*\\b:\\s*)?(\\b[a-zA-Z]{2,10}\\b)[^:]?((-?\\d+\\.?\\d*|[^#]*|\\s*))\\s*[\n\f#]*");
 	Pattern labeline = Pattern.compile("(\\b[a-zA-Z]*\\b:\\s*)[\n\f#]*$");
 	Pattern other = Pattern.compile("^#.*[\n\f]*|^[ \t\n]*$");
 
-	while((line = buffer.readLine()) != null){
+	while(i < size){
+	    line = lines[i++];
 	    Matcher matchLabel = labeline.matcher(line);
 	    Matcher matchComLine = comline.matcher(line);
 	    Matcher matchOther = other.matcher(line);

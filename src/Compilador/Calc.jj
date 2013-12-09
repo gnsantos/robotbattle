@@ -1,4 +1,5 @@
 options {
+    STATIC = true;
     IGNORE_CASE = true;
     LOOKAHEAD   = 2;        // para eliminar conflitos
 }
@@ -6,18 +7,52 @@ options {
 // Descricao da classe Calc
 PARSER_BEGIN(Calc)
 import java.util.Vector;
-
+import java.io.*;
 public class Calc {
     static Instrucao[] Prog;                // programa
     static TabSim Nomes  = new TabSim();    // nomes globais
     static TabSim Locais = null;            // nomes locais (ativada dentro de funcao)
     static Computador C  = new Computador();// Maquina virtual
     static int tam = 0;                     // tamanho do programa
+    static Calc parser = null;
+	
+    public static void initParser(){
+		if(parser == null){
+			parser = new Calc(System.in);
+		}
+	}
+	
+    public static String parse(String pathToProg, String pathToDefault){
+		initParser();
+		InputStream s = null;
+		InputStreamReader isr = null;
+		BufferedReader buffer = null;
+		try{
+			s = new FileInputStream(pathToProg);
+			isr = new InputStreamReader(s);
+			buffer = new BufferedReader(isr);
+		} catch(Exception e){
+			System.out.println("File not found. Using default.");
+			try{
+				s = new FileInputStream(pathToDefault);
+			}catch(Exception ex) {System.out.println("Erro fatal. Encerrando programa"); System.exit(1);}
+			isr = new InputStreamReader(s);
+			buffer = new BufferedReader(isr);
+		}
+		Calc.ReInit(buffer);
+		try{
+			Prog = Calc.Programa();
+		} catch(Exception parseEx){System.out.println("Erro na compilacao high-level."); System.exit(1);}
+		return C.Dump(Prog);
+	}	
 
     public static void main(String args[]) throws ParseException {
-        Calc parser = new Calc(System.in); // cria o compilador
+        String s;
+	initParser();
+	Calc.ReInit(System.in);
         Prog = parser.Programa();          // compila e retorna o código de maquina
-        C.Dump(Prog);                      // imprime o código objeto
+        s = C.Dump(Prog);                      // manda a string com codigo para s
+	System.out.println(s); //imprime o codigo
 //        System.out.println(((Real)C.Roda(Prog)).val()); // roda e mostra o resultado
     }
 }
