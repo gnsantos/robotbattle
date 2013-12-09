@@ -106,7 +106,7 @@ public class Battlefield extends JFrame{
     static int Height = Terreno.length;
     static int Width = Terreno[0].length;
     
-    private static int numRobots = 20;       // Número de robôs ativos
+    private static int numRobots = 8;       // Número de robôs ativos
     private static int NUM_CRYSTALS = 15;   //Número de cristais ativos
     private static int NUM_DROPPED_CRYSTALS = 0;    // Número de cristais que já estão na base
     
@@ -483,18 +483,18 @@ public class Battlefield extends JFrame{
         // e danifica o robô, caso necessário
         
         while (!mineExploded.empty()){
-            Iterator it = army.iterator();
             Bomb b = mineExploded.pop();
             int i = b.getX();
             int j = b.getY();
-            while(it.hasNext()){
-                hal = (BattleRobot)it.next();
+            for (int x = 0; x < army.size(); x++) {
+                hal = army.get(x);
                 if(i == hal.getX() && j == hal.getY()){
+                    if (hal.getHealth() + BOMB_DAMAGE <= 0.0){ 
+                        x--;
+                    }
                     damageRobot(hal, BOMB_DAMAGE);
                     hal.setTakingDamage(3);
-                    DebugJav.sayCrash("CRASH HERE");
-                }
-            DebugJav.sayCrash("CRASH END");
+                }   
             }
             auxMines.push(b);            
         }

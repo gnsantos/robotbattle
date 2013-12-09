@@ -14,7 +14,7 @@ public class BattleRobot implements Robot{
     private VirtualMachine vm;
     private String robotState;
     private final Integer MAX_CRYSTAL = 3;
-    private final Integer MAX_BOMB = 10;
+    private final Integer MAX_BOMB = 50;
     private Vector<Bomb> groundMine = new Vector<Bomb>(MAX_BOMB);
     private int takingDamage = 0;
     
