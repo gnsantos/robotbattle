@@ -528,10 +528,14 @@ class SYSCALL extends Instrucao {
             newParam = "MY_HEALTH";
         else if (param.equals("Crystals"))
             newParam = "NUMBER_OF_CRYSTAL";
-        else if (param.equals("Enemy_base_distance"))
-            newParam = "ENEMY_BAS_DISTANCE";
-        else if (param.equals("Base_distance"))
-            newParam = "TEMA_BASE_DISTANCE";
+        else if (param.equals("Enemy_base_distance_x"))
+            newParam = "ENEMY_BAS_DISTANCE_X";
+	else if (param.equals("Enemy_base_distance_y"))
+            newParam = "ENEMY_BAS_DISTANCE_Y";
+        else if (param.equals("Base_distance_x"))
+            newParam = "TEMA_BASE_DISTANCE_X";
+	else if (param.equals("Base_distance_y"))
+            newParam = "TEMA_BASE_DISTANCE_Y";
         else if (param.equals("Is_in_enemy_base"))
             newParam = "IS_IN_ENEMY_BASE";
         else 

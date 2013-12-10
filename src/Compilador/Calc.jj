@@ -547,7 +547,7 @@ TOKEN :
 {
  < NUM: ( ["0"-"9"] )+ >
 |       // Possíveis perguntas a serem feitas pela syscall ASK
- <QUESTION: "Health" | "Crystals" | "Is_in_enemy_base" | "Enemy_base_distance" | "Base_distance" > 
+ <QUESTION: "Health" | "Crystals" | "Is_in_enemy_base" | "Enemy_base_distance_x" | "Enemy_base_distance_y" | "Base_distance_x" | "Base_distance_y" > 
 |       // Possíveis syscalls
  <CHAMADA: "WALK" | "FIRE" | "BOMB" | "TAKE" | "DROP" | "LOOK" | "ASK">
 |       // Possíveis direções a serem passadas para determinadas syscalls
